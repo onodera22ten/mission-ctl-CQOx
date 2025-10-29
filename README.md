@@ -139,19 +139,41 @@ Automatically checks data requirements:
 **Generated visualizations** (see `reports/world_class/`):
 
 **Core Causal Inference Visualizations:**
-1. **3D Causal DAG** (`causal_dag_3d.png` + `causal_dag_animated.gif`) - Interactive rotational animation showing causal structure with node importance
-2. **Time-Varying Treatment Effects** (`tvce_animated.gif`, 3.1MB) - Animated confidence bands showing dynamic causal effects over time
-3. **CATE Heterogeneity Surface** (`cate_surface_3d.png` + `cate_surface_animated.gif`) - 3D heatmap with interactive rotation showing treatment effect heterogeneity
-4. **Network Diffusion 3D** (`network_diffusion_3d.gif`, 1.4MB) - Graph dynamics showing spillover effects over time
-5. **Sensitivity Analysis 3D** (`sensitivity_3d.png`) - Rosenbaum bounds contour plot for robustness assessment
-6. **Propensity Score Overlap 3D** (`propensity_3d.png`, 2.7MB) - 3D histogram showing treated/control distribution overlap
+1. **3D Causal DAG** - Interactive rotational animation showing causal structure with node importance
+   - Static: `causal_dag_3d.png`
+   - Animated: `causal_dag_animated.gif`
+
+2. **Time-Varying Treatment Effects** (3.1MB) - Animated confidence bands showing dynamic causal effects over time
+   - `tvce_animated.gif`
+
+3. **CATE Heterogeneity Surface** - 3D heatmap with interactive rotation showing treatment effect heterogeneity
+   - Static: `cate_surface_3d.png`
+   - Animated: `cate_surface_animated.gif`
+
+4. **Network Diffusion 3D** (1.4MB) - Graph dynamics showing spillover effects over time
+   - `network_diffusion_3d.gif`
+
+5. **Sensitivity Analysis 3D** - Rosenbaum bounds contour plot for robustness assessment
+   - `sensitivity_3d.png`
+
+6. **Propensity Score Overlap 3D** (2.7MB) - 3D histogram showing treated/control distribution overlap
+   - `propensity_3d.png`
 
 **Estimator Performance Visualizations:**
-7. **Estimator Comparison** (`estimator_comparison.png`) - All 29 methods with confidence intervals and effect estimates
-8. **Category Performance 3D** (`category_performance_3d.png`, 1.7MB) - 3D bar chart comparing method categories (Double ML, PSM, IV, etc.)
-9. **Diagnostic Heatmap** (`diagnostic_heatmap.png`) - Quality metrics matrix (balance, overlap, first-stage F, R², sample size)
-10. **Execution Time Benchmark** (`execution_time.png`) - Performance comparison across all estimators (10k rows dataset)
-11. **Quality Gates 3D** (`quality_gates_3d.png`) - 3D pie chart showing validation pass rates
+7. **Estimator Comparison** - All 29 methods with confidence intervals and effect estimates
+   - `estimator_comparison.png`
+
+8. **Category Performance 3D** (1.7MB) - 3D bar chart comparing method categories (Double ML, PSM, IV, etc.)
+   - `category_performance_3d.png`
+
+9. **Diagnostic Heatmap** - Quality metrics matrix (balance, overlap, first-stage F, R², sample size)
+   - `diagnostic_heatmap.png`
+
+10. **Execution Time Benchmark** - Performance comparison across all estimators (10k rows dataset)
+    - `execution_time.png`
+
+11. **Quality Gates 3D** - 3D pie chart showing validation pass rates
+    - `quality_gates_3d.png`
 
 All visualizations use:
 - ✅ **High Resolution**: 300 DPI publication quality
@@ -475,5 +497,3 @@ MIT License - see [LICENSE](LICENSE)
 ---
 
 **CQOx - Rigorous Causal Inference at Scale**
-
-*Built with ❤️ using Claude Code*
