@@ -1,0 +1,10 @@
+{
+  "uid": "cqox-37",
+  "title": "CQOx App (37 panels)",
+  "timezone": "browser",
+  "schemaVersion": 38,
+  "version": 1,
+  "refresh": "10s",
+  "panels": [],
+  "time": { "from": "now-6h", "to": "now" }
+}

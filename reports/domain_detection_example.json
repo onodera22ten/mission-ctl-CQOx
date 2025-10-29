@@ -1,0 +1,26 @@
+{
+	"Input":"test_education.csv (50 rows Ã 12 columns)",
+	"Columns":"student_id, school_id, teacher_id, intervention, prior_test_score, attendance_rate, ses_index, special_ed, grade_level, post_test_score, graduated, college_enrolled",
+	"Detection Result":{
+		"Domain":"education",
+		"Confidence":0.87,
+		"Scores":{
+			"education":0.87,
+			"policy":8.0e-2,
+			"medical":3.0e-2,
+			"retail":1.0e-2,
+			"finance":1.0e-2,
+			"network":0.0
+		},
+		"Evidence":[
+			"student",
+			"school",
+			"teacher",
+			"grade",
+			"test",
+			"attendance",
+			"graduation",
+			"college"
+		]
+	}
+}

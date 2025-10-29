@@ -1,0 +1,36 @@
+=================================================
+Plan2 Implementation Complete
+=================================================
+
+Date: Wed 29 Oct 2025 13:46:49
+
+Files Created: 18
+
+Components:
+  - Data Contract (YAML SSOT)
+  - DuckDB + dbt-duckdb (3-stage pipeline)
+  - pandera/pytest (Quality gates)
+  - Multi-format input (CSV/TSV/JSONL/XLSX/Parquet)
+  - Causal safety metrics (Overlap, SMD)
+  - PostgreSQL/DuckDB routing (heuristic)
+  - Makefile (one-command execution)
+
+Key Formulas:
+  Overlap = E[1(0.05 < e(X) < 0.95)]
+  SMD_j = (μ_1j - μ_0j) / sqrt((s^2_1j + s^2_0j)/2)
+
+Quality Gates:
+  - Overlap ≥ 0.6
+  - max|SMD| ≤ 0.1
+  - Missing rate ≤ 0.3
+
+Execution:
+  cd ciq && make all
+
+Expected Output:
+  - ciq/data/staged/staged.parquet
+  - ciq/warehouse/warehouse.duckdb
+  - ciq/data/processed/causal_ready.parquet
+  - ciq/artifacts/overlap_metrics.json
+
+=================================================

@@ -1,0 +1,16 @@
+# Engine Router Configuration
+# Purpose: Automatic PostgreSQL/DuckDB selection based on query type and context
+
+defaults:
+  large_select_mb: 50  # Threshold for DuckDB (Parquet size)
+  api_schemas: ["public", "api", "auth"]  # PG-優先 schemas
+  pg_write_schemas: ["public", "api"]  # Write-only PG schemas
+
+rules:
+  prefer_duckdb_if_parquet: true  # read_parquet() → DuckDB
+  allow_select_fallback: true  # SELECT failure → fallback (read-only)
+
+# Quality notes:
+# - DDL/DML → PG固定 (Fail-close, no fallback)
+# - API context → PG優先 (connection pooling, access control)
+# - Batch + Parquet → DuckDB (column-oriented I/O)

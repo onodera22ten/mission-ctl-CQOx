@@ -1,0 +1,295 @@
+{
+  "938a47c3-fc0e-44b2-9be4-6a8f73647b7c": {
+    "path": "data/uploads/938a47c3-fc0e-44b2-9be4-6a8f73647b7c.csv",
+    "domain": "retail"
+  },
+  "1ba7babcf5f04d41b878da6acb5bf856": {
+    "id": "1ba7babcf5f04d41b878da6acb5bf856",
+    "path": "/home/hirokionodera/cqox-complete/data/uploads/1ba7babcf5f04d41b878da6acb5bf856_sample_retail.csv",
+    "domain": "retail",
+    "filename": "sample_retail.csv",
+    "size": 165
+  },
+  "ac38472d373649f297ba5267f07e9bbe": {
+    "id": "ac38472d373649f297ba5267f07e9bbe",
+    "path": "/home/hirokionodera/cqox-complete/data/uploads/ac38472d373649f297ba5267f07e9bbe_sample_retail.csv",
+    "domain": "retail",
+    "filename": "sample_retail.csv",
+    "size": 165
+  },
+  "2f0973e30d804075a082c4a5e6ef0d92": {
+    "id": "2f0973e30d804075a082c4a5e6ef0d92",
+    "path": "/home/hirokionodera/cqox-complete/data/uploads/2f0973e30d804075a082c4a5e6ef0d92_sample_retail.csv",
+    "domain": "retail",
+    "filename": "sample_retail.csv",
+    "size": 165
+  },
+  "32ac97ab282947119ba8267c85e6a971": {
+    "id": "32ac97ab282947119ba8267c85e6a971",
+    "path": "/home/hirokionodera/cqox-complete/data/uploads/32ac97ab282947119ba8267c85e6a971_sample_retail.csv",
+    "domain": "retail",
+    "filename": "sample_retail.csv",
+    "size": 165
+  },
+  "0ca6ab1586f04d22b814755630b07fb3": {
+    "path": "/home/hirokionodera/cqox-complete/data/uploads/0ca6ab1586f04d22b814755630b07fb3_sample_retail.csv"
+  },
+  "05468b918ac740f7b8ae368f4765ae8b": {
+    "path": "/home/hirokionodera/cqox-complete/data/uploads/05468b918ac740f7b8ae368f4765ae8b_sample_retail.csv"
+  },
+  "6db34caa588644febc7e67d618a8b64c": {
+    "path": "/home/hirokionodera/cqox-complete/data/uploads/6db34caa588644febc7e67d618a8b64c_sample_retail.csv"
+  },
+  "508cd36b75b14c05b60ff57545dac764": {
+    "path": "/home/hirokionodera/cqox-complete/data/uploads/508cd36b75b14c05b60ff57545dac764_sample_retail.csv"
+  },
+  "a547ebdd7ada4dff9ac545ef62885022": {
+    "path": "/home/hirokionodera/cqox-complete/data/uploads/a547ebdd7ada4dff9ac545ef62885022_sample_push_5000_variant.csv"
+  },
+  "3dc9e97b4af74d76917e9739d60f147b": {
+    "path": "/home/hirokionodera/cqox-complete/data/uploads/3dc9e97b4af74d76917e9739d60f147b_retail_large.csv"
+  },
+  "6fb6b91c851c40ca91ff50277d2931f3": {
+    "path": "/home/hirokionodera/cqox-complete/data/uploads/6fb6b91c851c40ca91ff50277d2931f3_retail_large.csv"
+  },
+  "b2382f36d33344b0a6ca5c49bbeba8ce": {
+    "path": "/home/hirokionodera/cqox-complete/data/uploads/b2382f36d33344b0a6ca5c49bbeba8ce_retail_large.csv"
+  },
+  "67cea0f1b5434f6fb01262cac796bf2c": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/67cea0f1b5434f6fb01262cac796bf2c_sample_retail.csv"
+  },
+  "5f540007d6e948c1924a8cd138f80a38": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/5f540007d6e948c1924a8cd138f80a38_retail_large.csv"
+  },
+  "93e095add77d48418d95471e6ccc3f29": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/93e095add77d48418d95471e6ccc3f29_network_edges.csv"
+  },
+  "7db4107e0d9b45e5be6a414bf9080867": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/7db4107e0d9b45e5be6a414bf9080867_retail_large.csv"
+  },
+  "35c41cb470d04a5782035237c18a0b84": {
+    "path": "/app/data/uploads/35c41cb470d04a5782035237c18a0b84_retail_large.csv"
+  },
+  "5ca21560eb534fceaad2e3fcd8223f58": {
+    "path": "/app/data/uploads/5ca21560eb534fceaad2e3fcd8223f58_retail_large.csv"
+  },
+  "aa8b678df7ce4cb483cb597bd46afa20": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/aa8b678df7ce4cb483cb597bd46afa20_test_retail_small.csv"
+  },
+  "b70bffa1a07d4b0ba110dfb3ed91c9d4": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/b70bffa1a07d4b0ba110dfb3ed91c9d4_mini_retail.csv"
+  },
+  "f086fcbd889741d19bc3065923f4bce4": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/f086fcbd889741d19bc3065923f4bce4_test_retail_small.csv"
+  },
+  "ca520a8830834a098a36cf9402d8e507": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/ca520a8830834a098a36cf9402d8e507_mini_retail_complete.csv"
+  },
+  "c476706596c7417eac9d1bfec1aac451": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/c476706596c7417eac9d1bfec1aac451_mini_retail_complete.csv"
+  },
+  "e39a770f2b6647e58b2df1460becb8de": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/e39a770f2b6647e58b2df1460becb8de_mini_retail_complete.csv"
+  },
+  "ab1826681f714896815757740307afdd": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/ab1826681f714896815757740307afdd_mini_retail_complete.csv"
+  },
+  "2c6f3d603ac845a8b86a0b23defc46c9": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/2c6f3d603ac845a8b86a0b23defc46c9_mini_retail_complete.csv"
+  },
+  "eda954c8f5ef4eb7837c067470860c77": {
+    "path": "/app/data/uploads/eda954c8f5ef4eb7837c067470860c77_mini_retail_complete.csv"
+  },
+  "3913c67837e545588bf424e992f80dd1": {
+    "path": "/app/data/uploads/3913c67837e545588bf424e992f80dd1_mini_retail_complete.csv"
+  },
+  "ac77c35f08dd4ed2ba8f88236a8ae896": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/ac77c35f08dd4ed2ba8f88236a8ae896_mini_retail_complete.csv"
+  },
+  "e2cf9f3ea9e04635ae04b1391c05ba74": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/e2cf9f3ea9e04635ae04b1391c05ba74_mini_retail_complete.csv"
+  },
+  "50d65d7a848945a0916a132b8defcf25": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/50d65d7a848945a0916a132b8defcf25_mini_retail_complete.csv"
+  },
+  "9dd6c21e6ff64585bec9f8e02d5750f1": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/9dd6c21e6ff64585bec9f8e02d5750f1_mini_retail_complete.csv"
+  },
+  "ef281c179f0149b59dbcd9ec03258614": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/ef281c179f0149b59dbcd9ec03258614_mini_retail_complete.csv"
+  },
+  "38a957d70834432ab72eb6f9a4de6c12": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/38a957d70834432ab72eb6f9a4de6c12_mini_retail_complete.csv"
+  },
+  "8ad283298e8a447e8695cefb8f248735": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/8ad283298e8a447e8695cefb8f248735_mini_retail_complete.csv"
+  },
+  "b37cdf832e05437f84c3cc1263a3e5f9": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/b37cdf832e05437f84c3cc1263a3e5f9_mini_retail_complete.csv"
+  },
+  "9488c38b74384e198e5d5a972653c2ab": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/9488c38b74384e198e5d5a972653c2ab_mini_retail_complete.csv"
+  },
+  "c0904f2d861e45d586bd1a2127411ad0": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/c0904f2d861e45d586bd1a2127411ad0_mini_retail_complete.csv"
+  },
+  "9f0960222e88428a9280320ba4b6b845": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/9f0960222e88428a9280320ba4b6b845_mini_retail_complete.csv"
+  },
+  "a5fb645f2fab4010b983b8a72d940ed4": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/a5fb645f2fab4010b983b8a72d940ed4_mini_retail_complete.csv"
+  },
+  "917bc17e4d6c49189f5aaf5d84b334fa": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/917bc17e4d6c49189f5aaf5d84b334fa_mini_retail_complete.csv"
+  },
+  "970651d346c741eeb160c05f01d37a98": {
+    "path": "/app/data/uploads/970651d346c741eeb160c05f01d37a98_mini_retail_complete.csv"
+  },
+  "0f6f93dc6ec540c2af83406690240dda": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/0f6f93dc6ec540c2af83406690240dda_mini_retail_complete.csv"
+  },
+  "24cff60d6c3e4070a3c1390d5be5f8c0": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/24cff60d6c3e4070a3c1390d5be5f8c0_mini_retail_complete.csv"
+  },
+  "f4a22fa321904516b143d395aecf2468": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/f4a22fa321904516b143d395aecf2468_test_education.csv"
+  },
+  "a64ac2b8846d427b903c5c7c3cfadc5f": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/a64ac2b8846d427b903c5c7c3cfadc5f_test_education.csv"
+  },
+  "d9d5fc61b9bc490792e0f49f941d015b": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/d9d5fc61b9bc490792e0f49f941d015b_test_education.csv"
+  },
+  "f4d41ab85c9e4cb9a0d756df9329aa25": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/f4d41ab85c9e4cb9a0d756df9329aa25_test_education.csv"
+  },
+  "01c218744eb84dc3a24194d90a12801e": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/01c218744eb84dc3a24194d90a12801e_test_education.csv"
+  },
+  "58018769999b4e05bbb847b64a91d347": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/58018769999b4e05bbb847b64a91d347_test_education.csv"
+  },
+  "97a90cb2574b497aba758fcea93d2f62": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/97a90cb2574b497aba758fcea93d2f62_test_education.csv"
+  },
+  "5c09087bd584482a97bc5b3b3bddad0f": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/5c09087bd584482a97bc5b3b3bddad0f_test_education.csv"
+  },
+  "c4d4a100047b42ce8d6187c9bd21e0a1": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/c4d4a100047b42ce8d6187c9bd21e0a1_test_education.csv"
+  },
+  "83a83f21234742ad928012163519398a": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/83a83f21234742ad928012163519398a_test_medical.csv"
+  },
+  "0a92346262184786b55e821f7017860e": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/0a92346262184786b55e821f7017860e_mini_retail_complete.csv"
+  },
+  "214eb633bd6a4eeda210811b0fe79bda": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/214eb633bd6a4eeda210811b0fe79bda_test_medical.csv"
+  },
+  "7894b7faa4794d6e8fc14df0b5a88f50": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/7894b7faa4794d6e8fc14df0b5a88f50_mini_retail.csv"
+  },
+  "8c3ad8dce38f4e0ca649815782cfcad5": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/8c3ad8dce38f4e0ca649815782cfcad5_mini_retail_complete.csv"
+  },
+  "35600c63384f4d1399edee6b5e82564f": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/35600c63384f4d1399edee6b5e82564f_mini_retail_complete.csv"
+  },
+  "2a9dc2eb8a934a8a90561c53cadc5cb2": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/2a9dc2eb8a934a8a90561c53cadc5cb2_test_education.csv"
+  },
+  "2f6e9d377410408bb6c97c4a79456498": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/2f6e9d377410408bb6c97c4a79456498_test_education.csv"
+  },
+  "36140cd617144af584d99069f8cfdd4a": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/36140cd617144af584d99069f8cfdd4a_test_education.csv"
+  },
+  "b4ee20e0e11e40a988e5870b1b6d4174": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/b4ee20e0e11e40a988e5870b1b6d4174_test_medical.csv"
+  },
+  "f842dff74b35460388e4c652d7edcab5": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/f842dff74b35460388e4c652d7edcab5_test_education.csv"
+  },
+  "f02301de4e434e97b6b31f04553f7a9e": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/f02301de4e434e97b6b31f04553f7a9e_test_education.csv"
+  },
+  "8da8cbc35cf44f73a882b0e2d46c7946": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/8da8cbc35cf44f73a882b0e2d46c7946_test_education.csv"
+  },
+  "5d51856581294502a4c452202e048d31": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/5d51856581294502a4c452202e048d31_test_education.csv"
+  },
+  "dbf17ac0558649ddb57c9fe6599c0a39": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/dbf17ac0558649ddb57c9fe6599c0a39_test_education.csv"
+  },
+  "a665cf6a894f4554b4a73a2edf423205": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/a665cf6a894f4554b4a73a2edf423205_test_education.csv"
+  },
+  "1fec8384fab442c4b4d0c8daa8c96c7a": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/1fec8384fab442c4b4d0c8daa8c96c7a_test_education.csv"
+  },
+  "09f5783b563143efb4ce1991e4ea9b3d": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/09f5783b563143efb4ce1991e4ea9b3d_test_education.csv"
+  },
+  "533c0c87ccb24ea1b6b15bfe5ce4ab8a": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/533c0c87ccb24ea1b6b15bfe5ce4ab8a_test_education.csv"
+  },
+  "e341e2c5822145b5bbd9cf0044d53350": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/e341e2c5822145b5bbd9cf0044d53350_test_education.csv"
+  },
+  "18632174cff84ccbbe5f1bf60dc0d1bb": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/18632174cff84ccbbe5f1bf60dc0d1bb_mini_retail_complete.csv"
+  },
+  "33576d42710348829dfd896df7426931": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/33576d42710348829dfd896df7426931_education_test.csv"
+  },
+  "98f6e6e127fe4f6db762cc3b254b4853": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/98f6e6e127fe4f6db762cc3b254b4853_test_retail.csv"
+  },
+  "62e41b9af43e42f6bd74d3b7f95f324e": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/62e41b9af43e42f6bd74d3b7f95f324e_test_retail.csv"
+  },
+  "3643763b7fbb49898f95f9182fb788ce": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/3643763b7fbb49898f95f9182fb788ce_education_test.csv"
+  },
+  "c0ca561b43df4f8ab6634152473181ab": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/c0ca561b43df4f8ab6634152473181ab_education_test.csv"
+  },
+  "9782d4ffd0494caf97677b027f20c9e6": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/9782d4ffd0494caf97677b027f20c9e6_test_education.csv"
+  },
+  "035260c83b71434faf4146c4a7406add": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/035260c83b71434faf4146c4a7406add_test_education.csv"
+  },
+  "eb8e475415f94f4a9e203561994ffb72": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/eb8e475415f94f4a9e203561994ffb72_test_education.csv"
+  },
+  "525a2e7714444cd1b05427aa7d6d8dc8": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/525a2e7714444cd1b05427aa7d6d8dc8_test_small.csv"
+  },
+  "b3476e413142415b81ee2b66dd15182b": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/b3476e413142415b81ee2b66dd15182b_test_small.csv"
+  },
+  "abea47956a3b480f8670f0ce5613c582": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/abea47956a3b480f8670f0ce5613c582_test_education.csv"
+  },
+  "6462958058734fac98ba1c0a9da4bc3e": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/6462958058734fac98ba1c0a9da4bc3e_test_education.csv"
+  },
+  "6d222746058f4922a6652a08082894cd": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/6d222746058f4922a6652a08082894cd_test_education.csv"
+  },
+  "ff60760cc8e14c13b399e3faeb0b5104": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/ff60760cc8e14c13b399e3faeb0b5104_test_education.csv"
+  },
+  "5c689b44ed214f85b34f0ac84871d675": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/5c689b44ed214f85b34f0ac84871d675_test_retail.csv"
+  },
+  "048be4c6c22d4888bf2571dc98dab705": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/048be4c6c22d4888bf2571dc98dab705_test_education.csv"
+  },
+  "3687f213b479447eb0a31cdd13c5ce64": {
+    "path": "/home/hirokionodera/cqox-complete_b/data/uploads/3687f213b479447eb0a31cdd13c5ce64_test_education.csv"
+  }
+}

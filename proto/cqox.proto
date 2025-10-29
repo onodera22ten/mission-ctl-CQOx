@@ -1,0 +1,21 @@
+syntax = "proto3";
+package cqox;
+
+service Engine {
+  rpc AnalyzeComprehensive (AnalyzeRequest) returns (AnalyzeResponse) {}
+}
+
+message AnalyzeRequest {
+  string df_path = 1;
+  map<string,string> mapping = 2;
+  string cfg_json = 3;
+  double lambda = 4;
+  bool preview = 5;
+  int32 sample_limit = 6;
+}
+
+message AnalyzeResponse {
+  string status = 1;
+  string message = 2;
+  string result_json = 3; // JSONで返す簡易形
+}

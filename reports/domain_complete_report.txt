@@ -1,0 +1,52 @@
+=================================================
+Domain Detection & 26 Domain-Specific Visualizations
+=================================================
+
+Date: Wed 29 Oct 2025 14:16:03
+
+Components:
+  1. Domain Detection (TF-IDF based)
+     - 6 domains: medical, education, retail, finance, network, policy
+     - 186 keywords total
+     - Confidence scoring with evidence tracking
+
+  2. Domain-Specific Figures (26 total)
+     - Medical: 6 figures (survival, dose-response, clustering, etc.)
+     - Education: 5 figures (event study, fairness, teacher effects, etc.)
+     - Retail: 5 figures (funnel, seasonality, CLV, etc.)
+     - Finance: 4 figures (portfolio, risk-return, synthetic DiD, etc.)
+     - Network: 3 figures (graph, exposure, spillover)
+     - Policy: 3 figures (rollout map, staggered adoption, welfare)
+
+  3. Integration
+     - Auto-detection in server.py (lines 287-290)
+     - Manual override supported (payload.domain)
+     - Two-tab UI (Main 14 + Domain-Specific 26)
+
+Implementation Files:
+  - backend/inference/domain_detection.py (205 lines)
+  - backend/engine/figures_domain.py (1019 lines)
+  - backend/engine/server.py (integration)
+  - frontend/src/ui/FiguresPanel.tsx (two-tab UI)
+
+Sample Data:
+  - test_data/test_education.csv (50 rows Ã 12 columns)
+  - Validates education domain detection
+
+Known Issues:
+  1. Keyword collision (e.g., 'treatment' in medical/education)
+     â Solution: Use domain-specific terms ('intervention' for education)
+  2. 0/26 domain figures â Ensure descriptive column names
+  3. Low confidence â Add domain keywords to column names
+
+Testing:
+  python3 -c "
+    import pandas as pd
+    from backend.inference.domain_detection import detect_domain_from_dataframe
+    df = pd.read_csv('test_data/test_education.csv')
+    result = detect_domain_from_dataframe(df)
+    print('Domain:', result['domain'])
+    print('Confidence:', result['confidence'])
+  "
+
+=================================================

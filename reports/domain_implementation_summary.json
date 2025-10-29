@@ -1,0 +1,45 @@
+{
+	"Core Files":{
+		"backend\/inference\/domain_detection.py":{
+			"Lines":205,
+			"Purpose":"TF-IDF based domain detection",
+			"Classes":"DomainDetector",
+			"Functions":"detect_domain_from_dataframe()",
+			"Domains":6,
+			"Keywords":"186 total"
+		},
+		"backend\/engine\/figures_domain.py":{
+			"Lines":1019,
+			"Purpose":"26 domain-specific visualizations",
+			"Classes":"DomainFigureGenerator",
+			"Figures":{
+				"Medical":6,
+				"Education":5,
+				"Retail":5,
+				"Finance":4,
+				"Network":3,
+				"Policy":3
+			}
+		},
+		"backend\/engine\/server.py":{
+			"Integration Lines":"283-295, 317, 380-384",
+			"Purpose":"Auto-detect domain and call generator",
+			"Features":"Fallback to manual domain selection"
+		}
+	},
+	"Frontend Files":{
+		"frontend\/src\/ui\/FiguresPanel.tsx":{
+			"Lines":"25-62, 64-303",
+			"Purpose":"Two-tab UI: Main (14) + Domain-Specific (26)",
+			"Features":"Dynamic domain grouping, count badges"
+		}
+	},
+	"Sample Data":{
+		"test_data\/test_education.csv":{
+			"Rows":50,
+			"Columns":12,
+			"Domain":"education",
+			"Purpose":"Validation data for education domain"
+		}
+	}
+}

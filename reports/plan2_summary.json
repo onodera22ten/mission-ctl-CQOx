@@ -1,0 +1,34 @@
+{
+	"Total Files Created":18,
+	"Configuration Files":{
+		"ciq\/contracts\/dataset.yaml":"Data contract (SSOT)",
+		"ciq\/config\/router.yml":"Engine routing config",
+		"ciq\/dbt_project\/dbt_project.yml":"dbt project config",
+		"ciq\/dbt_project\/profiles.yml":"dbt profiles (local\/cloud)"
+	},
+	"Library Modules":{
+		"ciq\/lib\/contract.py":"Contract validation (pandera)",
+		"ciq\/lib\/engines.py":"DuckDB\/PostgreSQL wrappers",
+		"ciq\/lib\/router.py":"Automatic engine routing"
+	},
+	"Scripts":{
+		"ciq\/scripts\/convert_any_to_parquet.py":"Multi-format ingestion",
+		"ciq\/scripts\/prepare_causal.py":"Causal safety metrics"
+	},
+	"dbt Models":{
+		"models\/staging\/stg_events.sql":"Type casting",
+		"models\/curated\/cur_events.sql":"Deduplication + cleaning",
+		"models\/features\/causal_ready.sql":"Causal-safe normalization",
+		"models\/schema.yml":"dbt tests (NOT NULL, accepted_values)"
+	},
+	"Tests":{
+		"ciq\/tests\/test_contract.py":"Contract validation tests",
+		"ciq\/tests\/test_router.py":"Router decision logic tests"
+	},
+	"Automation":{
+		"ciq\/Makefile":"One-command pipeline (make all)"
+	},
+	"Documentation":{
+		"wolfram_scripts\/plan2_implementation.wls":"This file"
+	}
+}

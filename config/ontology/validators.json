@@ -1,0 +1,87 @@
+{
+  "unit_id": {
+    "dtype": ["int64", "object", "string"],
+    "uniqueness": "> 0.8",
+    "missing_rate": "< 0.05",
+    "description": "High cardinality, mostly unique, minimal missing"
+  },
+  "time": {
+    "dtype": ["datetime64", "object", "int64"],
+    "patterns": ["YYYY-MM-DD", "YYYY/MM/DD", "timestamp", "YYYYMMDD"],
+    "missing_rate": "< 0.1",
+    "description": "Date or timestamp format"
+  },
+  "treatment": {
+    "dtype": ["int64", "float64", "object", "bool"],
+    "cardinality": "< 20",
+    "binary_preferred": true,
+    "missing_rate": "< 0.05",
+    "description": "Low cardinality, preferably binary"
+  },
+  "outcome": {
+    "dtype": ["int64", "float64", "bool"],
+    "missing_rate": "< 0.3",
+    "variance": "> 0",
+    "description": "Numeric with variance"
+  },
+  "cost": {
+    "dtype": ["int64", "float64"],
+    "range": [">= 0", "< inf"],
+    "missing_rate": "< 0.5",
+    "description": "Non-negative numeric"
+  },
+  "propensity": {
+    "dtype": ["float64"],
+    "range": ["-10 to 10", "log-odds or probability"],
+    "missing_rate": "< 0.3",
+    "description": "Continuous, bounded or log-scale"
+  },
+  "weight": {
+    "dtype": ["float64", "int64"],
+    "range": ["> 0", "< inf"],
+    "missing_rate": "< 0.2",
+    "description": "Positive numeric"
+  },
+  "covariate": {
+    "dtype": ["int64", "float64", "object", "bool"],
+    "missing_rate": "< 0.5",
+    "description": "Any type, moderate missing allowed"
+  },
+  "cluster": {
+    "dtype": ["int64", "object", "string"],
+    "cardinality": "< num_rows / 10",
+    "missing_rate": "< 0.1",
+    "description": "Categorical with moderate cardinality"
+  },
+  "instrument": {
+    "dtype": ["int64", "float64", "bool"],
+    "correlation_with_treatment": "> 0.1",
+    "missing_rate": "< 0.3",
+    "description": "Correlated with treatment"
+  },
+  "network_edge": {
+    "dtype": ["object", "string", "int64"],
+    "format": "edge_list or adjacency",
+    "missing_rate": "< 0.2",
+    "description": "Edge or connection identifier"
+  },
+  "auxiliary_outcome": {
+    "dtype": ["int64", "float64"],
+    "missing_rate": "< 0.3",
+    "description": "Similar to primary outcome"
+  },
+  "policy_boundary": {
+    "dtype": ["int64", "float64"],
+    "variance": "> 0",
+    "missing_rate": "< 0.1",
+    "description": "Continuous running variable"
+  },
+  "data_quality_thresholds": {
+    "min_rows": 100,
+    "min_treated": 10,
+    "min_control": 10,
+    "max_missing_overall": 0.5,
+    "max_duplicates": 0.1,
+    "description": "Overall data quality requirements"
+  }
+}

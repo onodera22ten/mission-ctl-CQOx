@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: cqox-frontend }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: cqox-frontend } }
+  template:
+    metadata: { labels: { app: cqox-frontend } }
+    spec:
+      containers:
+        - name: frontend
+          image: cqox/frontend:latest
+          ports: [ {containerPort: 80} ]
+---
+apiVersion: v1
+kind: Service
+metadata: { name: cqox-frontend }
+spec:
+  selector: { app: cqox-frontend }
+  ports: [ { port: 80, targetPort: 80 } ]
+

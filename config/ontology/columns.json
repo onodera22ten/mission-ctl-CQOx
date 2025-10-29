@@ -1,0 +1,124 @@
+{
+  "unit_id": {
+    "synonyms": [
+      "id", "unit_id", "user_id", "patient_id", "student_id", "customer_id",
+      "device_id", "account_id", "member_id", "subject_id", "individual_id",
+      "person_id", "entity_id", "node_id", "uid", "userid", "patientid",
+      "customerid", "accountid", "deviceid", "subjectid", "individualno"
+    ],
+    "description": "Unique identifier for experimental unit",
+    "required": true,
+    "priority": 100
+  },
+  "time": {
+    "synonyms": [
+      "time", "date", "datetime", "timestamp", "period", "week", "month",
+      "year", "day", "quarter", "fiscal_year", "fiscal_period", "time_period",
+      "observation_date", "event_date", "record_date", "dt", "ds", "date_time"
+    ],
+    "description": "Time dimension for panel data",
+    "required": false,
+    "priority": 90
+  },
+  "treatment": {
+    "synonyms": [
+      "treatment", "w", "treat", "intervention", "policy", "exposure",
+      "variant", "group", "arm", "condition", "dose", "drug", "therapy",
+      "campaign", "ad", "promotion", "program", "assigned", "treatment_group"
+    ],
+    "description": "Treatment or intervention indicator",
+    "required": true,
+    "priority": 95
+  },
+  "outcome": {
+    "synonyms": [
+      "y", "outcome", "result", "response", "target", "label", "metric",
+      "kpi", "conversion", "revenue", "sales", "profit", "score", "performance",
+      "success", "failure", "event", "survival", "recovery", "improvement",
+      "achievement", "grade", "test_score", "clicks", "purchases", "churn"
+    ],
+    "description": "Outcome or dependent variable",
+    "required": true,
+    "priority": 98
+  },
+  "cost": {
+    "synonyms": [
+      "cost", "price", "spend", "spending", "expenditure", "expense",
+      "budget", "investment", "loss", "charge", "fee", "payment", "amount"
+    ],
+    "description": "Cost associated with treatment",
+    "required": false,
+    "priority": 60
+  },
+  "propensity": {
+    "synonyms": [
+      "propensity", "ps", "pscore", "propensity_score", "p_score",
+      "log_propensity", "logit_ps", "lp", "logit_p", "probability"
+    ],
+    "description": "Propensity score or log-propensity",
+    "required": false,
+    "priority": 70
+  },
+  "weight": {
+    "synonyms": [
+      "weight", "weights", "sampling_weight", "survey_weight", "ipw",
+      "iptw", "sample_weight", "wt", "wgt"
+    ],
+    "description": "Sampling or inverse probability weight",
+    "required": false,
+    "priority": 65
+  },
+  "covariate": {
+    "synonyms": [
+      "x", "x_", "covariate", "feature", "predictor", "variable",
+      "control", "confounder", "baseline", "demographic", "characteristic",
+      "age", "gender", "sex", "race", "income", "education", "region"
+    ],
+    "description": "Covariate or control variable (prefix match: x_*)",
+    "required": false,
+    "priority": 50
+  },
+  "cluster": {
+    "synonyms": [
+      "cluster", "cluster_id", "group_id", "school_id", "hospital_id",
+      "region_id", "district_id", "area_id", "zone_id", "block_id"
+    ],
+    "description": "Cluster identifier for clustered standard errors",
+    "required": false,
+    "priority": 55
+  },
+  "instrument": {
+    "synonyms": [
+      "instrument", "z", "iv", "instrumental_variable", "exogenous"
+    ],
+    "description": "Instrumental variable for IV estimation",
+    "required": false,
+    "priority": 60
+  },
+  "network_edge": {
+    "synonyms": [
+      "edge", "link", "connection", "friend", "follower", "neighbor",
+      "adjacent", "connected_to", "network"
+    ],
+    "description": "Network edge or connection",
+    "required": false,
+    "priority": 50
+  },
+  "auxiliary_outcome": {
+    "synonyms": [
+      "y_aux", "y_auxiliary", "auxiliary_outcome", "proxy", "surrogate", "mediator"
+    ],
+    "description": "Auxiliary outcome for proximal causal inference",
+    "required": false,
+    "priority": 55
+  },
+  "policy_boundary": {
+    "synonyms": [
+      "boundary", "cutoff", "threshold", "running_variable", "score",
+      "assignment_variable", "forcing_variable"
+    ],
+    "description": "Running variable for RD design",
+    "required": false,
+    "priority": 60
+  }
+}

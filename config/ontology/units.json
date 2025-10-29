@@ -1,0 +1,73 @@
+{
+  "outcome_units": {
+    "continuous": {
+      "currency": ["USD", "EUR", "JPY", "GBP", "CNY", "dollars", "yen", "euros"],
+      "percentage": ["%", "percent", "rate", "ratio"],
+      "time": ["days", "hours", "minutes", "seconds", "weeks", "months", "years"],
+      "count": ["count", "number", "qty", "quantity", "units"],
+      "score": ["points", "score", "rating", "grade"]
+    },
+    "binary": {
+      "success": [0, 1, "yes", "no", "true", "false", "success", "failure"],
+      "survival": ["survived", "died", "censored", "event"],
+      "conversion": ["converted", "not_converted", "clicked", "purchased"]
+    }
+  },
+  "treatment_encoding": {
+    "binary": {
+      "control": [0, "control", "untreated", "placebo", "baseline"],
+      "treated": [1, "treatment", "treated", "intervention", "exposed"]
+    },
+    "multilevel": {
+      "description": "Multiple treatment levels (dose-response)",
+      "examples": ["low", "medium", "high", "dose_0", "dose_1", "dose_2"]
+    }
+  },
+  "time_units": {
+    "daily": ["day", "daily", "date", "dt"],
+    "weekly": ["week", "weekly", "wk"],
+    "monthly": ["month", "monthly", "mon", "ym"],
+    "quarterly": ["quarter", "quarterly", "q", "qtr"],
+    "yearly": ["year", "yearly", "annual", "yr"]
+  },
+  "scale_detection": {
+    "log_scale": {
+      "indicators": ["log_", "ln_", "logged_", "log("],
+      "description": "Variable is log-transformed"
+    },
+    "standardized": {
+      "indicators": ["_std", "_z", "_scaled", "z_score"],
+      "description": "Variable is standardized (mean=0, sd=1)"
+    },
+    "normalized": {
+      "indicators": ["_norm", "_normalized", "_min_max"],
+      "description": "Variable is normalized (0-1 range)"
+    }
+  },
+  "domain_specific_units": {
+    "medical": {
+      "outcome": ["mmHg", "bpm", "mg/dL", "survival_days", "qaly", "mortality"],
+      "treatment": ["mg", "mcg", "mL", "dose", "surgery", "therapy"]
+    },
+    "education": {
+      "outcome": ["test_score", "gpa", "grade", "pass_rate", "graduation"],
+      "treatment": ["program", "curriculum", "intervention", "tutoring"]
+    },
+    "retail": {
+      "outcome": ["revenue", "sales", "margin", "basket_size", "ltv"],
+      "treatment": ["discount", "promotion", "campaign", "pricing"]
+    },
+    "finance": {
+      "outcome": ["return", "profit", "loss", "roi", "sharpe_ratio"],
+      "treatment": ["portfolio", "strategy", "allocation", "hedge"]
+    },
+    "policy": {
+      "outcome": ["employment", "income", "poverty_rate", "crime_rate"],
+      "treatment": ["policy", "regulation", "subsidy", "tax"]
+    },
+    "network": {
+      "outcome": ["engagement", "virality", "centrality", "diffusion"],
+      "treatment": ["seeding", "targeting", "intervention_node"]
+    }
+  }
+}

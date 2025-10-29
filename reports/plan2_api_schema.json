@@ -1,0 +1,30 @@
+{
+	"Endpoint":"\/api\/upload",
+	"Method":"POST",
+	"Request":{
+		"Content-Type":"multipart\/form-data",
+		"Body":{
+			"file":"UploadFile (required)"
+		}
+	},
+	"Response (Success)":{
+		"ok":"true",
+		"dataset_id":"uuid.hex (e.g., '3f8a9c2b...')",
+		"meta":{
+			"columns":"[\"customer_id\", \"age\", \"treated\", \"y\", ...]",
+			"dtypes":"{\"customer_id\": \"int64\", \"age\": \"int16\", ...}",
+			"preview":"[{row1}, {row2}, ..., {row10}] (head 10)"
+		},
+		"candidates":{
+			"y":"[\"revenue\", \"conversion\", \"score\", ...]",
+			"treatment":"[\"treated\", \"campaign\", \"variant\", ...]",
+			"unit_id":"[\"customer_id\", \"user_id\", ...]",
+			"...":"..."
+		},
+		"stats":"[{\"column\": \"age\", \"dtype\": \"int16\", \"na\": 0}, ...]"
+	},
+	"Response (Error)":{
+		"detail":"Error message string",
+		"HTTP Status":"400 (validation), 500 (parse error)"
+	}
+}

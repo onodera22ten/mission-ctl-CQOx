@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "job_id": "job_fcaec0a1",
+    "dataset_id": "test_network",
+    "created_at": "2025-10-28T04:38:18.467379",
+    "cqox_version": "1.0.0",
+    "python_version": "3.11"
+  },
+  "dictionary_version": {
+    "columns_version": "1.0.0",
+    "units_version": "1.0.0",
+    "validators_version": "1.0.0",
+    "columns_hash": "28748834",
+    "units_hash": "3c8aeb83",
+    "validators_hash": "f2ed05b3",
+    "timestamp": "2025-10-28T04:38:18.467566"
+  },
+  "mapping_decisions": [],
+  "transformations": [],
+  "random_seeds": [
+    {
+      "seed": 689707107,
+      "scope": "inference",
+      "algorithm": "numpy+random",
+      "timestamp": "2025-10-28T04:38:18.467594"
+    }
+  ],
+  "validations": [
+    {
+      "check_type": "leakage",
+      "passed": false,
+      "severity": "warning",
+      "details": {
+        "has_leakage": "True",
+        "suspicious_columns": "['degree_centrality', 'friend_treated']",
+        "correlations": "{'degree_centrality': np.float64(0.961283277451513), 'friend_treated': np.float64(0.9614102724435953)}",
+        "severity": "warning",
+        "recommendations": "[\"Remove 'degree_centrality' (correlation=0.961 with outcome, likely leakage)\", \"Remove 'friend_treated' (correlation=0.961 with outcome, likely leakage)\"]"
+      },
+      "recommendations": [
+        "Remove 'degree_centrality' (correlation=0.961 with outcome, likely leakage)",
+        "Remove 'friend_treated' (correlation=0.961 with outcome, likely leakage)"
+      ],
+      "timestamp": "2025-10-28T04:38:18.470796"
+    },
+    {
+      "check_type": "vif",
+      "passed": true,
+      "severity": "warning",
+      "details": {
+        "has_multicollinearity": "True",
+        "vif_scores": "{'degree_centrality': np.float64(17.349407526020823), 'friend_treated': np.float64(17.349407526020823)}",
+        "problematic_columns": "['degree_centrality', 'friend_treated']",
+        "severity": "warning",
+        "recommendations": "[\"Remove or combine 'degree_centrality' (VIF=17.3, highly collinear)\", \"Remove or combine 'friend_treated' (VIF=17.3, highly collinear)\"]"
+      },
+      "recommendations": [
+        "Remove or combine 'degree_centrality' (VIF=17.3, highly collinear)",
+        "Remove or combine 'friend_treated' (VIF=17.3, highly collinear)"
+      ],
+      "timestamp": "2025-10-28T04:38:18.470804"
+    },
+    {
+      "check_type": "missing",
+      "passed": true,
+      "severity": "ok",
+      "details": {
+        "has_issues": "False",
+        "missing_rates": "{'node_id': np.float64(0.0), 'network_treatment': np.float64(0.0), 'outcome': np.float64(0.0), 'degree_centrality': np.float64(0.0), 'friend_treated': np.float64(0.0)}",
+        "missing_patterns": "{}",
+        "mechanism": "MCAR",
+        "severity": "ok",
+        "recommendations": "['No significant missing data']"
+      },
+      "recommendations": [
+        "No significant missing data"
+      ],
+      "timestamp": "2025-10-28T04:38:18.470809"
+    },
+    {
+      "check_type": "balance",
+      "passed": true,
+      "severity": "info",
+      "details": {
+        "is_balanced": "False",
+        "smd_scores": "{'degree_centrality': np.float64(3.4803955455024274), 'friend_treated': np.float64(4.754774315136186)}",
+        "imbalanced_columns": "['degree_centrality', 'friend_treated']",
+        "severity": "info",
+        "recommendations": "[\"Adjust for 'degree_centrality' (SMD=3.480, imbalanced)\", \"Adjust for 'friend_treated' (SMD=4.755, imbalanced)\"]"
+      },
+      "recommendations": [
+        "Adjust for 'degree_centrality' (SMD=3.480, imbalanced)",
+        "Adjust for 'friend_treated' (SMD=4.755, imbalanced)"
+      ],
+      "timestamp": "2025-10-28T04:38:18.470814"
+    },
+    {
+      "check_type": "overlap",
+      "passed": true,
+      "severity": "ok",
+      "details": {
+        "has_overlap": "True",
+        "propensity_range": "(0.0, 1.0)",
+        "trimmed_fraction": "0.0",
+        "severity": "ok",
+        "recommendations": "['No propensity scores provided - skipping overlap check']"
+      },
+      "recommendations": [
+        "No propensity scores provided - skipping overlap check"
+      ],
+      "timestamp": "2025-10-28T04:38:18.470818"
+    }
+  ]
+}

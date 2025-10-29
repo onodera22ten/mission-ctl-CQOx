@@ -1,0 +1,20 @@
+
+> cqox-ui@0.1.0 dev
+> vite
+
+
+  VITE v5.4.21  ready in 164 ms
+
+  ➜  Local:   http://localhost:4000/
+  ➜  Network: use --host to expose
+13:51:23 [vite] hmr update /src/ui/FiguresPanel.tsx
+13:53:41 [vite] hmr update /src/ui/FiguresPanel.tsx
+13:53:53 [vite] hmr update /src/ui/FiguresPanel.tsx
+13:54:04 [vite] hmr update /src/ui/FiguresPanel.tsx
+13:56:18 [vite] hmr update /src/ui/App.tsx
+14:27:20 [vite] hmr update /src/ui/App.tsx
+18:47:27 [vite] hmr update /src/ui/App.tsx
+18:47:55 [vite] hmr update /src/components/figures/Figure.tsx
+18:47:55 [vite] hmr invalidate /src/components/figures/Figure.tsx Could not Fast Refresh (new export)
+18:47:55 [vite] hmr update /src/components/figures/EventStudy.tsx, /src/components/figures/ATEDensity.tsx, /src/components/figures/ParallelTrends.tsx, /src/components/figures/RosenbaumSensitivity.tsx, /src/components/figures/BalanceSMD.tsx, /src/components/figures/TVCE.tsx, /src/components/figures/PropensityOverlap.tsx, /src/components/figures/QualityGatesBoard.tsx, /src/components/figures/HeterogeneityWaterfall.tsx, /src/components/figures/NetworkSpillover.tsx, /src/components/figures/IVStrengthStability.tsx, /src/components/figures/TransportWeights.tsx, /src/components/figures/IVFirstStageF.tsx, /src/components/figures/CASRadar.tsx, /src/ui/FiguresPanel.tsx
+18:56:34 [vite] hmr update /src/ui/FiguresPanel.tsx

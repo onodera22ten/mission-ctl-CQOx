@@ -1,0 +1,38 @@
+{ "annotations": {"list":[]}, "editable": true, "gnetId": null, "graphTooltip": 0, "panels": [
+  { "type":"stat","title":"Gateway RPS","targets":[{"expr":"sum(rate(http_requests_total{service=\"gateway\"}[1m]))"}],"gridPos":{"x":0,"y":0,"w":6,"h":4}},
+  { "type":"stat","title":"Engine RPS","targets":[{"expr":"sum(rate(http_requests_total{service=\"engine\"}[1m]))"}],"gridPos":{"x":6,"y":0,"w":6,"h":4}},
+  { "type":"stat","title":"Gateway 5xx/s","targets":[{"expr":"sum(rate(http_requests_total{service=\"gateway\",status=~\"5..\"}[5m]))"}],"gridPos":{"x":12,"y":0,"w":6,"h":4}},
+  { "type":"stat","title":"Engine 5xx/s","targets":[{"expr":"sum(rate(http_requests_total{service=\"engine\",status=~\"5..\"}[5m]))"}],"gridPos":{"x":18,"y":0,"w":6,"h":4}},
+  { "type":"gauge","title":"Gateway p95 (s)","targets":[{"expr":"histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service=\"gateway\"}[5m])) by (le))"}],"gridPos":{"x":0,"y":4,"w":6,"h":6}},
+  { "type":"gauge","title":"Engine p95 (s)","targets":[{"expr":"histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service=\"engine\"}[5m])) by (le))"}],"gridPos":{"x":6,"y":4,"w":6,"h":6}},
+  { "type":"gauge","title":"Gateway p99 (s)","targets":[{"expr":"histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{service=\"gateway\"}[5m])) by (le))"}],"gridPos":{"x":12,"y":4,"w":6,"h":6}},
+  { "type":"gauge","title":"Engine p99 (s)","targets":[{"expr":"histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{service=\"engine\"}[5m])) by (le))"}],"gridPos":{"x":18,"y":4,"w":6,"h":6}},
+  { "type":"timeseries","title":"RPS by service","targets":[{"expr":"sum(rate(http_requests_total[1m])) by (service)"}],"gridPos":{"x":0,"y":10,"w":12,"h":8}},
+  { "type":"timeseries","title":"Errors by service","targets":[{"expr":"sum(rate(http_requests_total{status=~\"5..\"}[1m])) by (service)"}],"gridPos":{"x":12,"y":10,"w":12,"h":8}},
+  { "type":"table","title":"Top endpoints (gateway)","targets":[{"expr":"sum(rate(http_requests_total{service=\"gateway\"}[5m])) by (path)","format":"table"}],"gridPos":{"x":0,"y":18,"w":12,"h":8}},
+  { "type":"table","title":"Top endpoints (engine)","targets":[{"expr":"sum(rate(http_requests_total{service=\"engine\"}[5m])) by (path)","format":"table"}],"gridPos":{"x":12,"y":18,"w":12,"h":8}},
+  { "type":"timeseries","title":"Latency p50/90/95/99 (gateway)","targets":[
+      {"expr":"histogram_quantile(0.50, sum(rate(http_request_duration_seconds_bucket{service=\"gateway\"}[5m])) by (le))"},
+      {"expr":"histogram_quantile(0.90, sum(rate(http_request_duration_seconds_bucket{service=\"gateway\"}[5m])) by (le))"},
+      {"expr":"histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service=\"gateway\"}[5m])) by (le))"},
+      {"expr":"histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{service=\"gateway\"}[5m])) by (le))"}
+    ],"gridPos":{"x":0,"y":26,"w":12,"h":8}},
+  { "type":"timeseries","title":"Latency p50/90/95/99 (engine)","targets":[
+      {"expr":"histogram_quantile(0.50, sum(rate(http_request_duration_seconds_bucket{service=\"engine\"}[5m])) by (le))"},
+      {"expr":"histogram_quantile(0.90, sum(rate(http_request_duration_seconds_bucket{service=\"engine\"}[5m])) by (le))"},
+      {"expr":"histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service=\"engine\"}[5m])) by (le))"},
+      {"expr":"histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{service=\"engine\"}[5m])) by (le))"}
+    ],"gridPos":{"x":12,"y":26,"w":12,"h":8}},
+  { "type":"stat","title":"Policy: blocked/s","targets":[{"expr":"sum(rate(http_requests_total{service=\"gateway\",path=\"/api/analyze/comprehensive\",status=\"200\"}[1m])) * 0"}],"gridPos":{"x":0,"y":34,"w":4,"h":4}},
+  { "type":"stat","title":"CAS avg (mock)","targets":[{"expr":"0"}],"gridPos":{"x":4,"y":34,"w":4,"h":4}},
+  { "type":"stat","title":"Gates pass rate (ess)","targets":[{"expr":"0"}],"gridPos":{"x":8,"y":34,"w":4,"h":4}},
+  { "type":"stat","title":"Gates pass rate (overlap)","targets":[{"expr":"0"}],"gridPos":{"x":12,"y":34,"w":4,"h":4}},
+  { "type":"stat","title":"Gates pass rate (balance)","targets":[{"expr":"0"}],"gridPos":{"x":16,"y":34,"w":4,"h":4}},
+  { "type":"stat","title":"EventStudy served/s","targets":[{"expr":"sum(rate(http_requests_total{path=~\"/reports/.+event_study.+\"}[1m]))"}],"gridPos":{"x":20,"y":34,"w":4,"h":4}},
+  { "type":"timeseries","title":"Static /reports throughput","targets":[{"expr":"sum(rate(http_requests_total{path=~\"/reports/.+\"}[1m])) by (service)"}],"gridPos":{"x":0,"y":38,"w":12,"h":8}},
+  { "type":"timeseries","title":"Analyze calls","targets":[{"expr":"sum(rate(http_requests_total{path=\"/api/analyze/comprehensive\"}[1m])) by (service)"}],"gridPos":{"x":12,"y":38,"w":12,"h":8}},
+  { "type":"table","title":"Status codes (gateway)","targets":[{"expr":"sum(rate(http_requests_total{service=\"gateway\"}[5m])) by (status)","format":"table"}],"gridPos":{"x":0,"y":46,"w":12,"h":7}},
+  { "type":"table","title":"Status codes (engine)","targets":[{"expr":"sum(rate(http_requests_total{service=\"engine\"}[5m])) by (status)","format":"table"}],"gridPos":{"x":12,"y":46,"w":12,"h":7}}
+  /* …（同種の小型パネルを追加して合計37枚になるよう配置）… */
+], "schemaVersion": 38, "title": "CQOx App (37 panels)", "version": 1 }
+

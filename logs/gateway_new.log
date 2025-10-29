@@ -1,0 +1,60 @@
+INFO:     Started server process [3948617]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8082 (Press CTRL+C to quit)
+INFO:gateway:Incoming request: GET /api/health
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:52894 - "GET /api/health HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: GET /api/health
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:40842 - "GET /api/health HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: GET /api/health
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:40854 - "GET /api/health HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/upload
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:33624 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: GET /api/roles/profile
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:33634 - "GET /api/roles/profile?dataset_id=0f6f93dc6ec540c2af83406690240dda HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/analyze/comprehensive
+INFO:httpx:HTTP Request: POST http://localhost:8081/api/analyze/comprehensive "HTTP/1.1 200 OK"
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:33650 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: GET /reports/figures/job_f4b80c0e/event_study.html
+INFO:gateway:Incoming request: GET /reports/figures/job_f4b80c0e/parallel_trends.png
+INFO:gateway:Incoming request: GET /reports/figures/job_f4b80c0e/ate_density.png
+INFO:gateway:Incoming request: GET /reports/figures/job_f4b80c0e/propensity_overlap.png
+INFO:gateway:Incoming request: GET /reports/figures/job_f4b80c0e/balance_smd.png
+INFO:gateway:Incoming request: GET /reports/figures/job_f4b80c0e/rosenbaum_gamma.png
+INFO:gateway:Response status: 200
+INFO:gateway:Response status: 200
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:33660 - "GET /reports/figures/job_f4b80c0e/event_study.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33662 - "GET /reports/figures/job_f4b80c0e/parallel_trends.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33674 - "GET /reports/figures/job_f4b80c0e/ate_density.png HTTP/1.1" 200 OK
+INFO:gateway:Response status: 200
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:33686 - "GET /reports/figures/job_f4b80c0e/propensity_overlap.png HTTP/1.1" 200 OK
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:33688 - "GET /reports/figures/job_f4b80c0e/balance_smd.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33700 - "GET /reports/figures/job_f4b80c0e/rosenbaum_gamma.png HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: GET /reports/figures/job_f4b80c0e/transport_weights.png
+INFO:gateway:Incoming request: GET /reports/figures/job_f4b80c0e/tvce_line.png
+INFO:gateway:Incoming request: GET /reports/figures/job_f4b80c0e/network_spillover.png
+INFO:gateway:Response status: 200
+INFO:gateway:Incoming request: GET /reports/figures/job_f4b80c0e/quality_gates_board.png
+INFO:gateway:Incoming request: GET /reports/figures/job_f4b80c0e/cas_radar.png
+INFO:     127.0.0.1:33714 - "GET /reports/figures/job_f4b80c0e/transport_weights.png HTTP/1.1" 200 OK
+INFO:gateway:Response status: 200
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:33722 - "GET /reports/figures/job_f4b80c0e/tvce_line.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33736 - "GET /reports/figures/job_f4b80c0e/cas_radar.png HTTP/1.1" 200 OK
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:33724 - "GET /reports/figures/job_f4b80c0e/network_spillover.png HTTP/1.1" 200 OK
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:33728 - "GET /reports/figures/job_f4b80c0e/quality_gates_board.png HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [3948617]
