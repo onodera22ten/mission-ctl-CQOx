@@ -191,7 +191,9 @@ async def upload(file: UploadFile = File(...)) -> JSONResponse:
         try:
             from ciq.scripts.convert_any_to_parquet import load_one
             df = load_one(dst)
-            preview_rows = df.head(10).to_dict(orient="records")
+            # Replace NaN/inf with None for JSON serialization
+            df_clean = df.replace([float('inf'), float('-inf')], None).fillna(value=None)
+            preview_rows = df_clean.head(10).to_dict(orient="records")
             dtypes = {c: str(t) for c, t in df.dtypes.items()}
             candidates = _infer_candidates(df)
             stats = [{"column": c, "dtype": str(df.dtypes[c]), "na": int(df[c].isna().sum())} for c in df.columns]

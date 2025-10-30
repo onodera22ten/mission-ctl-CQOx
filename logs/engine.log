@@ -1,463 +1,422 @@
-INFO:     Started server process [66924]
+DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:     Started server process [132242]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
-[engine] DB clients disabled: No module named 'redis'
-[observability][engine] tracing disabled: No module named 'opentelemetry'
-INFO:     127.0.0.1:51360 - "GET /api/health HTTP/1.1" 200 OK
-[server] Estimator validation: 2/7 estimators can run
+Warning: asyncpg not installed. Run: pip install asyncpg
+[engine] DB clients disabled: No module named 'sqlalchemy'
+[Tracing] OpenTelemetry enabled for Engine
+INFO:     127.0.0.1:41266 - "GET /api/health HTTP/1.1" 200 OK
+[server] Estimator validation: 3/7 estimators can run
 [server]   ✓ tvce
-[server]   ✗ ope: log_propensity
+[server]   ✓ ope
 [server]   ✓ hidden
 [server]   ✗ iv: z
 [server]   ✗ transport: domain
 [server]   ✗ proximal: w_neg, z_neg
 [server]   ✗ network: cluster_id, neighbor_exposure
+[server]   ✓ tvce: τ=2.0689 ± 1.1770 (0.00s)
+[server]   ✓ ope: τ=2.0689 ± 1.1770 (0.00s)
+[server]   ✓ hidden: τ=2.0689 ± 1.1770 (0.00s)
 [server] Using matplotlib fallback (WolframONE disabled for debugging)
-INFO:     127.0.0.1:55642 - "POST /api/analyze/comprehensive HTTP/1.1" 500 Internal Server Error
+[server] Generated 11 figures with matplotlib
+[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_8e28a395
+[primitive] y=test_score_raw, t=age_group, time=missing_days
+[primitive] covariates: ['name', 'received_tutoring', 'gender_code', 'household_income_range', 'parent_education']
+[primitive] Attempting timeseries...
+[primitive] ✅ timeseries: /home/hirokionodera/cqox-complete_b/reports/figures/job_8e28a395/primitive_timeseries.png
+[primitive] Attempting distribution...
+[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_8e28a395/primitive_distribution.png
+[primitive] Attempting scatter...
+[primitive] Attempting heterogeneity...
+[primitive] Attempting propensity...
+[primitive] Attempting balance...
+[primitive] Completed. Generated 2 figures: ['primitive_timeseries', 'primitive_distribution']
+[DomainFigures] Generating 4/5 figures for education
+[DomainFigures] Recommended: education_gain_distrib, education_attainment_sankey, education_event_study, education_fairness...
+[server] Generated 2 advanced figures (41-42)
+INFO:     127.0.0.1:40184 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53112 - "POST /api/analyze/comprehensive HTTP/1.1" 500 Internal Server Error
 ERROR:    Exception in ASGI application
-  + Exception Group Traceback (most recent call last):
-  |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/_utils.py", line 79, in collapse_excgroups
-  |     yield
-  |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 183, in __call__
-  |     async with anyio.create_task_group() as task_group:
-  |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/anyio/_backends/_asyncio.py", line 781, in __aexit__
-  |     raise BaseExceptionGroup(
-  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
-  +-+---------------- 1 ----------------
-    | Traceback (most recent call last):
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
-    |     result = await app(  # type: ignore[func-returns-value]
-    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
-    |     return await self.app(scope, receive, send)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/applications.py", line 1133, in __call__
-    |     await super().__call__(scope, receive, send)
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/applications.py", line 113, in __call__
-    |     await self.middleware_stack(scope, receive, send)
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 186, in __call__
-    |     raise exc
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 164, in __call__
-    |     await self.app(scope, receive, _send)
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 182, in __call__
-    |     with recv_stream, send_stream, collapse_excgroups():
-    |   File "/usr/lib64/python3.11/contextlib.py", line 158, in __exit__
-    |     self.gen.throw(typ, value, traceback)
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
-    |     raise exc
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 184, in __call__
-    |     response = await self.dispatch_func(request, call_next)
-    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "/home/hirokionodera/cqox-complete_b/backend/observability/metrics.py", line 262, in observability_middleware
-    |     response = await call_next(request)
-    |                ^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 159, in call_next
-    |     raise app_exc
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 144, in coro
-    |     await self.app(scope, receive_or_disconnect, send_no_error)
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
-    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    |     raise exc
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    |     await app(scope, receive, sender)
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
-    |     await self.app(scope, receive, send)
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 716, in __call__
-    |     await self.middleware_stack(scope, receive, send)
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 736, in app
-    |     await route.handle(scope, receive, send)
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 290, in handle
-    |     await self.app(scope, receive, send)
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 123, in app
-    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    |     raise exc
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    |     await app(scope, receive, sender)
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 109, in app
-    |     response = await f(request)
-    |                ^^^^^^^^^^^^^^^^
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 389, in app
-    |     raw_response = await run_endpoint_function(
-    |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 288, in run_endpoint_function
-    |     return await dependant.call(**values)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "/home/hirokionodera/cqox-complete_b/backend/engine/server.py", line 272, in analyze
-    |     from backend.engine.figures_basic import generate_all
-    | ModuleNotFoundError: No module named 'backend.engine.figures_basic'
-    +------------------------------------
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/indexes/base.py", line 3790, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "index.pyx", line 152, in pandas._libs.index.IndexEngine.get_loc
+  File "index.pyx", line 181, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'customer_segment'
 
-During handling of the above exception, another exception occurred:
+The above exception was the direct cause of the following exception:
 
 Traceback (most recent call last):
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
     result = await app(  # type: ignore[func-returns-value]
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
     return await self.app(scope, receive, send)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/applications.py", line 1133, in __call__
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/applications.py", line 1106, in __call__
     await super().__call__(scope, receive, send)
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/applications.py", line 113, in __call__
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/applications.py", line 122, in __call__
     await self.middleware_stack(scope, receive, send)
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 186, in __call__
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 184, in __call__
     raise exc
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 164, in __call__
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 162, in __call__
     await self.app(scope, receive, _send)
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 182, in __call__
-    with recv_stream, send_stream, collapse_excgroups():
-  File "/usr/lib64/python3.11/contextlib.py", line 158, in __exit__
-    self.gen.throw(typ, value, traceback)
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
-    raise exc
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 184, in __call__
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/opentelemetry/instrumentation/asgi/__init__.py", line 606, in __call__
+    await self.app(scope, otel_receive, otel_send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 108, in __call__
     response = await self.dispatch_func(request, call_next)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/hirokionodera/cqox-complete_b/backend/observability/metrics.py", line 262, in observability_middleware
     response = await call_next(request)
                ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 159, in call_next
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 84, in call_next
     raise app_exc
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 144, in coro
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 70, in coro
     await self.app(scope, receive_or_disconnect, send_no_error)
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
-    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
     raise exc
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
     await self.app(scope, receive, send)
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 716, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 736, in app
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 718, in __call__
     await route.handle(scope, receive, send)
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 290, in handle
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 276, in handle
     await self.app(scope, receive, send)
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 123, in app
-    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 109, in app
-    response = await f(request)
-               ^^^^^^^^^^^^^^^^
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 389, in app
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 66, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 274, in app
     raw_response = await run_endpoint_function(
                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 288, in run_endpoint_function
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 191, in run_endpoint_function
     return await dependant.call(**values)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hirokionodera/cqox-complete_b/backend/engine/server.py", line 272, in analyze
-    from backend.engine.figures_basic import generate_all
-ModuleNotFoundError: No module named 'backend.engine.figures_basic'
-INFO:     Started server process [67279]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
-[engine] DB clients disabled: No module named 'redis'
-[observability][engine] tracing disabled: No module named 'opentelemetry'
-INFO:     127.0.0.1:57628 - "GET /api/health HTTP/1.1" 200 OK
-/home/hirokionodera/cqox-complete_b/backend/engine/figures.py:78: FutureWarning:
+  File "/home/hirokionodera/cqox-complete_b/backend/engine/server.py", line 148, in analyze
+    if df[t].dtype == 'object' or df[t].nunique() > 2:
+       ~~^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/frame.py", line 3893, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/indexes/base.py", line 3797, in get_loc
+    raise KeyError(key) from err
+KeyError: 'customer_segment'
+INFO:     127.0.0.1:53128 - "POST /api/analyze/comprehensive HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/indexes/base.py", line 3790, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "index.pyx", line 152, in pandas._libs.index.IndexEngine.get_loc
+  File "index.pyx", line 181, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'customer_segment'
 
-DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+The above exception was the direct cause of the following exception:
 
-[server] Estimator validation: 2/7 estimators can run
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/applications.py", line 1106, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/opentelemetry/instrumentation/asgi/__init__.py", line 606, in __call__
+    await self.app(scope, otel_receive, otel_send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 108, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/observability/metrics.py", line 262, in observability_middleware
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 84, in call_next
+    raise app_exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 70, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
+    raise exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 66, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 274, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 191, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/engine/server.py", line 148, in analyze
+    if df[t].dtype == 'object' or df[t].nunique() > 2:
+       ~~^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/frame.py", line 3893, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/indexes/base.py", line 3797, in get_loc
+    raise KeyError(key) from err
+KeyError: 'customer_segment'
+INFO:     127.0.0.1:53132 - "POST /api/analyze/comprehensive HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/indexes/base.py", line 3790, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "index.pyx", line 152, in pandas._libs.index.IndexEngine.get_loc
+  File "index.pyx", line 181, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'customer_segment'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/applications.py", line 1106, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/opentelemetry/instrumentation/asgi/__init__.py", line 606, in __call__
+    await self.app(scope, otel_receive, otel_send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 108, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/observability/metrics.py", line 262, in observability_middleware
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 84, in call_next
+    raise app_exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 70, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
+    raise exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 66, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 274, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 191, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/engine/server.py", line 148, in analyze
+    if df[t].dtype == 'object' or df[t].nunique() > 2:
+       ~~^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/frame.py", line 3893, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/indexes/base.py", line 3797, in get_loc
+    raise KeyError(key) from err
+KeyError: 'customer_segment'
+INFO:     127.0.0.1:53138 - "POST /api/analyze/comprehensive HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/indexes/base.py", line 3790, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "index.pyx", line 152, in pandas._libs.index.IndexEngine.get_loc
+  File "index.pyx", line 181, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'customer_segment'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/applications.py", line 1106, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/opentelemetry/instrumentation/asgi/__init__.py", line 606, in __call__
+    await self.app(scope, otel_receive, otel_send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 108, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/observability/metrics.py", line 262, in observability_middleware
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 84, in call_next
+    raise app_exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 70, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
+    raise exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 66, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 274, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 191, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/engine/server.py", line 148, in analyze
+    if df[t].dtype == 'object' or df[t].nunique() > 2:
+       ~~^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/frame.py", line 3893, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/indexes/base.py", line 3797, in get_loc
+    raise KeyError(key) from err
+KeyError: 'customer_segment'
+INFO:     127.0.0.1:58732 - "POST /api/analyze/comprehensive HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/indexes/base.py", line 3790, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "index.pyx", line 152, in pandas._libs.index.IndexEngine.get_loc
+  File "index.pyx", line 181, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'customer_segment'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/applications.py", line 1106, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/opentelemetry/instrumentation/asgi/__init__.py", line 606, in __call__
+    await self.app(scope, otel_receive, otel_send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 108, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/observability/metrics.py", line 262, in observability_middleware
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 84, in call_next
+    raise app_exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 70, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
+    raise exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 66, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 274, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 191, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/engine/server.py", line 148, in analyze
+    if df[t].dtype == 'object' or df[t].nunique() > 2:
+       ~~^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/frame.py", line 3893, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/indexes/base.py", line 3797, in get_loc
+    raise KeyError(key) from err
+KeyError: 'customer_segment'
+[server] Estimator validation: 3/7 estimators can run
 [server]   ✓ tvce
-[server]   ✗ ope: log_propensity
+[server]   ✓ ope
 [server]   ✓ hidden
 [server]   ✗ iv: z
 [server]   ✗ transport: domain
 [server]   ✗ proximal: w_neg, z_neg
 [server]   ✗ network: cluster_id, neighbor_exposure
+[server]   ✓ tvce: τ=2.0689 ± 1.1770 (0.00s)
+[server]   ✓ ope: τ=2.0689 ± 1.1770 (0.00s)
+[server]   ✓ hidden: τ=2.0689 ± 1.1770 (0.00s)
 [server] Using matplotlib fallback (WolframONE disabled for debugging)
-[server] Generated 10 figures with matplotlib
-[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_7a029b5c
-[primitive] y=test_score, t=tutoring_program, time=school_year
-[primitive] covariates: []
+[server] Generated 11 figures with matplotlib
+[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_e75af9a3
+[primitive] y=test_score_raw, t=age_group, time=missing_days
+[primitive] covariates: ['name', 'received_tutoring', 'gender_code', 'household_income_range', 'parent_education']
 [primitive] Attempting timeseries...
-[primitive] ✅ timeseries: /home/hirokionodera/cqox-complete_b/reports/figures/job_7a029b5c/primitive_timeseries.png
+[primitive] ✅ timeseries: /home/hirokionodera/cqox-complete_b/reports/figures/job_e75af9a3/primitive_timeseries.png
 [primitive] Attempting distribution...
-[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_7a029b5c/primitive_distribution.png
+[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_e75af9a3/primitive_distribution.png
+[primitive] Attempting scatter...
 [primitive] Attempting heterogeneity...
 [primitive] Attempting propensity...
+[primitive] Attempting balance...
 [primitive] Completed. Generated 2 figures: ['primitive_timeseries', 'primitive_distribution']
-[DomainFigures] Generating 0/6 figures for medical
-[DomainFigures] Recommended: ...
-Failed to generate E-value figure: float division by zero
-Failed to generate CATE figure: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
-[server] Generated 0 advanced figures (41-42)
-INFO:     127.0.0.1:57652 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
-INFO:     Started server process [67548]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
-/home/hirokionodera/cqox-complete_b/backend/engine/figures.py:78: FutureWarning:
-
-DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
-
-[engine] DB clients disabled: No module named 'redis'
-[observability][engine] tracing disabled: No module named 'opentelemetry'
-[server] Estimator validation: 2/7 estimators can run
-[server]   ✓ tvce
-[server]   ✗ ope: log_propensity
-[server]   ✓ hidden
-[server]   ✗ iv: z
-[server]   ✗ transport: domain
-[server]   ✗ proximal: w_neg, z_neg
-[server]   ✗ network: cluster_id, neighbor_exposure
-[server] Using matplotlib fallback (WolframONE disabled for debugging)
-[server] Generated 10 figures with matplotlib
-[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_46eb2066
-[primitive] y=test_score, t=tutoring_program, time=school_year
-[primitive] covariates: []
-[primitive] Attempting timeseries...
-[primitive] ✅ timeseries: /home/hirokionodera/cqox-complete_b/reports/figures/job_46eb2066/primitive_timeseries.png
-[primitive] Attempting distribution...
-[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_46eb2066/primitive_distribution.png
-[primitive] Attempting heterogeneity...
-[primitive] Attempting propensity...
-[primitive] Completed. Generated 2 figures: ['primitive_timeseries', 'primitive_distribution']
-[DomainFigures] Generating 0/6 figures for medical
-[DomainFigures] Recommended: ...
-Failed to generate E-value figure: float division by zero
-[server] Generated 1 advanced figures (41-42)
-INFO:     127.0.0.1:38170 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
-INFO:     Started server process [67815]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
-/home/hirokionodera/cqox-complete_b/backend/engine/figures.py:78: FutureWarning:
-
-DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
-
-[engine] DB clients disabled: No module named 'redis'
-[observability][engine] tracing disabled: No module named 'opentelemetry'
-[server] Estimator validation: 2/7 estimators can run
-[server]   ✓ tvce
-[server]   ✗ ope: log_propensity
-[server]   ✓ hidden
-[server]   ✗ iv: z
-[server]   ✗ transport: domain
-[server]   ✗ proximal: w_neg, z_neg
-[server]   ✗ network: cluster_id, neighbor_exposure
-[server] Using matplotlib fallback (WolframONE disabled for debugging)
-[server] Generated 10 figures with matplotlib
-[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_8f78eecc
-[primitive] y=test_score, t=tutoring_program, time=school_year
-[primitive] covariates: []
-[primitive] Attempting timeseries...
-[primitive] ✅ timeseries: /home/hirokionodera/cqox-complete_b/reports/figures/job_8f78eecc/primitive_timeseries.png
-[primitive] Attempting distribution...
-[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_8f78eecc/primitive_distribution.png
-[primitive] Attempting heterogeneity...
-[primitive] Attempting propensity...
-[primitive] Completed. Generated 2 figures: ['primitive_timeseries', 'primitive_distribution']
-[DomainFigures] Generating 0/6 figures for medical
-[DomainFigures] Recommended: ...
+[DomainFigures] Generating 4/5 figures for education
+[DomainFigures] Recommended: education_gain_distrib, education_attainment_sankey, education_event_study, education_fairness...
 [server] Generated 2 advanced figures (41-42)
-INFO:     127.0.0.1:45730 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
-[server] Estimator validation: 2/7 estimators can run
-[server]   ✓ tvce
-[server]   ✗ ope: log_propensity
-[server]   ✓ hidden
-[server]   ✗ iv: z
-[server]   ✗ transport: domain
-[server]   ✗ proximal: w_neg, z_neg
-[server]   ✗ network: cluster_id, neighbor_exposure
-[server] Using matplotlib fallback (WolframONE disabled for debugging)
-[server] Generated 10 figures with matplotlib
-[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_d8303a54
-[primitive] y=test_score, t=tutoring_program, time=school_year
-[primitive] covariates: []
-[primitive] Attempting timeseries...
-[primitive] ✅ timeseries: /home/hirokionodera/cqox-complete_b/reports/figures/job_d8303a54/primitive_timeseries.png
-[primitive] Attempting distribution...
-[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_d8303a54/primitive_distribution.png
-[primitive] Attempting heterogeneity...
-[primitive] Attempting propensity...
-[primitive] Completed. Generated 2 figures: ['primitive_timeseries', 'primitive_distribution']
-[DomainFigures] Generating 0/6 figures for medical
-[DomainFigures] Recommended: ...
-[server] Generated 2 advanced figures (41-42)
-INFO:     127.0.0.1:39154 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
-[server] Estimator validation: 3/7 estimators can run
-[server]   ✓ tvce
-[server]   ✓ ope
-[server]   ✓ hidden
-[server]   ✗ iv: z
-[server]   ✗ transport: domain
-[server]   ✗ proximal: w_neg, z_neg
-[server]   ✗ network: cluster_id, neighbor_exposure
-[server] Using matplotlib fallback (WolframONE disabled for debugging)
-[server] Generated 11 figures with matplotlib
-[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_24beaa2f
-[primitive] y=test_score, t=tutoring_program, time=school_year
-[primitive] covariates: ['attendance_rate']
-[primitive] Attempting timeseries...
-[primitive] ✅ timeseries: /home/hirokionodera/cqox-complete_b/reports/figures/job_24beaa2f/primitive_timeseries.png
-[primitive] Attempting distribution...
-[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_24beaa2f/primitive_distribution.png
-[primitive] Attempting scatter...
-[primitive] ✅ scatter: /home/hirokionodera/cqox-complete_b/reports/figures/job_24beaa2f/primitive_scatter.png
-[primitive] Attempting heterogeneity...
-[primitive] Attempting propensity...
-[primitive] ✅ propensity: /home/hirokionodera/cqox-complete_b/reports/figures/job_24beaa2f/primitive_propensity.png
-[primitive] Attempting balance...
-[primitive] ✅ balance: /home/hirokionodera/cqox-complete_b/reports/figures/job_24beaa2f/primitive_balance.png
-[primitive] Completed. Generated 5 figures: ['primitive_timeseries', 'primitive_distribution', 'primitive_scatter', 'primitive_propensity', 'primitive_balance']
-[DomainFigures] Generating 0/5 figures for education
-[DomainFigures] Recommended: ...
-[server] Generated 2 advanced figures (41-42)
-INFO:     127.0.0.1:43692 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
-[server] Estimator validation: 3/7 estimators can run
-[server]   ✓ tvce
-[server]   ✓ ope
-[server]   ✓ hidden
-[server]   ✗ iv: z
-[server]   ✗ transport: domain
-[server]   ✗ proximal: w_neg, z_neg
-[server]   ✗ network: cluster_id, neighbor_exposure
-[server] Using matplotlib fallback (WolframONE disabled for debugging)
-[server] Generated 11 figures with matplotlib
-[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_efdef9b3
-[primitive] y=test_score, t=tutoring_program, time=school_year
-[primitive] covariates: ['attendance_rate']
-[primitive] Attempting timeseries...
-[primitive] ✅ timeseries: /home/hirokionodera/cqox-complete_b/reports/figures/job_efdef9b3/primitive_timeseries.png
-[primitive] Attempting distribution...
-[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_efdef9b3/primitive_distribution.png
-[primitive] Attempting scatter...
-[primitive] ✅ scatter: /home/hirokionodera/cqox-complete_b/reports/figures/job_efdef9b3/primitive_scatter.png
-[primitive] Attempting heterogeneity...
-[primitive] Attempting propensity...
-[primitive] ✅ propensity: /home/hirokionodera/cqox-complete_b/reports/figures/job_efdef9b3/primitive_propensity.png
-[primitive] Attempting balance...
-[primitive] ✅ balance: /home/hirokionodera/cqox-complete_b/reports/figures/job_efdef9b3/primitive_balance.png
-[primitive] Completed. Generated 5 figures: ['primitive_timeseries', 'primitive_distribution', 'primitive_scatter', 'primitive_propensity', 'primitive_balance']
-[DomainFigures] Generating 0/5 figures for education
-[DomainFigures] Recommended: ...
-[server] Generated 2 advanced figures (41-42)
-INFO:     127.0.0.1:44188 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
-[server] Estimator validation: 3/7 estimators can run
-[server]   ✓ tvce
-[server]   ✓ ope
-[server]   ✓ hidden
-[server]   ✗ iv: z
-[server]   ✗ transport: domain
-[server]   ✗ proximal: w_neg, z_neg
-[server]   ✗ network: cluster_id, neighbor_exposure
-[server] Using matplotlib fallback (WolframONE disabled for debugging)
-[server] Generated 11 figures with matplotlib
-[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_990c3c91
-[primitive] y=test_score, t=tutoring_program, time=school_year
-[primitive] covariates: ['attendance_rate']
-[primitive] Attempting timeseries...
-[primitive] ✅ timeseries: /home/hirokionodera/cqox-complete_b/reports/figures/job_990c3c91/primitive_timeseries.png
-[primitive] Attempting distribution...
-[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_990c3c91/primitive_distribution.png
-[primitive] Attempting scatter...
-[primitive] ✅ scatter: /home/hirokionodera/cqox-complete_b/reports/figures/job_990c3c91/primitive_scatter.png
-[primitive] Attempting heterogeneity...
-[primitive] Attempting propensity...
-[primitive] ✅ propensity: /home/hirokionodera/cqox-complete_b/reports/figures/job_990c3c91/primitive_propensity.png
-[primitive] Attempting balance...
-[primitive] ✅ balance: /home/hirokionodera/cqox-complete_b/reports/figures/job_990c3c91/primitive_balance.png
-[primitive] Completed. Generated 5 figures: ['primitive_timeseries', 'primitive_distribution', 'primitive_scatter', 'primitive_propensity', 'primitive_balance']
-[DomainFigures] Generating 0/5 figures for education
-[DomainFigures] Recommended: ...
-[server] Generated 2 advanced figures (41-42)
-INFO:     127.0.0.1:37520 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
-[server] Estimator validation: 3/7 estimators can run
-[server]   ✓ tvce
-[server]   ✓ ope
-[server]   ✓ hidden
-[server]   ✗ iv: z
-[server]   ✗ transport: domain
-[server]   ✗ proximal: w_neg, z_neg
-[server]   ✗ network: cluster_id, neighbor_exposure
-[server] Using matplotlib fallback (WolframONE disabled for debugging)
-[server] Generated 11 figures with matplotlib
-[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_29610b4d
-[primitive] y=revenue, t=campaign, time=purchase_date
-[primitive] covariates: ['conversion']
-[primitive] Attempting timeseries...
-[primitive] ✅ timeseries: /home/hirokionodera/cqox-complete_b/reports/figures/job_29610b4d/primitive_timeseries.png
-[primitive] Attempting distribution...
-[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_29610b4d/primitive_distribution.png
-[primitive] Attempting scatter...
-[primitive] ✅ scatter: /home/hirokionodera/cqox-complete_b/reports/figures/job_29610b4d/primitive_scatter.png
-[primitive] Attempting heterogeneity...
-[primitive] Attempting propensity...
-[primitive] ✅ propensity: /home/hirokionodera/cqox-complete_b/reports/figures/job_29610b4d/primitive_propensity.png
-[primitive] Attempting balance...
-[primitive] ✅ balance: /home/hirokionodera/cqox-complete_b/reports/figures/job_29610b4d/primitive_balance.png
-[primitive] Completed. Generated 5 figures: ['primitive_timeseries', 'primitive_distribution', 'primitive_scatter', 'primitive_propensity', 'primitive_balance']
-[DomainFigures] Generating 0/5 figures for retail
-[DomainFigures] Recommended: ...
-[server] Generated 2 advanced figures (41-42)
-INFO:     127.0.0.1:43182 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
-[server] Estimator validation: 3/7 estimators can run
-[server]   ✓ tvce
-[server]   ✓ ope
-[server]   ✓ hidden
-[server]   ✗ iv: z
-[server]   ✗ transport: domain
-[server]   ✗ proximal: w_neg, z_neg
-[server]   ✗ network: cluster_id, neighbor_exposure
-[server] Using matplotlib fallback (WolframONE disabled for debugging)
-[server] Generated 11 figures with matplotlib
-[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_9c167ef6
-[primitive] y=prior_test_score, t=tutoring_program, time=school_id
-[primitive] covariates: ['teacher_id', 'special_education', 'grade_level', 'post_test_score', 'graduated', 'college_enrolled']
-[primitive] Attempting timeseries...
-[primitive] ✅ timeseries: /home/hirokionodera/cqox-complete_b/reports/figures/job_9c167ef6/primitive_timeseries.png
-[primitive] Attempting distribution...
-[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_9c167ef6/primitive_distribution.png
-[primitive] Attempting scatter...
-[primitive] ✅ scatter: /home/hirokionodera/cqox-complete_b/reports/figures/job_9c167ef6/primitive_scatter.png
-[primitive] Attempting heterogeneity...
-[primitive] ✅ heterogeneity: /home/hirokionodera/cqox-complete_b/reports/figures/job_9c167ef6/primitive_heterogeneity.png
-[primitive] Attempting propensity...
-[primitive] ✅ propensity: /home/hirokionodera/cqox-complete_b/reports/figures/job_9c167ef6/primitive_propensity.png
-[primitive] Attempting balance...
-[primitive] ✅ balance: /home/hirokionodera/cqox-complete_b/reports/figures/job_9c167ef6/primitive_balance.png
-[primitive] Completed. Generated 6 figures: ['primitive_timeseries', 'primitive_distribution', 'primitive_scatter', 'primitive_heterogeneity', 'primitive_propensity', 'primitive_balance']
-[DomainFigures] Generating 2/6 figures for medical
-[DomainFigures] Recommended: medical_km_survival, medical_sensitivity...
-[server] Generated 2 advanced figures (41-42)
-INFO:     127.0.0.1:47970 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
-[server] Estimator validation: 3/7 estimators can run
-[server]   ✓ tvce
-[server]   ✓ ope
-[server]   ✓ hidden
-[server]   ✗ iv: z
-[server]   ✗ transport: domain
-[server]   ✗ proximal: w_neg, z_neg
-[server]   ✗ network: cluster_id, neighbor_exposure
-[server] Using matplotlib fallback (WolframONE disabled for debugging)
-[server] Generated 11 figures with matplotlib
-[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_3c6b6747
-[primitive] y=prior_test_score, t=tutoring_program, time=school_id
-[primitive] covariates: ['teacher_id', 'special_education', 'grade_level', 'post_test_score', 'graduated', 'college_enrolled']
-[primitive] Attempting timeseries...
-[primitive] ✅ timeseries: /home/hirokionodera/cqox-complete_b/reports/figures/job_3c6b6747/primitive_timeseries.png
-[primitive] Attempting distribution...
-[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_3c6b6747/primitive_distribution.png
-[primitive] Attempting scatter...
-[primitive] ✅ scatter: /home/hirokionodera/cqox-complete_b/reports/figures/job_3c6b6747/primitive_scatter.png
-[primitive] Attempting heterogeneity...
-[primitive] ✅ heterogeneity: /home/hirokionodera/cqox-complete_b/reports/figures/job_3c6b6747/primitive_heterogeneity.png
-[primitive] Attempting propensity...
-[primitive] ✅ propensity: /home/hirokionodera/cqox-complete_b/reports/figures/job_3c6b6747/primitive_propensity.png
-[primitive] Attempting balance...
-[primitive] ✅ balance: /home/hirokionodera/cqox-complete_b/reports/figures/job_3c6b6747/primitive_balance.png
-[primitive] Completed. Generated 6 figures: ['primitive_timeseries', 'primitive_distribution', 'primitive_scatter', 'primitive_heterogeneity', 'primitive_propensity', 'primitive_balance']
-[DomainFigures] Generating 2/6 figures for medical
-[DomainFigures] Recommended: medical_km_survival, medical_sensitivity...
-[server] Generated 2 advanced figures (41-42)
-INFO:     127.0.0.1:56758 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43918 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK

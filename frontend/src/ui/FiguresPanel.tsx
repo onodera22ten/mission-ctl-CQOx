@@ -37,6 +37,10 @@ const MAIN_FIGURES: Array<[string, string, React.FC<{ url: string }>]> = [
   ["heterogeneity_waterfall", "Heterogeneity Waterfall", HeterogeneityWaterfall],
   ["quality_gates_board", "Quality Gates Board", QualityGatesBoard],
   ["cas_radar", "CAS Radar", CASRadar],
+];
+
+// Full-width figures (1 per row)
+const FULL_WIDTH_FIGURES: Array<[string, string, React.FC<{ url: string }>]> = [
   ["evalue_sensitivity", "E-value Sensitivity (Fig 41)", GenericFigure],
   ["cate_forest", "CATE Forest (Fig 42)", GenericFigure],
 ];
@@ -66,6 +70,7 @@ export default function FiguresPanel({ figures }: { figures: Record<string, stri
 
   // Count available figures
   const mainCount = MAIN_FIGURES.filter(([key]) => figures[key]).length;
+  const fullWidthCount = FULL_WIDTH_FIGURES.filter(([key]) => figures[key]).length;
   const domainCount = DOMAIN_FIGURE_KEYS.filter(key => figures[key]).length;
 
   return (
@@ -95,7 +100,7 @@ export default function FiguresPanel({ figures }: { figures: Record<string, stri
             borderBottom: currentPage === "main" ? "3px solid #3b82f6" : "none"
           }}
         >
-          📊 Main Figures ({mainCount}/14)
+          📊 Main Figures ({mainCount + fullWidthCount}/{MAIN_FIGURES.length + FULL_WIDTH_FIGURES.length})
         </button>
         <button
           onClick={() => setCurrentPage("domain")}
@@ -145,13 +150,16 @@ export default function FiguresPanel({ figures }: { figures: Record<string, stri
               borderRadius: 12,
               fontWeight: 500
             }}>
-              {mainCount}/14 available
+              {mainCount + fullWidthCount}/{MAIN_FIGURES.length + FULL_WIDTH_FIGURES.length} available
             </span>
           </h3>
+
+          {/* Grid figures */}
           <div style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
             gap: 20,
+            marginBottom: 20,
           }}>
             {MAIN_FIGURES.map(([key, title, Comp]) => {
               const url = figures[key];
@@ -192,6 +200,47 @@ export default function FiguresPanel({ figures }: { figures: Record<string, stri
               );
             })}
           </div>
+
+          {/* Full-width figures */}
+          {FULL_WIDTH_FIGURES.map(([key, title, Comp]) => {
+            const url = figures[key];
+            if (!url) return null;
+            return (
+              <div
+                key={key}
+                style={{
+                  background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+                  padding: 24,
+                  borderRadius: 16,
+                  border: "1px solid #334155",
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)",
+                  marginBottom: 20,
+                  transition: "transform 0.2s, box-shadow 0.2s",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 8px 12px rgba(0, 0, 0, 0.4)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.3)";
+                }}
+              >
+                <div style={{
+                  fontWeight: 600,
+                  marginBottom: 16,
+                  fontSize: 18,
+                  color: "#e2e8f0",
+                  borderBottom: "2px solid #3b82f6",
+                  paddingBottom: 10,
+                }}>
+                  {title}
+                </div>
+                <Comp url={url} />
+              </div>
+            );
+          })}
         </div>
       )}
 

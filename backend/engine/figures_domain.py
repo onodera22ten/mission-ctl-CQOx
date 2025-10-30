@@ -40,7 +40,7 @@ class DomainFigureGenerator:
         self.recommended_figures = self.selector.get_recommended_figures()
 
     def generate_all(self, output_dir: Path) -> Dict[str, str]:
-        """Generate all domain-specific figures (with intelligent selection)"""
+        """Generate all domain-specific figures using WolframONE"""
         output_dir.mkdir(parents=True, exist_ok=True)
         figures = {}
 
@@ -49,24 +49,54 @@ class DomainFigureGenerator:
         print(f"[DomainFigures] Generating {report['recommended']}/{report['total_figures']} figures for {self.domain}")
         print(f"[DomainFigures] Recommended: {', '.join(report['recommended_figures'][:5])}...")
 
-        if self.domain == "medical":
-            figures.update(self._generate_medical(output_dir))
-        elif self.domain == "education":
-            figures.update(self._generate_education(output_dir))
-        elif self.domain == "retail":
-            figures.update(self._generate_retail(output_dir))
-        elif self.domain == "finance":
-            # Use matplotlib version for reliability
-            from backend.engine.figures_finance_network_policy import generate_finance_figures
-            figures.update(generate_finance_figures(self.df, self.mapping, output_dir))
-        elif self.domain == "network":
-            # Use matplotlib version for reliability
-            from backend.engine.figures_finance_network_policy import generate_network_figures
-            figures.update(generate_network_figures(self.df, self.mapping, output_dir))
-        elif self.domain == "policy":
-            # Use matplotlib version for reliability
-            from backend.engine.figures_finance_network_policy import generate_policy_figures
-            figures.update(generate_policy_figures(self.df, self.mapping, output_dir))
+        # Save data for WolframONE processing
+        import tempfile
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.csv', delete=False) as f:
+            self.df.to_csv(f.name, index=False)
+            data_path = f.name
+
+        # Call WolframONE visualization script
+        import subprocess
+        wolfram_script = Path("wolfram_scripts/domain_visualizations.wls")
+        if wolfram_script.exists():
+            try:
+                print(f"[DomainFigures] Calling WolframONE for {self.domain} domain...")
+                result = subprocess.run(
+                    ["wolframscript", str(wolfram_script), self.domain, data_path, str(output_dir)],
+                    capture_output=True,
+                    text=True,
+                    timeout=120
+                )
+                if result.returncode == 0:
+                    print(f"[DomainFigures] WolframONE generation successful")
+                    # Collect generated figures
+                    for fig_file in output_dir.glob(f"{self.domain}_*.png"):
+                        fig_name = fig_file.stem
+                        figures[fig_name] = f"/reports/domain/{fig_file.name}"
+                else:
+                    print(f"[DomainFigures] WolframONE error: {result.stderr}")
+            except Exception as e:
+                print(f"[DomainFigures] Failed to call WolframONE: {e}")
+        else:
+            print(f"[DomainFigures] WolframONE script not found, skipping")
+
+        # Fallback to old methods if no figures generated
+        if not figures:
+            if self.domain == "medical":
+                figures.update(self._generate_medical(output_dir))
+            elif self.domain == "education":
+                figures.update(self._generate_education(output_dir))
+            elif self.domain == "retail":
+                figures.update(self._generate_retail(output_dir))
+            elif self.domain == "finance":
+                from backend.engine.figures_finance_network_policy import generate_finance_figures
+                figures.update(generate_finance_figures(self.df, self.mapping, output_dir))
+            elif self.domain == "network":
+                from backend.engine.figures_finance_network_policy import generate_network_figures
+                figures.update(generate_network_figures(self.df, self.mapping, output_dir))
+            elif self.domain == "policy":
+                from backend.engine.figures_finance_network_policy import generate_policy_figures
+                figures.update(generate_policy_figures(self.df, self.mapping, output_dir))
 
         return figures
 

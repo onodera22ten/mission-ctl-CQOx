@@ -1,457 +1,374 @@
-WARNING:gateway:[observability][gateway] tracing disabled: No module named 'opentelemetry'
-INFO:     Started server process [66948]
+INFO:backend.observability.tracing:[Tracing] Jaeger exporter enabled: localhost:6831
+INFO:backend.observability.tracing:[Tracing] HTTPX instrumentation enabled
+INFO:backend.observability.tracing:[Tracing] Redis instrumentation enabled
+ERROR:opentelemetry.instrumentation.instrumentor:DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:backend.observability.tracing:[Tracing] Psycopg2 instrumentation enabled
+INFO:backend.observability.tracing:[Tracing] OpenTelemetry setup complete for service: gateway
+INFO:backend.observability.tracing:[Tracing] FastAPI instrumented for gateway
+INFO:gateway:[Tracing] OpenTelemetry enabled for Gateway
+INFO:     Started server process [132765]
 INFO:     Waiting for application startup.
 INFO:gateway:[Gateway] Starting up...
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8081 (Press CTRL+C to quit)
 INFO:gateway:Incoming request: GET /api/health
 INFO:gateway:Response status: 200
-INFO:     127.0.0.1:57204 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47740 - "GET /api/health HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/upload
+INFO:backend.ingestion.parquet_pipeline:[ParquetPipeline] Processing d2398ccc5473454bb08d2e26841b3e65_education_messy.csv → d2398ccc5473454bb08d2e26841b3e65
+ERROR:gateway:Failed to process uploaded file with Parquet pipeline: Object of type int64 is not JSON serializable
+ERROR:gateway:Fallback loader also failed: Must specify a fill 'value' or 'method'.
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:58776 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/roles/infer
+INFO:backend.inference.role_inference:[RoleInference] Analyzing 10 columns from dataframe
+INFO:backend.inference.role_inference:[RoleInference] unit_id -> student_id (confidence: 0.95)
+INFO:backend.inference.role_inference:[RoleInference] outcome -> test_score_raw (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] treatment -> age_group (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] time -> missing_days (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] propensity -> prior_gpa_text (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] instrument -> received_tutoring (confidence: 0.64)
+INFO:backend.inference.role_inference:[RoleInference] cluster -> gender_code (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] covariate -> household_income_range (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] network_edge -> name (confidence: 0.45)
+INFO:backend.inference.domain_detection:[DomainDetection] Analyzing dataframe for domain
+INFO:backend.inference.domain_detection:[DomainDetection] Detected: education (confidence: 0.94)
+INFO:backend.inference.domain_detection:[DomainDetection] Hierarchy: causal_inference → human_behavior → education
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:38972 - "POST /api/roles/infer HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/upload
+INFO:backend.ingestion.parquet_pipeline:[ParquetPipeline] Processing a17fb07819e6434485d15199bef5646d_education_messy.csv → a17fb07819e6434485d15199bef5646d
+ERROR:gateway:Failed to process uploaded file with Parquet pipeline: Object of type int64 is not JSON serializable
+ERROR:gateway:Fallback loader also failed: Must specify a fill 'value' or 'method'.
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:47344 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/roles/infer
+INFO:backend.inference.role_inference:[RoleInference] Analyzing 10 columns from dataframe
+INFO:backend.inference.role_inference:[RoleInference] unit_id -> student_id (confidence: 0.95)
+INFO:backend.inference.role_inference:[RoleInference] outcome -> test_score_raw (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] treatment -> age_group (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] time -> missing_days (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] propensity -> prior_gpa_text (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] instrument -> received_tutoring (confidence: 0.64)
+INFO:backend.inference.role_inference:[RoleInference] cluster -> gender_code (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] covariate -> household_income_range (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] network_edge -> name (confidence: 0.45)
+INFO:backend.inference.domain_detection:[DomainDetection] Analyzing dataframe for domain
+INFO:backend.inference.domain_detection:[DomainDetection] Detected: education (confidence: 0.94)
+INFO:backend.inference.domain_detection:[DomainDetection] Hierarchy: causal_inference → human_behavior → education
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:47360 - "POST /api/roles/infer HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/upload
+INFO:backend.ingestion.parquet_pipeline:[ParquetPipeline] Processing eb93389de1d24dda855d42fb15e2f876_education_messy.csv → eb93389de1d24dda855d42fb15e2f876
+ERROR:gateway:Failed to process uploaded file with Parquet pipeline: Object of type int64 is not JSON serializable
+ERROR:gateway:Fallback loader also failed: Must specify a fill 'value' or 'method'.
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:33974 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/roles/infer
+INFO:backend.inference.role_inference:[RoleInference] Analyzing 10 columns from dataframe
+INFO:backend.inference.role_inference:[RoleInference] unit_id -> student_id (confidence: 0.95)
+INFO:backend.inference.role_inference:[RoleInference] outcome -> test_score_raw (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] treatment -> age_group (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] time -> missing_days (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] propensity -> prior_gpa_text (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] instrument -> received_tutoring (confidence: 0.64)
+INFO:backend.inference.role_inference:[RoleInference] cluster -> gender_code (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] covariate -> household_income_range (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] network_edge -> name (confidence: 0.45)
+INFO:backend.inference.domain_detection:[DomainDetection] Analyzing dataframe for domain
+INFO:backend.inference.domain_detection:[DomainDetection] Detected: education (confidence: 0.94)
+INFO:backend.inference.domain_detection:[DomainDetection] Hierarchy: causal_inference → human_behavior → education
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:33986 - "POST /api/roles/infer HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/analyze/comprehensive
+INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 200 OK"
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:33992 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: GET /reports/figures/job_8e28a395/event_study.html
+INFO:gateway:Incoming request: GET /reports/figures/job_8e28a395/parallel_trends.png
+INFO:gateway:Incoming request: GET /reports/figures/job_8e28a395/ate_density.png
+INFO:gateway:Incoming request: GET /reports/figures/job_8e28a395/propensity_overlap.png
+INFO:gateway:Incoming request: GET /reports/figures/job_8e28a395/balance_smd.png
+INFO:gateway:Incoming request: GET /reports/figures/job_8e28a395/rosenbaum_gamma.png
+INFO:gateway:Response status: 200
+INFO:gateway:Response status: 200
+INFO:gateway:Response status: 200
+INFO:gateway:Response status: 200
+INFO:gateway:Response status: 200
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:34040 - "GET /figures/job_8e28a395/balance_smd.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34056 - "GET /figures/job_8e28a395/rosenbaum_gamma.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34032 - "GET /figures/job_8e28a395/ate_density.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34008 - "GET /figures/job_8e28a395/event_study.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34034 - "GET /figures/job_8e28a395/propensity_overlap.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34022 - "GET /figures/job_8e28a395/parallel_trends.png HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: GET /reports/figures/job_8e28a395/transport_weights.png
+INFO:gateway:Incoming request: GET /reports/figures/job_8e28a395/tvce_line.png
+INFO:gateway:Incoming request: GET /reports/figures/job_8e28a395/network_spillover.png
+INFO:gateway:Incoming request: GET /reports/figures/job_8e28a395/quality_gates_board.png
+INFO:gateway:Incoming request: GET /reports/figures/job_8e28a395/cas_radar.png
+INFO:gateway:Incoming request: GET /reports/figures/job_8e28a395/evalue_sensitivity.png
+INFO:gateway:Response status: 200
+INFO:gateway:Response status: 200
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:34066 - "GET /figures/job_8e28a395/transport_weights.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34074 - "GET /figures/job_8e28a395/tvce_line.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34098 - "GET /figures/job_8e28a395/quality_gates_board.png HTTP/1.1" 200 OK
+INFO:gateway:Response status: 200
+INFO:gateway:Response status: 200
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:34122 - "GET /figures/job_8e28a395/evalue_sensitivity.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34086 - "GET /figures/job_8e28a395/network_spillover.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34110 - "GET /figures/job_8e28a395/cas_radar.png HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: GET /reports/figures/job_8e28a395/cate_forest.png
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:34132 - "GET /figures/job_8e28a395/cate_forest.png HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: GET /reports/figures/job_8e28a395/event_study.html
+INFO:gateway:Response status: 304
+INFO:     127.0.0.1:56674 - "GET /figures/job_8e28a395/event_study.html HTTP/1.1" 304 Not Modified
+INFO:gateway:Incoming request: POST /api/upload
+INFO:backend.ingestion.parquet_pipeline:[ParquetPipeline] Processing e7287905d4bf4813beb463503ea673f4_ecommerce_transactions.xlsx.tsv → e7287905d4bf4813beb463503ea673f4
+ERROR:gateway:Failed to process uploaded file with Parquet pipeline: Object of type int64 is not JSON serializable
+ERROR:gateway:Fallback loader also failed: Must specify a fill 'value' or 'method'.
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:48006 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/roles/infer
+INFO:backend.inference.role_inference:[RoleInference] Analyzing 19 columns from dataframe
+INFO:backend.inference.role_inference:[RoleInference] unit_id -> transaction_id (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] outcome -> days_since_last_purchase (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] treatment -> customer_segment (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] time -> customer_lifetime_value_tier (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] propensity -> time_on_site_minutes (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] weight -> email_engagement_score (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] cost -> purchase_amount_usd (confidence: 0.64)
+INFO:backend.inference.role_inference:[RoleInference] instrument -> received_discount_code (confidence: 0.64)
+INFO:backend.inference.role_inference:[RoleInference] policy_boundary -> product_rating_avg (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] cluster -> product_category (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] auxiliary_outcome -> number_of_items (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] covariate -> geographic_region (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] network_edge -> device_type (confidence: 0.45)
+INFO:backend.inference.domain_detection:[DomainDetection] Analyzing dataframe for domain
+INFO:backend.inference.domain_detection:[DomainDetection] Detected: finance (confidence: 0.40)
+INFO:backend.inference.domain_detection:[DomainDetection] Hierarchy: causal_inference → economic_transaction → finance
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:48010 - "POST /api/roles/infer HTTP/1.1" 200 OK
 INFO:gateway:Incoming request: POST /api/analyze/comprehensive
 INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 500 Internal Server Error"
 ERROR:gateway:Engine call failed (HTTPError): HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
 For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
 ERROR:gateway:Exception details: HTTPStatusError("Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500")
 ERROR:gateway:Traceback: Traceback (most recent call last):
-  File "/home/hirokionodera/cqox-complete_b/backend/gateway/app.py", line 309, in analyze_comprehensive
+  File "/home/hirokionodera/cqox-complete_b/backend/gateway/app.py", line 371, in analyze_comprehensive
     result = await _call_engine_analyze(forward_payload)
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hirokionodera/cqox-complete_b/backend/gateway/app.py", line 266, in _call_engine_analyze
+  File "/home/hirokionodera/cqox-complete_b/backend/gateway/app.py", line 329, in _call_engine_analyze
     r.raise_for_status()
-  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/httpx/_models.py", line 829, in raise_for_status
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/httpx/_models.py", line 758, in raise_for_status
     raise HTTPStatusError(message, request=request, response=self)
 httpx.HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
 For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
 
 INFO:gateway:Response status: 503
-INFO:     127.0.0.1:55200 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:45208 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable
 INFO:gateway:Incoming request: POST /api/analyze/comprehensive
-INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 200 OK"
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:35196 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 500 Internal Server Error"
+ERROR:gateway:Engine call failed (HTTPError): HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+ERROR:gateway:Exception details: HTTPStatusError("Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500")
+ERROR:gateway:Traceback: Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/backend/gateway/app.py", line 371, in analyze_comprehensive
+    result = await _call_engine_analyze(forward_payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/gateway/app.py", line 329, in _call_engine_analyze
+    r.raise_for_status()
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/httpx/_models.py", line 758, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+
+INFO:gateway:Response status: 503
+INFO:     127.0.0.1:45210 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable
 INFO:gateway:Incoming request: POST /api/analyze/comprehensive
-INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 200 OK"
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:47616 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 500 Internal Server Error"
+ERROR:gateway:Engine call failed (HTTPError): HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+ERROR:gateway:Exception details: HTTPStatusError("Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500")
+ERROR:gateway:Traceback: Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/backend/gateway/app.py", line 371, in analyze_comprehensive
+    result = await _call_engine_analyze(forward_payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/gateway/app.py", line 329, in _call_engine_analyze
+    r.raise_for_status()
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/httpx/_models.py", line 758, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+
+INFO:gateway:Response status: 503
+INFO:     127.0.0.1:45216 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable
 INFO:gateway:Incoming request: POST /api/analyze/comprehensive
-INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 200 OK"
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:58430 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: POST /api/analyze/comprehensive
-INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 200 OK"
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:37228 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: GET /api/health
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:43672 - "GET /api/health HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 500 Internal Server Error"
+ERROR:gateway:Engine call failed (HTTPError): HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+ERROR:gateway:Exception details: HTTPStatusError("Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500")
+ERROR:gateway:Traceback: Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/backend/gateway/app.py", line 371, in analyze_comprehensive
+    result = await _call_engine_analyze(forward_payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/gateway/app.py", line 329, in _call_engine_analyze
+    r.raise_for_status()
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/httpx/_models.py", line 758, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+
+INFO:gateway:Response status: 503
+INFO:     127.0.0.1:45218 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable
 INFO:gateway:Incoming request: POST /api/upload
+INFO:backend.ingestion.parquet_pipeline:[ParquetPipeline] Processing 99edb98083e7413bab9464c64acf69fd_ecommerce_transactions.xlsx.tsv → 99edb98083e7413bab9464c64acf69fd
+ERROR:gateway:Failed to process uploaded file with Parquet pipeline: Object of type int64 is not JSON serializable
+ERROR:gateway:Fallback loader also failed: Must specify a fill 'value' or 'method'.
 INFO:gateway:Response status: 200
-INFO:     127.0.0.1:38904 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38656 - "POST /api/upload HTTP/1.1" 200 OK
 INFO:gateway:Incoming request: POST /api/roles/infer
-INFO:backend.inference.role_inference:[RoleInference] Analyzing 6 columns from dataframe
+INFO:backend.inference.role_inference:[RoleInference] Analyzing 19 columns from dataframe
+INFO:backend.inference.role_inference:[RoleInference] unit_id -> transaction_id (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] outcome -> days_since_last_purchase (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] treatment -> customer_segment (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] time -> customer_lifetime_value_tier (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] propensity -> time_on_site_minutes (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] weight -> email_engagement_score (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] cost -> purchase_amount_usd (confidence: 0.64)
+INFO:backend.inference.role_inference:[RoleInference] instrument -> received_discount_code (confidence: 0.64)
+INFO:backend.inference.role_inference:[RoleInference] policy_boundary -> product_rating_avg (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] cluster -> product_category (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] auxiliary_outcome -> number_of_items (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] covariate -> geographic_region (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] network_edge -> device_type (confidence: 0.45)
+INFO:backend.inference.domain_detection:[DomainDetection] Analyzing dataframe for domain
+INFO:backend.inference.domain_detection:[DomainDetection] Detected: finance (confidence: 0.40)
+INFO:backend.inference.domain_detection:[DomainDetection] Hierarchy: causal_inference → economic_transaction → finance
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:38668 - "POST /api/roles/infer HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/analyze/comprehensive
+INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 500 Internal Server Error"
+ERROR:gateway:Engine call failed (HTTPError): HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+ERROR:gateway:Exception details: HTTPStatusError("Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500")
+ERROR:gateway:Traceback: Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/backend/gateway/app.py", line 371, in analyze_comprehensive
+    result = await _call_engine_analyze(forward_payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/gateway/app.py", line 329, in _call_engine_analyze
+    r.raise_for_status()
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/httpx/_models.py", line 758, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+
+INFO:gateway:Response status: 503
+INFO:     127.0.0.1:38680 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable
+INFO:gateway:Incoming request: POST /api/upload
+INFO:backend.ingestion.parquet_pipeline:[ParquetPipeline] Processing e818567c0d6c40868c9d5aefdb34788f_education_messy.csv → e818567c0d6c40868c9d5aefdb34788f
+ERROR:gateway:Failed to process uploaded file with Parquet pipeline: Object of type int64 is not JSON serializable
+ERROR:gateway:Fallback loader also failed: Must specify a fill 'value' or 'method'.
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:40792 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/roles/infer
+INFO:backend.inference.role_inference:[RoleInference] Analyzing 10 columns from dataframe
 INFO:backend.inference.role_inference:[RoleInference] unit_id -> student_id (confidence: 0.95)
-INFO:backend.inference.role_inference:[RoleInference] outcome -> test_score (confidence: 0.95)
-INFO:backend.inference.role_inference:[RoleInference] treatment -> tutoring_program (confidence: 0.80)
-INFO:backend.inference.role_inference:[RoleInference] time -> school_year (confidence: 0.80)
-INFO:backend.inference.role_inference:[RoleInference] propensity -> gpa (confidence: 0.45)
-INFO:backend.inference.role_inference:[RoleInference] weight -> attendance_rate (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] outcome -> test_score_raw (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] treatment -> age_group (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] time -> missing_days (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] propensity -> prior_gpa_text (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] instrument -> received_tutoring (confidence: 0.64)
+INFO:backend.inference.role_inference:[RoleInference] cluster -> gender_code (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] covariate -> household_income_range (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] network_edge -> name (confidence: 0.45)
 INFO:backend.inference.domain_detection:[DomainDetection] Analyzing dataframe for domain
-INFO:backend.inference.domain_detection:[DomainDetection] Detected domain: education (confidence: 1.00)
+INFO:backend.inference.domain_detection:[DomainDetection] Detected: education (confidence: 0.94)
+INFO:backend.inference.domain_detection:[DomainDetection] Hierarchy: causal_inference → human_behavior → education
 INFO:gateway:Response status: 200
-INFO:     127.0.0.1:38910 - "POST /api/roles/infer HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40796 - "POST /api/roles/infer HTTP/1.1" 200 OK
 INFO:gateway:Incoming request: POST /api/analyze/comprehensive
 INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 200 OK"
 INFO:gateway:Response status: 200
-INFO:     127.0.0.1:38922 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: GET /reports/figures/job_24beaa2f/parallel_trends.png
-INFO:gateway:Incoming request: GET /reports/figures/job_24beaa2f/ate_density.png
-INFO:gateway:Incoming request: GET /reports/figures/job_24beaa2f/propensity_overlap.png
-INFO:gateway:Incoming request: GET /reports/figures/job_24beaa2f/balance_smd.png
-INFO:gateway:Incoming request: GET /reports/figures/job_24beaa2f/rosenbaum_gamma.png
-INFO:gateway:Incoming request: GET /reports/figures/job_24beaa2f/transport_weights.png
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:38934 - "GET /reports/figures/job_24beaa2f/ate_density.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38926 - "GET /reports/figures/job_24beaa2f/parallel_trends.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38948 - "GET /reports/figures/job_24beaa2f/propensity_overlap.png HTTP/1.1" 200 OK
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:38950 - "GET /reports/figures/job_24beaa2f/balance_smd.png HTTP/1.1" 200 OK
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:38952 - "GET /reports/figures/job_24beaa2f/rosenbaum_gamma.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38962 - "GET /reports/figures/job_24beaa2f/transport_weights.png HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: GET /reports/figures/job_24beaa2f/tvce_line.png
-INFO:gateway:Incoming request: GET /reports/figures/job_24beaa2f/network_spillover.png
-INFO:gateway:Incoming request: GET /reports/figures/job_24beaa2f/quality_gates_board.png
-INFO:gateway:Incoming request: GET /reports/figures/job_24beaa2f/cas_radar.png
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:38998 - "GET /reports/figures/job_24beaa2f/cas_radar.png HTTP/1.1" 200 OK
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:38972 - "GET /reports/figures/job_24beaa2f/tvce_line.png HTTP/1.1" 200 OK
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:38988 - "GET /reports/figures/job_24beaa2f/quality_gates_board.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38980 - "GET /reports/figures/job_24beaa2f/network_spillover.png HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: POST /api/upload
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:55336 - "POST /api/upload HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: POST /api/roles/infer
-INFO:backend.inference.role_inference:[RoleInference] Analyzing 6 columns from dataframe
-INFO:backend.inference.role_inference:[RoleInference] unit_id -> student_id (confidence: 0.95)
-INFO:backend.inference.role_inference:[RoleInference] outcome -> test_score (confidence: 0.95)
-INFO:backend.inference.role_inference:[RoleInference] treatment -> tutoring_program (confidence: 0.80)
-INFO:backend.inference.role_inference:[RoleInference] time -> school_year (confidence: 0.80)
-INFO:backend.inference.role_inference:[RoleInference] propensity -> gpa (confidence: 0.45)
-INFO:backend.inference.role_inference:[RoleInference] weight -> attendance_rate (confidence: 0.45)
-INFO:backend.inference.domain_detection:[DomainDetection] Analyzing dataframe for domain
-INFO:backend.inference.domain_detection:[DomainDetection] Detected domain: education (confidence: 1.00)
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:55350 - "POST /api/roles/infer HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: POST /api/analyze/comprehensive
-INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 200 OK"
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:55354 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: GET /reports/figures/job_efdef9b3/parallel_trends.png
-INFO:gateway:Incoming request: GET /reports/figures/job_efdef9b3/ate_density.png
-INFO:gateway:Incoming request: GET /reports/figures/job_efdef9b3/event_study.html
-INFO:gateway:Incoming request: GET /reports/figures/job_efdef9b3/propensity_overlap.png
-INFO:gateway:Incoming request: GET /reports/figures/job_efdef9b3/balance_smd.png
-INFO:gateway:Incoming request: GET /reports/figures/job_efdef9b3/rosenbaum_gamma.png
+INFO:     127.0.0.1:40810 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/parallel_trends.png
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/event_study.html
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/ate_density.png
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/propensity_overlap.png
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/balance_smd.png
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/rosenbaum_gamma.png
 INFO:gateway:Response status: 200
 INFO:gateway:Response status: 200
 INFO:gateway:Response status: 200
 INFO:gateway:Response status: 200
-INFO:     127.0.0.1:55400 - "GET /reports/figures/job_efdef9b3/propensity_overlap.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55362 - "GET /reports/figures/job_efdef9b3/parallel_trends.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55378 - "GET /reports/figures/job_efdef9b3/ate_density.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55412 - "GET /reports/figures/job_efdef9b3/balance_smd.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40850 - "GET /figures/job_e75af9a3/ate_density.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40826 - "GET /figures/job_e75af9a3/parallel_trends.png HTTP/1.1" 200 OK
 INFO:gateway:Response status: 200
-INFO:     127.0.0.1:55386 - "GET /reports/figures/job_efdef9b3/event_study.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40854 - "GET /figures/job_e75af9a3/propensity_overlap.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40836 - "GET /figures/job_e75af9a3/event_study.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40864 - "GET /figures/job_e75af9a3/balance_smd.png HTTP/1.1" 200 OK
 INFO:gateway:Response status: 200
-INFO:     127.0.0.1:55428 - "GET /reports/figures/job_efdef9b3/rosenbaum_gamma.png HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: GET /reports/figures/job_efdef9b3/transport_weights.png
-INFO:gateway:Incoming request: GET /reports/figures/job_efdef9b3/tvce_line.png
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:55432 - "GET /reports/figures/job_efdef9b3/transport_weights.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55436 - "GET /reports/figures/job_efdef9b3/tvce_line.png HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: GET /reports/figures/job_efdef9b3/network_spillover.png
-INFO:gateway:Incoming request: GET /reports/figures/job_efdef9b3/quality_gates_board.png
-INFO:gateway:Incoming request: GET /reports/figures/job_efdef9b3/cas_radar.png
-INFO:gateway:Incoming request: GET /reports/figures/job_efdef9b3/evalue_sensitivity.png
-INFO:gateway:Response status: 200
-INFO:gateway:Incoming request: GET /reports/figures/job_efdef9b3/cate_forest.png
-INFO:     127.0.0.1:55452 - "GET /reports/figures/job_efdef9b3/quality_gates_board.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40868 - "GET /figures/job_e75af9a3/rosenbaum_gamma.png HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/transport_weights.png
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/tvce_line.png
 INFO:gateway:Response status: 200
 INFO:gateway:Response status: 200
-INFO:     127.0.0.1:55468 - "GET /reports/figures/job_efdef9b3/cas_radar.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55448 - "GET /reports/figures/job_efdef9b3/network_spillover.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40884 - "GET /figures/job_e75af9a3/transport_weights.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40888 - "GET /figures/job_e75af9a3/tvce_line.png HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/network_spillover.png
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/quality_gates_board.png
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/cas_radar.png
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/evalue_sensitivity.png
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/cate_forest.png
 INFO:gateway:Response status: 200
-INFO:     127.0.0.1:55470 - "GET /reports/figures/job_efdef9b3/evalue_sensitivity.png HTTP/1.1" 200 OK
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:55474 - "GET /reports/figures/job_efdef9b3/cate_forest.png HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: POST /api/upload
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:55752 - "POST /api/upload HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: POST /api/roles/infer
-INFO:backend.inference.role_inference:[RoleInference] Analyzing 6 columns from dataframe
-INFO:backend.inference.role_inference:[RoleInference] unit_id -> student_id (confidence: 0.95)
-INFO:backend.inference.role_inference:[RoleInference] outcome -> test_score (confidence: 0.95)
-INFO:backend.inference.role_inference:[RoleInference] treatment -> tutoring_program (confidence: 0.80)
-INFO:backend.inference.role_inference:[RoleInference] time -> school_year (confidence: 0.80)
-INFO:backend.inference.role_inference:[RoleInference] propensity -> gpa (confidence: 0.45)
-INFO:backend.inference.role_inference:[RoleInference] weight -> attendance_rate (confidence: 0.45)
-INFO:backend.inference.domain_detection:[DomainDetection] Analyzing dataframe for domain
-INFO:backend.inference.domain_detection:[DomainDetection] Detected domain: education (confidence: 1.00)
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:55768 - "POST /api/roles/infer HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: POST /api/upload
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:58136 - "POST /api/upload HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: POST /api/roles/infer
-INFO:backend.inference.role_inference:[RoleInference] Analyzing 6 columns from dataframe
-INFO:backend.inference.role_inference:[RoleInference] unit_id -> student_id (confidence: 0.95)
-INFO:backend.inference.role_inference:[RoleInference] outcome -> test_score (confidence: 0.95)
-INFO:backend.inference.role_inference:[RoleInference] treatment -> tutoring_program (confidence: 0.80)
-INFO:backend.inference.role_inference:[RoleInference] time -> school_year (confidence: 0.80)
-INFO:backend.inference.role_inference:[RoleInference] propensity -> gpa (confidence: 0.45)
-INFO:backend.inference.role_inference:[RoleInference] weight -> attendance_rate (confidence: 0.45)
-INFO:backend.inference.domain_detection:[DomainDetection] Analyzing dataframe for domain
-INFO:backend.inference.domain_detection:[DomainDetection] Detected domain: education (confidence: 1.00)
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:58146 - "POST /api/roles/infer HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: POST /api/analyze/comprehensive
-INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 200 OK"
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:58150 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/parallel_trends.png
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/ate_density.png
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/propensity_overlap.png
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/event_study.html
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/balance_smd.png
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/rosenbaum_gamma.png
+INFO:     127.0.0.1:40902 - "GET /figures/job_e75af9a3/network_spillover.png HTTP/1.1" 200 OK
 INFO:gateway:Response status: 200
 INFO:gateway:Response status: 200
 INFO:gateway:Response status: 200
-INFO:     127.0.0.1:58158 - "GET /reports/figures/job_990c3c91/ate_density.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58154 - "GET /reports/figures/job_990c3c91/parallel_trends.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58168 - "GET /reports/figures/job_990c3c91/propensity_overlap.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40912 - "GET /figures/job_e75af9a3/quality_gates_board.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40934 - "GET /figures/job_e75af9a3/evalue_sensitivity.png HTTP/1.1" 200 OK
 INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:58192 - "GET /reports/figures/job_990c3c91/balance_smd.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58182 - "GET /reports/figures/job_990c3c91/event_study.html HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58194 - "GET /reports/figures/job_990c3c91/rosenbaum_gamma.png HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/transport_weights.png
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/tvce_line.png
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:58210 - "GET /reports/figures/job_990c3c91/tvce_line.png HTTP/1.1" 200 OK
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:58208 - "GET /reports/figures/job_990c3c91/transport_weights.png HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/network_spillover.png
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/quality_gates_board.png
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/cas_radar.png
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/evalue_sensitivity.png
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/cate_forest.png
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:58216 - "GET /reports/figures/job_990c3c91/network_spillover.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58254 - "GET /reports/figures/job_990c3c91/cate_forest.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58222 - "GET /reports/figures/job_990c3c91/cas_radar.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58238 - "GET /reports/figures/job_990c3c91/evalue_sensitivity.png HTTP/1.1" 200 OK
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:58218 - "GET /reports/figures/job_990c3c91/quality_gates_board.png HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/event_study.html
+INFO:     127.0.0.1:40950 - "GET /figures/job_e75af9a3/cate_forest.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40924 - "GET /figures/job_e75af9a3/cas_radar.png HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/parallel_trends.png
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/ate_density.png
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/event_study.html
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/propensity_overlap.png
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/balance_smd.png
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/transport_weights.png
 INFO:gateway:Response status: 304
-INFO:     127.0.0.1:54736 - "GET /reports/figures/job_990c3c91/event_study.html HTTP/1.1" 304 Not Modified
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/parallel_trends.png
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/ate_density.png
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/event_study.html
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/propensity_overlap.png
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/balance_smd.png
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/rosenbaum_gamma.png
-INFO:gateway:Response status: 304
-INFO:     127.0.0.1:60030 - "GET /reports/figures/job_990c3c91/parallel_trends.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:42354 - "GET /figures/job_e75af9a3/parallel_trends.png HTTP/1.1" 304 Not Modified
 INFO:gateway:Response status: 304
 INFO:gateway:Response status: 304
 INFO:gateway:Response status: 304
+INFO:     127.0.0.1:42376 - "GET /figures/job_e75af9a3/event_study.html HTTP/1.1" 304 Not Modified
 INFO:gateway:Response status: 304
-INFO:     127.0.0.1:60074 - "GET /reports/figures/job_990c3c91/rosenbaum_gamma.png HTTP/1.1" 304 Not Modified
-INFO:     127.0.0.1:60036 - "GET /reports/figures/job_990c3c91/ate_density.png HTTP/1.1" 304 Not Modified
-INFO:     127.0.0.1:60050 - "GET /reports/figures/job_990c3c91/event_study.html HTTP/1.1" 304 Not Modified
-INFO:     127.0.0.1:60052 - "GET /reports/figures/job_990c3c91/propensity_overlap.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:42360 - "GET /figures/job_e75af9a3/ate_density.png HTTP/1.1" 304 Not Modified
 INFO:gateway:Response status: 304
-INFO:     127.0.0.1:60060 - "GET /reports/figures/job_990c3c91/balance_smd.png HTTP/1.1" 304 Not Modified
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/transport_weights.png
+INFO:     127.0.0.1:42388 - "GET /figures/job_e75af9a3/propensity_overlap.png HTTP/1.1" 304 Not Modified
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/rosenbaum_gamma.png
+INFO:     127.0.0.1:42396 - "GET /figures/job_e75af9a3/balance_smd.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:42408 - "GET /figures/job_e75af9a3/transport_weights.png HTTP/1.1" 304 Not Modified
 INFO:gateway:Response status: 304
-INFO:     127.0.0.1:60090 - "GET /reports/figures/job_990c3c91/transport_weights.png HTTP/1.1" 304 Not Modified
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/tvce_line.png
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/network_spillover.png
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/quality_gates_board.png
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/cas_radar.png
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/evalue_sensitivity.png
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/cate_forest.png
+INFO:     127.0.0.1:42412 - "GET /figures/job_e75af9a3/rosenbaum_gamma.png HTTP/1.1" 304 Not Modified
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/tvce_line.png
 INFO:gateway:Response status: 304
-INFO:gateway:Response status: 304
-INFO:     127.0.0.1:60102 - "GET /reports/figures/job_990c3c91/network_spillover.png HTTP/1.1" 304 Not Modified
-INFO:     127.0.0.1:60096 - "GET /reports/figures/job_990c3c91/tvce_line.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:42414 - "GET /figures/job_e75af9a3/tvce_line.png HTTP/1.1" 304 Not Modified
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/network_spillover.png
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/quality_gates_board.png
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/cas_radar.png
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/evalue_sensitivity.png
+INFO:gateway:Incoming request: GET /reports/figures/job_e75af9a3/cate_forest.png
 INFO:gateway:Response status: 304
 INFO:gateway:Response status: 304
+INFO:     127.0.0.1:42464 - "GET /figures/job_e75af9a3/evalue_sensitivity.png HTTP/1.1" 304 Not Modified
 INFO:gateway:Response status: 304
-INFO:     127.0.0.1:60126 - "GET /reports/figures/job_990c3c91/cas_radar.png HTTP/1.1" 304 Not Modified
-INFO:     127.0.0.1:60110 - "GET /reports/figures/job_990c3c91/quality_gates_board.png HTTP/1.1" 304 Not Modified
-INFO:     127.0.0.1:60136 - "GET /reports/figures/job_990c3c91/evalue_sensitivity.png HTTP/1.1" 304 Not Modified
 INFO:gateway:Response status: 304
-INFO:     127.0.0.1:60144 - "GET /reports/figures/job_990c3c91/cate_forest.png HTTP/1.1" 304 Not Modified
-INFO:gateway:Incoming request: GET /reports/figures/job_990c3c91/event_study.html
+INFO:     127.0.0.1:42442 - "GET /figures/job_e75af9a3/quality_gates_board.png HTTP/1.1" 304 Not Modified
 INFO:gateway:Response status: 304
-INFO:     127.0.0.1:42208 - "GET /reports/figures/job_990c3c91/event_study.html HTTP/1.1" 304 Not Modified
-INFO:gateway:Incoming request: POST /api/upload
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:47104 - "POST /api/upload HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: POST /api/roles/infer
-INFO:backend.inference.role_inference:[RoleInference] Analyzing 6 columns from dataframe
-INFO:backend.inference.role_inference:[RoleInference] unit_id -> customer_id (confidence: 0.95)
-INFO:backend.inference.role_inference:[RoleInference] outcome -> revenue (confidence: 0.95)
-INFO:backend.inference.role_inference:[RoleInference] treatment -> campaign (confidence: 0.95)
-INFO:backend.inference.role_inference:[RoleInference] time -> purchase_date (confidence: 0.80)
-INFO:backend.inference.role_inference:[RoleInference] propensity -> discount_amount (confidence: 0.45)
-INFO:backend.inference.role_inference:[RoleInference] weight -> conversion (confidence: 0.45)
-INFO:backend.inference.domain_detection:[DomainDetection] Analyzing dataframe for domain
-INFO:backend.inference.domain_detection:[DomainDetection] Detected domain: retail (confidence: 0.75)
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:47108 - "POST /api/roles/infer HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: POST /api/analyze/comprehensive
-INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 200 OK"
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:57676 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: GET /reports/figures/job_29610b4d/event_study.html
-INFO:gateway:Incoming request: GET /reports/figures/job_29610b4d/parallel_trends.png
-INFO:gateway:Incoming request: GET /reports/figures/job_29610b4d/ate_density.png
-INFO:gateway:Incoming request: GET /reports/figures/job_29610b4d/propensity_overlap.png
-INFO:gateway:Incoming request: GET /reports/figures/job_29610b4d/balance_smd.png
-INFO:gateway:Incoming request: GET /reports/figures/job_29610b4d/rosenbaum_gamma.png
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:57680 - "GET /reports/figures/job_29610b4d/parallel_trends.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57678 - "GET /reports/figures/job_29610b4d/event_study.html HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57686 - "GET /reports/figures/job_29610b4d/ate_density.png HTTP/1.1" 200 OK
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:57702 - "GET /reports/figures/job_29610b4d/propensity_overlap.png HTTP/1.1" 200 OK
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:57720 - "GET /reports/figures/job_29610b4d/rosenbaum_gamma.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57706 - "GET /reports/figures/job_29610b4d/balance_smd.png HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: GET /reports/figures/job_29610b4d/transport_weights.png
-INFO:gateway:Incoming request: GET /reports/figures/job_29610b4d/tvce_line.png
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:57748 - "GET /reports/figures/job_29610b4d/tvce_line.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57734 - "GET /reports/figures/job_29610b4d/transport_weights.png HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: GET /reports/figures/job_29610b4d/network_spillover.png
-INFO:gateway:Incoming request: GET /reports/figures/job_29610b4d/quality_gates_board.png
-INFO:gateway:Incoming request: GET /reports/figures/job_29610b4d/cas_radar.png
-INFO:gateway:Incoming request: GET /reports/figures/job_29610b4d/evalue_sensitivity.png
-INFO:gateway:Incoming request: GET /reports/figures/job_29610b4d/cate_forest.png
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:57752 - "GET /reports/figures/job_29610b4d/network_spillover.png HTTP/1.1" 200 OK
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:57768 - "GET /reports/figures/job_29610b4d/quality_gates_board.png HTTP/1.1" 200 OK
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:57770 - "GET /reports/figures/job_29610b4d/cas_radar.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57796 - "GET /reports/figures/job_29610b4d/cate_forest.png HTTP/1.1" 200 OK
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:57786 - "GET /reports/figures/job_29610b4d/evalue_sensitivity.png HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: POST /api/upload
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:42796 - "POST /api/upload HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: POST /api/roles/infer
-INFO:backend.inference.role_inference:[RoleInference] Analyzing 12 columns from dataframe
-INFO:backend.inference.role_inference:[RoleInference] unit_id -> student_id (confidence: 0.95)
-INFO:backend.inference.role_inference:[RoleInference] outcome -> prior_test_score (confidence: 0.80)
-INFO:backend.inference.role_inference:[RoleInference] treatment -> tutoring_program (confidence: 0.80)
-INFO:backend.inference.role_inference:[RoleInference] time -> school_id (confidence: 0.45)
-INFO:backend.inference.role_inference:[RoleInference] propensity -> attendance_rate (confidence: 0.45)
-INFO:backend.inference.role_inference:[RoleInference] weight -> teacher_id (confidence: 0.45)
-INFO:backend.inference.role_inference:[RoleInference] cost -> ses_index (confidence: 0.45)
-INFO:backend.inference.role_inference:[RoleInference] instrument -> special_education (confidence: 0.45)
-INFO:backend.inference.role_inference:[RoleInference] policy_boundary -> post_test_score (confidence: 0.80)
-INFO:backend.inference.role_inference:[RoleInference] cluster -> grade_level (confidence: 0.45)
-INFO:backend.inference.role_inference:[RoleInference] auxiliary_outcome -> graduated (confidence: 0.45)
-INFO:backend.inference.role_inference:[RoleInference] covariate -> college_enrolled (confidence: 0.45)
-INFO:backend.inference.domain_detection:[DomainDetection] Analyzing dataframe for domain
-INFO:backend.inference.domain_detection:[DomainDetection] Detected domain: medical (confidence: 0.00)
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:42812 - "POST /api/roles/infer HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: POST /api/analyze/comprehensive
-INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 200 OK"
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:42824 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: GET /reports/figures/job_9c167ef6/event_study.html
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:42840 - "GET /reports/figures/job_9c167ef6/event_study.html HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: GET /reports/figures/job_9c167ef6/parallel_trends.png
-INFO:gateway:Incoming request: GET /reports/figures/job_9c167ef6/ate_density.png
-INFO:gateway:Incoming request: GET /reports/figures/job_9c167ef6/propensity_overlap.png
-INFO:gateway:Incoming request: GET /reports/figures/job_9c167ef6/balance_smd.png
-INFO:gateway:Incoming request: GET /reports/figures/job_9c167ef6/rosenbaum_gamma.png
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:42842 - "GET /reports/figures/job_9c167ef6/parallel_trends.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42848 - "GET /reports/figures/job_9c167ef6/ate_density.png HTTP/1.1" 200 OK
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:42862 - "GET /reports/figures/job_9c167ef6/propensity_overlap.png HTTP/1.1" 200 OK
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:42876 - "GET /reports/figures/job_9c167ef6/rosenbaum_gamma.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42874 - "GET /reports/figures/job_9c167ef6/balance_smd.png HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: GET /reports/figures/job_9c167ef6/transport_weights.png
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:42892 - "GET /reports/figures/job_9c167ef6/transport_weights.png HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: GET /reports/figures/job_9c167ef6/tvce_line.png
-INFO:gateway:Incoming request: GET /reports/figures/job_9c167ef6/network_spillover.png
-INFO:gateway:Incoming request: GET /reports/figures/job_9c167ef6/quality_gates_board.png
-INFO:gateway:Incoming request: GET /reports/figures/job_9c167ef6/cas_radar.png
-INFO:gateway:Incoming request: GET /reports/figures/job_9c167ef6/evalue_sensitivity.png
-INFO:gateway:Incoming request: GET /reports/figures/job_9c167ef6/cate_forest.png
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:42918 - "GET /reports/figures/job_9c167ef6/network_spillover.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42920 - "GET /reports/figures/job_9c167ef6/quality_gates_board.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42930 - "GET /reports/figures/job_9c167ef6/cas_radar.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42904 - "GET /reports/figures/job_9c167ef6/tvce_line.png HTTP/1.1" 200 OK
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:42940 - "GET /reports/figures/job_9c167ef6/evalue_sensitivity.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42944 - "GET /reports/figures/job_9c167ef6/cate_forest.png HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: POST /api/upload
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:57848 - "POST /api/upload HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: POST /api/roles/infer
-INFO:backend.inference.role_inference:[RoleInference] Analyzing 12 columns from dataframe
-INFO:backend.inference.role_inference:[RoleInference] unit_id -> student_id (confidence: 0.95)
-INFO:backend.inference.role_inference:[RoleInference] outcome -> prior_test_score (confidence: 0.80)
-INFO:backend.inference.role_inference:[RoleInference] treatment -> tutoring_program (confidence: 0.80)
-INFO:backend.inference.role_inference:[RoleInference] time -> school_id (confidence: 0.45)
-INFO:backend.inference.role_inference:[RoleInference] propensity -> attendance_rate (confidence: 0.45)
-INFO:backend.inference.role_inference:[RoleInference] weight -> teacher_id (confidence: 0.45)
-INFO:backend.inference.role_inference:[RoleInference] cost -> ses_index (confidence: 0.45)
-INFO:backend.inference.role_inference:[RoleInference] instrument -> special_education (confidence: 0.45)
-INFO:backend.inference.role_inference:[RoleInference] policy_boundary -> post_test_score (confidence: 0.80)
-INFO:backend.inference.role_inference:[RoleInference] cluster -> grade_level (confidence: 0.45)
-INFO:backend.inference.role_inference:[RoleInference] auxiliary_outcome -> graduated (confidence: 0.45)
-INFO:backend.inference.role_inference:[RoleInference] covariate -> college_enrolled (confidence: 0.45)
-INFO:backend.inference.domain_detection:[DomainDetection] Analyzing dataframe for domain
-INFO:backend.inference.domain_detection:[DomainDetection] Detected domain: medical (confidence: 0.00)
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:57850 - "POST /api/roles/infer HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: POST /api/analyze/comprehensive
-INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 200 OK"
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:57858 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: GET /reports/figures/job_3c6b6747/event_study.html
-INFO:gateway:Incoming request: GET /reports/figures/job_3c6b6747/parallel_trends.png
-INFO:gateway:Incoming request: GET /reports/figures/job_3c6b6747/ate_density.png
-INFO:gateway:Incoming request: GET /reports/figures/job_3c6b6747/propensity_overlap.png
-INFO:gateway:Incoming request: GET /reports/figures/job_3c6b6747/balance_smd.png
-INFO:gateway:Incoming request: GET /reports/figures/job_3c6b6747/rosenbaum_gamma.png
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:57870 - "GET /reports/figures/job_3c6b6747/parallel_trends.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57864 - "GET /reports/figures/job_3c6b6747/event_study.html HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57882 - "GET /reports/figures/job_3c6b6747/ate_density.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57888 - "GET /reports/figures/job_3c6b6747/propensity_overlap.png HTTP/1.1" 200 OK
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:57910 - "GET /reports/figures/job_3c6b6747/rosenbaum_gamma.png HTTP/1.1" 200 OK
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:57898 - "GET /reports/figures/job_3c6b6747/balance_smd.png HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: GET /reports/figures/job_3c6b6747/transport_weights.png
-INFO:gateway:Incoming request: GET /reports/figures/job_3c6b6747/tvce_line.png
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:57928 - "GET /reports/figures/job_3c6b6747/tvce_line.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57922 - "GET /reports/figures/job_3c6b6747/transport_weights.png HTTP/1.1" 200 OK
-INFO:gateway:Incoming request: GET /reports/figures/job_3c6b6747/network_spillover.png
-INFO:gateway:Incoming request: GET /reports/figures/job_3c6b6747/quality_gates_board.png
-INFO:gateway:Incoming request: GET /reports/figures/job_3c6b6747/cas_radar.png
-INFO:gateway:Incoming request: GET /reports/figures/job_3c6b6747/evalue_sensitivity.png
-INFO:gateway:Incoming request: GET /reports/figures/job_3c6b6747/cate_forest.png
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:57942 - "GET /reports/figures/job_3c6b6747/network_spillover.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57990 - "GET /reports/figures/job_3c6b6747/cate_forest.png HTTP/1.1" 200 OK
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:57950 - "GET /reports/figures/job_3c6b6747/quality_gates_board.png HTTP/1.1" 200 OK
-INFO:gateway:Response status: 200
-INFO:gateway:Response status: 200
-INFO:     127.0.0.1:57964 - "GET /reports/figures/job_3c6b6747/cas_radar.png HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57978 - "GET /reports/figures/job_3c6b6747/evalue_sensitivity.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42430 - "GET /figures/job_e75af9a3/network_spillover.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:42480 - "GET /figures/job_e75af9a3/cate_forest.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:42450 - "GET /figures/job_e75af9a3/cas_radar.png HTTP/1.1" 304 Not Modified
