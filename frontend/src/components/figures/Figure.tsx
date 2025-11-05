@@ -16,15 +16,23 @@ export function FigureImage({ title, subtitle, src, alt }: FigureProps) {
       <img
         src={src}
         alt={alt ?? title ?? src}
-        style={{ width: "100%", height: "auto", display: "block",
-                 border: "1px dashed #ccc", borderRadius: 8 }}
+        style={{ width: "100%", height: 380, objectFit: "contain", display: "block",
+                 border: "1px dashed #ccc", borderRadius: 8, background: "#fff" }}
       />
     </div>
   );
 }
 
-// Backward compatibility: export Figure as alias for FigureImage
-export const Figure = FigureImage;
+// .html/.htm は <iframe>、それ以外は <img> に自動切替
+export function SmartFigure({ title, subtitle, src, alt }: FigureProps) {
+  const isHTML = typeof src === "string" && /\.html?(\?|$)/i.test(src);
+  return isHTML
+    ? <FigureHTML title={title} subtitle={subtitle} src={src} />
+    : <FigureImage title={title} subtitle={subtitle} src={src} alt={alt} />;
+}
+
+// 後方互換: 既存コードは Figure を使い続ければ○（≒自動切替にスマート化）
+export const Figure = SmartFigure;
 
 // HTML(イベントスタディ等)を埋め込み
 export function FigureHTML({ title, subtitle, src }: FigureProps) {
@@ -34,7 +42,7 @@ export function FigureHTML({ title, subtitle, src }: FigureProps) {
       {subtitle && <div style={{ opacity: 0.7, fontSize: 12 }}>{subtitle}</div>}
       <iframe
         src={src}
-        style={{ width: "100%", height: 460, border: "1px dashed #ccc",
+        style={{ width: "100%", height: 380, border: "1px dashed #ccc",
                  borderRadius: 8, background: "#fff" }}
       />
     </div>
@@ -42,4 +50,4 @@ export function FigureHTML({ title, subtitle, src }: FigureProps) {
 }
 
 // 利便用のデフォルト（破壊的ではない）
-export default { FigureImage, FigureHTML };
+export default { FigureImage, FigureHTML, SmartFigure };

@@ -63,6 +63,30 @@ ESTIMATOR_SPECS = {
         optional=["unit_id"],
         fallback="tvce"
     ),
+    "synthetic_control": EstimatorRequirements(
+        name="Synthetic Control Method",
+        required=["y", "treatment", "unit_id", "time"],
+        optional=["covariates"],
+        fallback="tvce"
+    ),
+    "causal_forest": EstimatorRequirements(
+        name="Causal Forests",
+        required=["y", "treatment", "covariates"],
+        optional=["unit_id"],
+        fallback="tvce"
+    ),
+    "rd": EstimatorRequirements(
+        name="Regression Discontinuity",
+        required=["y", "treatment", "covariates"],
+        optional=["unit_id", "time"],
+        fallback="tvce"
+    ),
+    "did": EstimatorRequirements(
+        name="Difference-in-Differences",
+        required=["y", "treatment", "unit_id", "time"],
+        optional=["covariates"],
+        fallback="tvce"
+    ),
 }
 
 

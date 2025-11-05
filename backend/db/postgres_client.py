@@ -103,6 +103,14 @@ class PostgresClient:
             query = "UPDATE analysis_jobs SET status = %s WHERE job_id = %s"
             return self.execute(query, (status, job_id))
 
+    def get_job(self, job_id: str) -> Optional[Dict[str, Any]]:
+        """Fetch job results by job_id"""
+        query = "SELECT results FROM analysis_jobs WHERE job_id = %s"
+        result = self.fetchone(query, (job_id,))
+        if result and result.get("results"):
+            return result["results"]
+        return None
+
     def insert_estimator_result(self, job_id: str, estimator: str, tau: float, se: float,
                                 ci_lower: float, ci_upper: float, exec_time: float) -> bool:
         """Insert estimator result"""

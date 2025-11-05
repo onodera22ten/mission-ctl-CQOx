@@ -1,0 +1,12 @@
+INFO:     Started server process [240693]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:9080 (Press CTRL+C to quit)
+/home/hirokionodera/cqox-complete (Copy 2)/backend/inference/sensitivity_analysis.py:270: RuntimeWarning:
+
+overflow encountered in scalar multiply
+
+/home/hirokionodera/cqox-complete (Copy 2)/backend/inference/sensitivity_analysis.py:283: RuntimeWarning:
+
+overflow encountered in scalar multiply
+

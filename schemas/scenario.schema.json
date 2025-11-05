@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ScenarioSpec",
+  "description": "Counterfactual scenario specification for What-If analysis per Plan1.pdf",
+  "type": "object",
+  "properties": {
+    "scenario_id": {
+      "type": "string",
+      "description": "Unique scenario identifier"
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable scenario description"
+    },
+    "policy": {
+      "type": "object",
+      "description": "Policy counterfactuals (budget, threshold, fairness)",
+      "properties": {
+        "budget_multiplier": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 10.0,
+          "description": "Budget scaling factor (1.0 = baseline, 1.2 = +20%)"
+        },
+        "threshold_shift": {
+          "type": "number",
+          "description": "Shift in decision threshold (e.g., +0.1 for 10% increase)"
+        },
+        "fairness": {
+          "type": "object",
+          "properties": {
+            "group": {
+              "type": "string",
+              "description": "Fairness group column name"
+            },
+            "max_gap": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Maximum allowed gap between groups"
+            }
+          }
+        }
+      }
+    },
+    "intervention": {
+      "type": "object",
+      "description": "Intervention counterfactuals (do-operator, geo_quota)",
+      "properties": {
+        "do_treatment": {
+          "type": "number",
+          "enum": [0, 1],
+          "description": "Force all units to treatment (1) or control (0)"
+        },
+        "geo_quota": {
+          "type": "object",
+          "description": "Geographic quotas (e.g., {Tokyo: 0.6, Osaka: 0.2})",
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      }
+    },
+    "generative": {
+      "type": "object",
+      "description": "Generative model counterfactuals (network beta, survival hazard)",
+      "properties": {
+        "mmm": {
+          "type": "object",
+          "description": "Marketing Mix Model parameters",
+          "properties": {
+            "adstock_rate": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "saturation_alpha": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "network": {
+          "type": "object",
+          "description": "Network spillover parameters",
+          "properties": {
+            "beta": {
+              "type": "number",
+              "description": "Spillover coefficient (0.12 = 12% peer effect)"
+            }
+          }
+        },
+        "survival": {
+          "type": "object",
+          "description": "Survival model parameters",
+          "properties": {
+            "hazard_multiplier": {
+              "type": "number",
+              "minimum": 0.1,
+              "maximum": 10.0
+            }
+          }
+        }
+      }
+    },
+    "economics": {
+      "type": "object",
+      "description": "Economic parameter counterfactuals",
+      "properties": {
+        "cost_multiplier": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 10.0,
+          "description": "Cost scaling factor (1.1 = +10% cost)"
+        },
+        "value_per_unit_multiplier": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 10.0,
+          "description": "Value scaling factor"
+        },
+        "margin_adjustment": {
+          "type": "number",
+          "minimum": -0.5,
+          "maximum": 0.5,
+          "description": "Margin adjustment (e.g., +0.05 for 5% increase)"
+        }
+      }
+    }
+  },
+  "required": ["scenario_id"]
+}

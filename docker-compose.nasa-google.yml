@@ -1,0 +1,300 @@
+# CQOx NASA/Googleレベル Docker Compose
+# PostgreSQL 15 + TimescaleDB + Vault + 完全暗号化
+
+version: '3.9'
+
+networks:
+  cqox-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+  vault_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  loki_data:
+    driver: local
+
+services:
+  # =======================
+  # Database: PostgreSQL 15 + TimescaleDB（世界最高峰）
+  # =======================
+  postgres:
+    image: timescale/timescaledb-ha:pg15-latest
+    container_name: cqox-postgres-primary
+    environment:
+      POSTGRES_USER: cqox_admin
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme_secure_password}
+      POSTGRES_DB: cqox_prod
+      PGDATA: /var/lib/postgresql/data/pgdata
+      TIMESCALEDB_TELEMETRY: "off"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_wal_archive:/mnt/wal_archive
+      - ./db/init-timescaledb.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ./db/pgcrypto-setup.sql:/docker-entrypoint-initdb.d/02-encrypt.sql
+      - ./db/replication-setup.sql:/docker-entrypoint-initdb.d/03-replication.sql
+      - ./certs/postgres-server.crt:/var/lib/postgresql/server.crt:ro
+      - ./certs/postgres-server.key:/var/lib/postgresql/server.key:ro
+    command:
+      - postgres
+      # Connection
+      - -c
+      - max_connections=200
+      # Memory
+      - -c
+      - shared_buffers=2GB
+      - -c
+      - effective_cache_size=6GB
+      - -c
+      - maintenance_work_mem=512MB
+      # WAL
+      - -c
+      - wal_buffers=16MB
+      - -c
+      - min_wal_size=1GB
+      - -c
+      - max_wal_size=4GB
+      - -c
+      - checkpoint_completion_target=0.9
+      # Query tuning
+      - -c
+      - default_statistics_target=100
+      - -c
+      - random_page_cost=1.1
+      - -c
+      - effective_io_concurrency=200
+      - -c
+      - work_mem=10MB
+      # Parallelism
+      - -c
+      - max_worker_processes=4
+      - -c
+      - max_parallel_workers_per_gather=2
+      - -c
+      - max_parallel_workers=4
+      - -c
+      - max_parallel_maintenance_workers=2
+      # Encryption & Security
+      - -c
+      - ssl=on
+      - -c
+      - ssl_cert_file=/var/lib/postgresql/server.crt
+      - -c
+      - ssl_key_file=/var/lib/postgresql/server.key
+      # Replication & PITR
+      - -c
+      - wal_level=replica
+      - -c
+      - max_wal_senders=10
+      - -c
+      - max_replication_slots=10
+      - -c
+      - archive_mode=on
+      - -c
+      - archive_command=test ! -f /mnt/wal_archive/%f && cp %p /mnt/wal_archive/%f
+    ports:
+      - "5432:5432"
+    networks:
+      - cqox-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cqox_admin -d cqox_prod"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # =======================
+  # Secrets: HashiCorp Vault
+  # =======================
+  vault:
+    image: hashicorp/vault:1.15
+    container_name: cqox-vault
+    environment:
+      VAULT_ADDR: http://0.0.0.0:8200
+      VAULT_API_ADDR: http://0.0.0.0:8200
+    ports:
+      - "8200:8200"
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - vault_data:/vault/data
+      - ./vault/config.hcl:/vault/config/config.hcl:ro
+    command: server
+    networks:
+      - cqox-network
+    healthcheck:
+      test: ["CMD", "vault", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # =======================
+  # Monitoring: Prometheus
+  # =======================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: cqox-prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/rules:/etc/prometheus/rules:ro
+      - prometheus_data:/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=90d
+      - --web.enable-lifecycle
+      - --web.enable-admin-api
+    ports:
+      - "9090:9090"
+    networks:
+      - cqox-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # =======================
+  # Logging: Loki
+  # =======================
+  loki:
+    image: grafana/loki:latest
+    container_name: cqox-loki
+    volumes:
+      - ./loki/loki-config.yml:/etc/loki/config.yml:ro
+      - loki_data:/loki
+    command: -config.file=/etc/loki/config.yml
+    ports:
+      - "3100:3100"
+    networks:
+      - cqox-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3100/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # =======================
+  # Visualization: Grafana
+  # =======================
+  grafana:
+    image: grafana/grafana:latest
+    container_name: cqox-grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_SERVER_ROOT_URL: http://localhost:3000
+      GF_INSTALL_PLUGINS: grafana-piechart-panel
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports:
+      - "3000:3000"
+    networks:
+      - cqox-network
+    depends_on:
+      - prometheus
+      - loki
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # =======================
+  # Tracing: Jaeger
+  # =======================
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: cqox-jaeger
+    environment:
+      COLLECTOR_ZIPKIN_HOST_PORT: ":9411"
+      COLLECTOR_OTLP_ENABLED: "true"
+    ports:
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+      - "16686:16686"  # Jaeger UI
+      - "14268:14268"
+      - "14250:14250"
+      - "9411:9411"
+    networks:
+      - cqox-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:14269/"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # =======================
+  # PostgreSQL Standby (DR Multi-Region)
+  # =======================
+  postgres-standby:
+    image: timescale/timescaledb-ha:pg15-latest
+    container_name: cqox-postgres-standby
+    environment:
+      POSTGRES_USER: cqox_admin
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme_secure_password}
+      POSTGRES_DB: cqox_prod
+      PGDATA: /var/lib/postgresql/data/pgdata
+      TIMESCALEDB_TELEMETRY: "off"
+    volumes:
+      - postgres_standby_data:/var/lib/postgresql/data
+      - ./certs/postgres-server.crt:/var/lib/postgresql/server.crt:ro
+      - ./certs/postgres-server.key:/var/lib/postgresql/server.key:ro
+    command:
+      - postgres
+      # Hot standby configuration
+      - -c
+      - hot_standby=on
+      - -c
+      - ssl=on
+      - -c
+      - ssl_cert_file=/var/lib/postgresql/server.crt
+      - -c
+      - ssl_key_file=/var/lib/postgresql/server.key
+    ports:
+      - "5433:5432"  # Different port for standby
+    networks:
+      - cqox-network
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cqox_admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+# =======================
+# Volume Definitions
+# =======================
+volumes:
+  postgres_data:
+    driver: local
+  postgres_wal_archive:
+    driver: local
+  postgres_standby_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  loki_data:
+    driver: local
+  vault_data:
+    driver: local
+
+# =======================
+# Network Definitions
+# =======================
+networks:
+  cqox-network:
+    driver: bridge

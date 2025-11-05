@@ -1,70 +1,83 @@
 // frontend/src/ui/App.tsx
 import React, { useMemo, useState } from "react";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, ReferenceLine, Label } from "recharts";
-import { uploadFile, fetchRolesProfile, inferRoles, analyzeComprehensive } from "../lib/client";
-import FiguresPanel from "./FiguresPanel";
+import { analyzeComprehensive } from "../lib/client";
+import TasksPanel from "./TasksPanel";
 import MetricsDashboard from "../components/MetricsDashboard";
 
 // 階層構造対応: 具体ドメイン（Level 2）のみ表示
 const DOMAINS = ["education", "medical", "policy", "retail", "finance", "network"];
 
+// サンプルデータセットのプリセット
+const SAMPLE_DATASETS = [
+  {
+    path: "data/realistic_retail_5k.csv",
+    label: "Retail (5K rows)",
+    mapping: {
+      y: "y",
+      treatment: "treatment",
+      unit_id: "user_id",
+      time: "date",
+      cost: "cost",
+      log_propensity: "log_propensity"
+    },
+    domain: "retail",
+  },
+  {
+    path: "data/education_test.csv",
+    label: "Education Test",
+    mapping: { y: "y", treatment: "treatment", unit_id: "user_id" },
+    domain: "education",
+  },
+  {
+    path: "data/finance_test.csv",
+    label: "Finance Test",
+    mapping: { y: "y", treatment: "treatment", unit_id: "user_id" },
+    domain: "finance",
+  },
+  {
+    path: "data/policy_test.csv",
+    label: "Policy Test",
+    mapping: { y: "y", treatment: "treatment", unit_id: "user_id" },
+    domain: "policy",
+  },
+];
+
 type Mapping = Record<string, string>;
 
 export default function App() {
-  const [file, setFile] = useState<File | null>(null);
-  const [datasetId, setDatasetId] = useState("");
+  const [dfPath, setDfPath] = useState("data/realistic_retail_5k.csv");
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [domain, setDomain] = useState<string>("retail");
-  const [profile, setProfile] = useState<any | null>(null);
-  const [mapping, setMapping] = useState<Mapping>({});
+  const [mapping, setMapping] = useState<Mapping>({
+    y: "y",
+    treatment: "treatment",
+    unit_id: "user_id",
+    time: "date",
+    cost: "cost",
+    log_propensity: "log_propensity",
+  });
   const [result, setResult] = useState<any | null>(null);
   const [busy, setBusy] = useState(false);
   const canAnalyze = useMemo(
-    () => !!datasetId && !!mapping.y && !!mapping.treatment && !!mapping.unit_id,
-    [datasetId, mapping]
+    () => (!!dfPath || !!uploadedFile) && !!mapping.y && !!mapping.treatment,
+    [dfPath, uploadedFile, mapping]
   );
 
-  async function onUpload() {
-    if (!file) return;
-    setBusy(true);
-    try {
-      const up = await uploadFile(file);
-      setDatasetId(up.dataset_id);
+  function loadPreset(preset: typeof SAMPLE_DATASETS[0]) {
+    setDfPath(preset.path);
+    setUploadedFile(null);
+    setMapping(preset.mapping);
+    setDomain(preset.domain);
+    setResult(null);
+  }
 
-      // Phase 3: 自動ロール推論を使用
-      const inference = await inferRoles(up.dataset_id);
-
-      // profileには meta情報を保持（UIで列選択に使用）
-      setProfile({
-        ...inference,
-        meta: up.meta, // uploadFileからのmeta情報を追加
-      });
-
-      // 推論されたマッピングを設定（キー名をUIの形式に変換）
-      const auto: Mapping = {
-        y: inference.mapping.outcome || inference.mapping.y || "",
-        treatment: inference.mapping.treatment || "",
-        unit_id: inference.mapping.unit_id || "",
-        time: inference.mapping.time || "",
-        cost: inference.mapping.cost || "",
-        log_propensity: inference.mapping.propensity || inference.mapping.log_propensity || "",
-      };
-
-      // ドメインも自動設定
-      if (inference.domain?.domain) {
-        setDomain(inference.domain.domain);
-      }
-
-      setMapping(auto);
+  function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file) {
+      setUploadedFile(file);
+      setDfPath(""); // Clear path when file is uploaded
       setResult(null);
-
-      console.log('[Phase 3] Auto inference:', {
-        mapping: auto,
-        confidence: inference.confidence,
-        domain: inference.domain?.domain,
-        domainConfidence: inference.domain?.confidence
-      });
-    } finally {
-      setBusy(false);
     }
   }
 
@@ -72,11 +85,31 @@ export default function App() {
     if (!canAnalyze) return;
     setBusy(true);
     try {
-      const res = await analyzeComprehensive({
-        dataset_id: datasetId,
-        mapping,
-        domain,
-      });
+      let res;
+      if (uploadedFile) {
+        // Upload file first
+        const formData = new FormData();
+        formData.append('file', uploadedFile);
+        const uploadRes = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        const uploadData = await uploadRes.json();
+
+        // Then analyze with uploaded file path
+        res = await analyzeComprehensive({
+          df_path: uploadData.file_path,
+          mapping,
+          domain,
+        });
+      } else {
+        // Use specified path
+        res = await analyzeComprehensive({
+          df_path: dfPath,
+          mapping,
+          domain,
+        });
+      }
       setResult(res);
     } finally {
       setBusy(false);
@@ -108,116 +141,216 @@ export default function App() {
 
       <div style={{
         display: "flex",
-        gap: 12,
-        alignItems: "center",
-        flexWrap: "wrap",
+        flexDirection: "column",
+        gap: 16,
         marginBottom: 24,
-        padding: 16,
+        padding: 20,
         background: "#1e293b",
         borderRadius: 12,
         border: "1px solid #334155",
       }}>
-        <input
-          type="file"
-          accept=".csv,.tsv,.jsonl,.ndjson,.xlsx,.parquet,.feather,.gz,.bz2"
-          onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-          style={{
-            padding: "8px 12px",
-            borderRadius: 8,
-            border: "1px solid #475569",
-            background: "#0f172a",
-            color: "#e2e8f0",
-            cursor: "pointer",
-          }}
-          title="Supported: CSV, TSV, JSONL, XLSX, Parquet, Feather (with .gz/.bz2 compression)"
-        />
-        <select
-          value={domain}
-          onChange={(e) => setDomain(e.target.value)}
-          style={{
-            padding: "8px 12px",
-            borderRadius: 8,
-            border: "1px solid #475569",
-            background: "#0f172a",
-            color: "#e2e8f0",
-            cursor: "pointer",
-          }}
-        >
-          {DOMAINS.map((d) => (
-            <option key={d} value={d}>{d}</option>
-          ))}
-        </select>
-        <button
-          onClick={onUpload}
-          disabled={!file || busy}
-          style={{
-            padding: "8px 16px",
-            borderRadius: 8,
-            border: "none",
-            background: !file || busy ? "#475569" : "#3b82f6",
-            color: "#fff",
-            fontWeight: 600,
-            cursor: !file || busy ? "not-allowed" : "pointer",
-            transition: "background 0.2s",
-          }}
-        >
-          Upload
-        </button>
-        <button
-          onClick={onAnalyze}
-          disabled={!canAnalyze || busy}
-          style={{
-            padding: "8px 16px",
-            borderRadius: 8,
-            border: "none",
-            background: !canAnalyze || busy ? "#475569" : "#10b981",
-            color: "#fff",
-            fontWeight: 600,
-            cursor: !canAnalyze || busy ? "not-allowed" : "pointer",
-            transition: "background 0.2s",
-          }}
-        >
-          Analyze
-        </button>
-        {datasetId && (
-          <span style={{
-            padding: "6px 12px",
-            background: "#0f172a",
-            borderRadius: 6,
-            fontSize: 13,
-            color: "#94a3b8",
-            border: "1px solid #334155",
-          }}>
-            dataset_id: {datasetId}
-          </span>
-        )}
-      </div>
-
-      {profile && (
-        <div style={{ marginTop: 16 }}>
-          <h3>Mapping</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "160px 1fr", gap: 8, maxWidth: 920 }}>
-            {["y", "treatment", "unit_id", "time", "cost", "log_propensity"].map((role) => (
-              <React.Fragment key={role}>
-                <div>{role}</div>
-                <select
-                  value={mapping[role] ?? ""}
-                  onChange={(e) => setMapping((m) => ({ ...m, [role]: e.target.value }))}
-                >
-                  <option value="">(none)</option>
-                  {profile.meta.columns.map((c: string) => (
-                    <option key={c} value={c}>{c}</option>
-                  ))}
-                </select>
-              </React.Fragment>
+        {/* Presets Row */}
+        <div>
+          <label style={{ display: "block", marginBottom: 8, fontSize: 14, fontWeight: 600, color: "#94a3b8" }}>
+            Quick Start - Sample Datasets
+          </label>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            {SAMPLE_DATASETS.map((preset) => (
+              <button
+                key={preset.path}
+                onClick={() => loadPreset(preset)}
+                disabled={busy}
+                style={{
+                  padding: "8px 16px",
+                  borderRadius: 8,
+                  border: dfPath === preset.path ? "2px solid #3b82f6" : "1px solid #475569",
+                  background: dfPath === preset.path ? "#3b82f620" : "#0f172a",
+                  color: dfPath === preset.path ? "#3b82f6" : "#e2e8f0",
+                  fontWeight: dfPath === preset.path ? 600 : 400,
+                  fontSize: 13,
+                  cursor: busy ? "not-allowed" : "pointer",
+                  transition: "all 0.2s",
+                }}
+              >
+                {preset.label}
+              </button>
             ))}
           </div>
-
         </div>
-      )}
 
-      {/* Estimator Validation Panel */}
-      {profile?.estimator_validation && (
+        {/* File Upload */}
+        <div>
+          <label style={{ display: "block", marginBottom: 6, fontSize: 13, color: "#94a3b8" }}>
+            Upload Dataset (CSV, TSV, Parquet)
+          </label>
+          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+            <label style={{
+              padding: "8px 16px",
+              borderRadius: 8,
+              border: "2px dashed #475569",
+              background: uploadedFile ? "#3b82f620" : "#0f172a",
+              color: uploadedFile ? "#3b82f6" : "#e2e8f0",
+              cursor: "pointer",
+              fontSize: 14,
+              fontWeight: 500,
+              transition: "all 0.2s",
+            }}>
+              <input
+                type="file"
+                accept=".csv,.tsv,.parquet"
+                onChange={handleFileUpload}
+                style={{ display: "none" }}
+              />
+              {uploadedFile ? `📁 ${uploadedFile.name}` : "Choose File..."}
+            </label>
+            {uploadedFile && (
+              <button
+                onClick={() => setUploadedFile(null)}
+                style={{
+                  padding: "6px 12px",
+                  borderRadius: 6,
+                  border: "1px solid #ef4444",
+                  background: "#7f1d1d",
+                  color: "#fca5a5",
+                  fontSize: 12,
+                  cursor: "pointer",
+                }}
+              >
+                Clear
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* OR Divider */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "8px 0" }}>
+          <div style={{ flex: 1, height: 1, background: "#475569" }} />
+          <span style={{ color: "#94a3b8", fontSize: 12, fontWeight: 600 }}>OR</span>
+          <div style={{ flex: 1, height: 1, background: "#475569" }} />
+        </div>
+
+        {/* Dataset Path and Domain */}
+        <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+          <div style={{ flex: "1 1 400px" }}>
+            <label style={{ display: "block", marginBottom: 6, fontSize: 13, color: "#94a3b8" }}>
+              Or Specify Server Path
+            </label>
+            <input
+              type="text"
+              value={dfPath}
+              onChange={(e) => { setDfPath(e.target.value); setUploadedFile(null); }}
+              placeholder="data/realistic_retail_5k.csv"
+              disabled={!!uploadedFile}
+              style={{
+                width: "100%",
+                padding: "8px 12px",
+                borderRadius: 8,
+                border: "1px solid #475569",
+                background: uploadedFile ? "#1e293b" : "#0f172a",
+                color: uploadedFile ? "#64748b" : "#e2e8f0",
+                fontSize: 14,
+                opacity: uploadedFile ? 0.5 : 1,
+              }}
+            />
+          </div>
+          <div style={{ flex: "0 0 160px" }}>
+            <label style={{ display: "block", marginBottom: 6, fontSize: 13, color: "#94a3b8" }}>
+              Domain
+            </label>
+            <select
+              value={domain}
+              onChange={(e) => setDomain(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "8px 12px",
+                borderRadius: 8,
+                border: "1px solid #475569",
+                background: "#0f172a",
+                color: "#e2e8f0",
+                cursor: "pointer",
+              }}
+            >
+              {DOMAINS.map((d) => (
+                <option key={d} value={d}>{d}</option>
+              ))}
+            </select>
+          </div>
+          <div style={{ flex: "0 0 auto", alignSelf: "flex-end" }}>
+            <button
+              onClick={onAnalyze}
+              disabled={!canAnalyze || busy}
+              style={{
+                padding: "8px 24px",
+                borderRadius: 8,
+                border: "none",
+                background: !canAnalyze || busy ? "#475569" : "#10b981",
+                color: "#fff",
+                fontWeight: 600,
+                fontSize: 14,
+                cursor: !canAnalyze || busy ? "not-allowed" : "pointer",
+                transition: "background 0.2s",
+              }}
+            >
+              {busy ? "Analyzing..." : "Analyze"}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mapping Editor */}
+      <div style={{
+        marginBottom: 24,
+        padding: 20,
+        background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+        borderRadius: 16,
+        border: "1px solid #334155",
+      }}>
+        <h3 style={{
+          margin: 0,
+          marginBottom: 16,
+          fontSize: 20,
+          fontWeight: 600,
+          color: "#e2e8f0",
+          borderBottom: "2px solid #3b82f6",
+          paddingBottom: 8,
+        }}>
+          Column Mapping
+        </h3>
+        <div style={{ display: "grid", gridTemplateColumns: "150px 1fr", gap: 12, maxWidth: 920 }}>
+          {["y", "treatment", "unit_id", "time", "cost", "log_propensity"].map((role) => (
+            <React.Fragment key={role}>
+              <label style={{
+                fontSize: 13,
+                fontWeight: 600,
+                color: "#94a3b8",
+                alignSelf: "center",
+              }}>
+                {role}
+                {(role === "y" || role === "treatment") && (
+                  <span style={{ color: "#ef4444", marginLeft: 4 }}>*</span>
+                )}
+              </label>
+              <input
+                type="text"
+                value={mapping[role] ?? ""}
+                onChange={(e) => setMapping((m) => ({ ...m, [role]: e.target.value }))}
+                placeholder={`Column name for ${role}`}
+                style={{
+                  padding: "6px 12px",
+                  borderRadius: 8,
+                  border: "1px solid #475569",
+                  background: "#0f172a",
+                  color: "#e2e8f0",
+                  fontSize: 13,
+                }}
+              />
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+
+      {/* Estimator Validation Panel - Removed since we don't have profile data */}
+      {false && (
         <div style={{
           marginTop: 24,
           padding: 20,
@@ -465,7 +598,7 @@ export default function App() {
               }}>
                 Diagnostic Figures
               </h3>
-              <FiguresPanel figures={result.figures} />
+              <TasksPanel figures={result.figures} />
             </div>
           )}
         </div>

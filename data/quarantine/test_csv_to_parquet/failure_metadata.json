@@ -1,0 +1,6 @@
+{
+  "dataset_id": "test_csv_to_parquet",
+  "failed_at": "2025-11-01T08:15:26.691594+00:00",
+  "reason": "Schema None: A total of 9 schema errors were found.\n\nError Counts\n------------\n- SchemaErrorReason.COLUMN_NOT_IN_DATAFRAME: 9\n\nSchema Error Summary\n--------------------\n                                                                                                                             failure_cases  n_failure_cases\nschema_context  column check                                                                                                                               \nDataFrameSchema <NA>   column_in_dataframe  [customer_id, event_time, treated, y, age, gender, rfm_score, prior_7d_spend, web_session_cnt]                9\n\nUsage Tip\n---------\n\nDirectly inspect all errors by catching the exception:\n\n```\ntry:\n    schema.validate(dataframe, lazy=True)\nexcept SchemaErrors as err:\n    err.failure_cases  # dataframe of schema errors\n    err.data  # invalid dataframe\n```\n",
+  "original_file": "test_mini_retail.csv"
+}

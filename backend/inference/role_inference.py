@@ -161,22 +161,28 @@ class RoleInferenceEngine:
         """Score name similarity"""
         col_lower = column.lower().strip()
         synonyms = role_spec.get("synonyms", [])
-        
+        anti_patterns = role_spec.get("anti_patterns", [])
+
+        # Anti-pattern check (penalize demographic groups for treatment)
+        for anti in anti_patterns:
+            if anti.lower() in col_lower:
+                return 0.0
+
         # Exact match
         if col_lower in [s.lower() for s in synonyms]:
             return 1.0
-        
+
         # Partial match (contains)
         for syn in synonyms:
             syn_lower = syn.lower()
             if syn_lower in col_lower or col_lower in syn_lower:
                 return 0.7
-        
+
         # Prefix match for covariates (x_*)
         if role_spec.get("description", "").startswith("Covariate"):
             if col_lower.startswith("x_") or col_lower.startswith("x"):
                 return 0.6
-        
+
         return 0.0
     
     def _score_dtype_match(self, role_name: str, col_data: pd.Series) -> float:
@@ -210,7 +216,7 @@ class RoleInferenceEngine:
         validator = self.validators.get(role_name, {})
         score = 0.0
         checks = 0
-        
+
         # Missing rate
         if "missing_rate" in validator:
             missing_rate = col_data.isna().sum() / len(col_data)
@@ -219,7 +225,7 @@ class RoleInferenceEngine:
             if "<" in threshold_str:
                 score += 1.0 if missing_rate < threshold else 0.0
             checks += 1
-        
+
         # Uniqueness (for unit_id)
         if "uniqueness" in validator:
             uniqueness = col_data.nunique() / len(col_data)
@@ -228,7 +234,7 @@ class RoleInferenceEngine:
             if ">" in threshold_str:
                 score += 1.0 if uniqueness > threshold else 0.5
             checks += 1
-        
+
         # Cardinality (for treatment)
         if "cardinality" in validator:
             cardinality = col_data.nunique()
@@ -237,7 +243,16 @@ class RoleInferenceEngine:
             if "<" in threshold_str:
                 score += 1.0 if cardinality < threshold else 0.3
             checks += 1
-        
+
+            # Binary preference bonus for treatment
+            if validator.get("binary_preferred", False):
+                if cardinality == 2:
+                    score += 1.5  # Strong bonus for binary
+                    checks += 1
+                elif cardinality <= 4:
+                    score += 0.5  # Moderate bonus for low cardinality
+                    checks += 1
+
         # Variance (for outcome)
         if "variance" in validator:
             try:
@@ -247,7 +262,7 @@ class RoleInferenceEngine:
                 checks += 1
             except:
                 pass
-        
+
         # Range checks (for cost, weight)
         if "range" in validator:
             try:
@@ -257,7 +272,7 @@ class RoleInferenceEngine:
                     checks += 1
             except:
                 pass
-        
+
         return score / checks if checks > 0 else 0.5
 
 def infer_roles_from_dataframe(df: pd.DataFrame, min_confidence: float = 0.3) -> Dict:

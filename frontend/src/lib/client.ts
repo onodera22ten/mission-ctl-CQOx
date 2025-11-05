@@ -43,8 +43,8 @@ export async function inferRoles(dataset_id: string, min_confidence = 0.3) {
     candidates: Record<string, Array<{ column: string; confidence: number; reasons: string[] }>>;
     required_missing: string[];
     confidence: number;
-    domain: {
-      domain: string;
+    objective: {
+      objective: string;
       confidence: number;
       scores: Record<string, number>;
       evidence: string[];
@@ -54,7 +54,8 @@ export async function inferRoles(dataset_id: string, min_confidence = 0.3) {
 
 // 3) 総合分析（mappingは {role: column} で渡す）
 export async function analyzeComprehensive(args: {
-  dataset_id: string;
+  dataset_id?: string;
+  df_path?: string;
   mapping: Record<string, string>;
   preview?: boolean;
   domain?: string;
@@ -63,6 +64,23 @@ export async function analyzeComprehensive(args: {
   const payload = { ...args };
   const { data } = await api.post("/analyze/comprehensive", payload);
   return data;
+}
+
+export async function compareObjectives(job_ids: string[]) {
+  const { data } = await api.get("/compare/objectives", {
+    params: { job_ids: job_ids.join(",") },
+  });
+  return data as {
+    ok: boolean;
+    comparison_results: any[];
+    radar_chart_data: {
+      labels: string[];
+      datasets: {
+        label: string;
+        data: number[];
+      }[];
+    };
+  };
 }
 
 // デバッグ用スモーク

@@ -170,16 +170,18 @@ async def upload(file: UploadFile = File(...)) -> JSONResponse:
     _save_registry(reg)
 
     try:
-        # Use Parquet preprocessing pipeline
+        # Use Parquet preprocessing pipeline (schema-free mode)
         from backend.ingestion.parquet_pipeline import ParquetPipeline
 
-        pipeline = ParquetPipeline(BASE_DIR / "data")
-        packet_info = pipeline.process_upload(dst, dataset_id)
+        pipeline = ParquetPipeline(BASE_DIR / "data", contract_path=None)
+        packet_info = pipeline.process_upload(dst, dataset_id, mapping=None, skip_validation=True)
 
         # Load processed data for preview
         df, metadata = pipeline.load_packet(dataset_id)
 
-        preview_rows = df.head(10).to_dict(orient="records")
+        # Clean NaN/inf for JSON serialization (realistic data handling)
+        df_clean = df.replace([float('inf'), float('-inf')], None).fillna(value=None)
+        preview_rows = df_clean.head(10).to_dict(orient="records")
         dtypes = {c: str(t) for c, t in df.dtypes.items()}
         candidates = _infer_candidates(df)
         stats = [{"column": c, "dtype": str(df.dtypes[c]), "na": int(df[c].isna().sum())} for c in df.columns]
@@ -206,8 +208,93 @@ async def upload(file: UploadFile = File(...)) -> JSONResponse:
                          "candidates": candidates, "stats": stats,
                          "packet": packet_info if 'packet_info' in locals() else None})
 
+@app.get("/api/panels/available")
+async def panels_available(
+    treatment: str = Query(None),
+    y: str = Query(None),
+    unit_id: str = Query(None),
+    time: str = Query(None),
+    cost: str = Query(None),
+    features: str = Query(None),
+    instrument: str = Query(None),
+    cluster_id: str = Query(None),
+    objective: str = Query(None),
+    log_propensity: str = Query(None),
+) -> JSONResponse:
+    """
+    Get available panels based on provided roles (Plan3 Objective-Lens)
+
+    Query params: role names with any non-empty value = role is available
+    Example: /api/panels/available?treatment=1&y=1&features=1&time=1
+
+    Returns:
+        {
+            "ok": true,
+            "available_panels": ["ate_bar", "ate_density", ...],
+            "recommended_panels": ["ate_bar", ...],  // all recommended roles present
+            "missing_for_panels": {"iv_first_stage": ["instrument"], ...},
+            "tasks": {
+                "causal_estimation": {
+                    "name": "因果推定",
+                    "can_run": true,
+                    "available_panels": ["ate_bar", "ate_density"],
+                    "total_panels": 4
+                },
+                ...
+            }
+        }
+    """
+    try:
+        from backend.engine.composer import create_composer
+
+        # Build roles dict from query params
+        roles = {}
+        for role, value in [
+            ("treatment", treatment),
+            ("y", y),
+            ("unit_id", unit_id),
+            ("time", time),
+            ("cost", cost),
+            ("features", features),
+            ("instrument", instrument),
+            ("cluster_id", cluster_id),
+            ("objective", objective),
+            ("log_propensity", log_propensity),
+        ]:
+            if value:
+                roles[role] = value
+
+        composer = create_composer()
+        result = composer.get_available_panels(roles)
+
+        return JSONResponse({
+            "ok": True,
+            **result
+        })
+
+    except Exception as e:
+        logger.error(f"Failed to get available panels: {str(e)}")
+        raise HTTPException(500, f"Failed to get available panels: {str(e)}")
+
 @app.get("/api/roles/profile")
 async def roles_profile(dataset_id: str = Query(...)) -> JSONResponse:
+    """
+    Get role profile with suggestions for high-value missing roles (Plan3)
+
+    Returns:
+        {
+            "ok": true,
+            "dataset_id": "abc123",
+            "meta": {...},
+            "candidates": {...},
+            "role_profile": {
+                "detected_roles": [{"role": "treatment", "column": "received_tutoring", "confidence": 1.0}],
+                "missing_high_value": [{"role": "instrument", "would_unlock": 3}],
+                "total_possible_roles": 12,
+                "mapped_roles": 3
+            }
+        }
+    """
     reg = _load_registry()
     item = reg.get(dataset_id)
     if not item:
@@ -218,15 +305,29 @@ async def roles_profile(dataset_id: str = Query(...)) -> JSONResponse:
     try:
         # Use Plan2 multi-format loader
         from ciq.scripts.convert_any_to_parquet import load_one
+        from backend.engine.composer import create_composer
 
         df = load_one(path)
         preview_rows = df.head(10).to_dict(orient="records")
         dtypes = {c: str(t) for c, t in df.dtypes.items()}
         candidates = _infer_candidates(df)
-        return JSONResponse({"ok": True, "dataset_id": dataset_id,
-                             "meta": {"columns": list(df.columns), "dtypes": dtypes, "preview": preview_rows},
-                             "candidates": candidates})
+
+        # Get role profile from composer
+        # For now, use basic candidates as roles mapping
+        basic_roles = {role: cols[0] for role, cols in candidates.items() if cols}
+
+        composer = create_composer()
+        role_profile = composer.get_role_profile(df, basic_roles)
+
+        return JSONResponse({
+            "ok": True,
+            "dataset_id": dataset_id,
+            "meta": {"columns": list(df.columns), "dtypes": dtypes, "preview": preview_rows},
+            "candidates": candidates,
+            "role_profile": role_profile
+        })
     except Exception as e:
+        logger.error(f"Failed to get role profile: {str(e)}")
         raise HTTPException(500, f"Failed to read file: {str(e)}")
 
 @app.post("/api/roles/infer")
@@ -253,8 +354,8 @@ async def infer_roles(request: Dict[str, Any]) -> JSONResponse:
             },
             "required_missing": [],
             "confidence": 0.87,
-            "domain": {
-                "domain": "retail",
+            "objective": {
+                "objective": "retail",
                 "confidence": 0.82,
                 "evidence": ["customer", "product", "sales", ...]
             }
@@ -283,14 +384,14 @@ async def infer_roles(request: Dict[str, Any]) -> JSONResponse:
 
         # Import inference modules
         from backend.inference.role_inference import infer_roles_from_dataframe
-        from backend.inference.domain_detection import detect_domain_from_dataframe
+        from backend.inference.objective_detection import detect_objective_from_dataframe
         from backend.inference.estimator_validator import EstimatorValidator
 
         # Infer roles
         role_result = infer_roles_from_dataframe(df, min_confidence)
 
-        # Detect domain
-        domain_result = detect_domain_from_dataframe(df)
+        # Detect objective
+        objective_result = detect_objective_from_dataframe(df)
 
         # Validate estimators with inferred mapping
         validator = EstimatorValidator(df, role_result["mapping"])
@@ -305,7 +406,7 @@ async def infer_roles(request: Dict[str, Any]) -> JSONResponse:
             "candidates": role_result["candidates"],
             "required_missing": role_result["required_missing"],
             "confidence": role_result["confidence"],
-            "domain": domain_result,
+            "objective": objective_result,
             "estimator_validation": {
                 "runnable": runnable_estimators,
                 "details": validation_results,
@@ -329,6 +430,111 @@ async def _call_engine_analyze(payload: Dict[str, Any]) -> Dict[str, Any]:
         r.raise_for_status()
         return r.json()
 
+@app.post("/api/analyze/objective")
+async def analyze_objective(request: Dict[str, Any]) -> JSONResponse:
+    """
+    New Plan3 Objective-Lens analysis endpoint
+
+    Request:
+        {
+            "dataset_id": "abc123",
+            "mapping": {"treatment": "received_tutoring", "y": "test_score_raw", ...},
+            "objectives": ["diagnostics", "causal_estimation", "heterogeneity"],  // optional, defaults to all
+        }
+
+    Response:
+        {
+            "ok": true,
+            "dataset_id": "abc123",
+            "job_id": "job_xyz",
+            "estimates": {
+                "causal_estimation": {"ate": 11.47, "ate_se": 0.57, ...},
+                "diagnostics": {...},
+                ...
+            },
+            "figures": {
+                "ate_bar": "/reports/figures/job_xyz/causal_estimation/ate_bar.png",
+                ...
+            },
+            "diagnostics": {...},
+            "summary": {
+                "total_tasks": 3,
+                "successful": 3,
+                "skipped": 0,
+                "failed": 0,
+                "total_figures": 15
+            }
+        }
+    """
+    dataset_id = request.get("dataset_id")
+    if not dataset_id:
+        raise HTTPException(422, "dataset_id is required")
+
+    reg = _load_registry()
+    item = reg.get(dataset_id)
+    if not item:
+        raise HTTPException(404, f"Dataset not found: {dataset_id}")
+
+    path = Path(item["path"])
+    if not path.exists():
+        raise HTTPException(404, f"File missing on disk: {path}")
+
+    mapping = _normalize_mapping(request.get("mapping", {}))
+    if not mapping:
+        raise HTTPException(422, "mapping is required")
+
+    objectives = request.get("objectives", None)  # None = all tasks
+
+    try:
+        from ciq.scripts.convert_any_to_parquet import load_one
+        from backend.engine.composer import create_composer
+        import uuid
+
+        df = load_one(path)
+        job_id = f"job_{uuid.uuid4().hex[:8]}"
+        output_dir = REPORTS_DIR / "figures" / job_id
+
+        composer = create_composer()
+        result = composer.execute_all_tasks(df, mapping, output_dir, objectives)
+
+        # Convert local paths to HTTP URLs
+        def to_http(p: str) -> str:
+            pth = Path(p)
+            return f"/reports/figures/{job_id}/{pth.parent.name}/{pth.name}"
+
+        figures_http = {k: to_http(v) for k, v in result["figures"].items()}
+
+        # Clean NaN/Inf values for JSON serialization
+        import math
+        def clean_for_json(obj):
+            if isinstance(obj, dict):
+                return {k: clean_for_json(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [clean_for_json(item) for item in obj]
+            elif isinstance(obj, float):
+                if math.isnan(obj) or math.isinf(obj):
+                    return None
+                return obj
+            return obj
+
+        return JSONResponse({
+            "ok": True,
+            "dataset_id": dataset_id,
+            "job_id": job_id,
+            "estimates": clean_for_json(result["estimates"]),
+            "figures": figures_http,
+            "diagnostics": clean_for_json(result["diagnostics"]),
+            "summary": clean_for_json(result["summary"]),
+            "execution_log": clean_for_json(result["execution_log"]),
+            "status": "completed"
+        })
+
+    except Exception as e:
+        logger.error(f"Objective analysis failed: {str(e)}")
+        import traceback
+        logger.error(f"Traceback: {traceback.format_exc()}")
+        raise HTTPException(500, f"Analysis failed: {str(e)}")
+
 @app.post("/api/analyze/comprehensive")
 async def analyze_comprehensive(request: Dict[str, Any]) -> JSONResponse:
     dataset_id = request.get("dataset_id")
@@ -346,18 +552,14 @@ async def analyze_comprehensive(request: Dict[str, Any]) -> JSONResponse:
         if k not in mapping:
             raise HTTPException(422, f"Missing mapping: {k}")
 
-    # エンジンコンテナ用にパスを変換（ホストの絶対パス → /app/ 以下）
-    df_path = item["path"]
-    # TODO: Re-enable for Docker deployment
-    # if df_path.startswith("/home/"):
-    #     # ホストパスをコンテナパスに変換
-    #     df_path = df_path.replace("/home/hirokionodera/cqox-complete_b", "/app")
+    # Construct path to the processed Parquet file
+    df_path = str(BASE_DIR / "data" / "packets" / dataset_id / "data.parquet")
 
     forward_payload: Dict[str, Any] = {
         "dataset_id": dataset_id,
         "df_path": df_path,
         "mapping": mapping,
-        "domain": request.get("domain"),
+        "objective": request.get("objective"),
     }
     cfg_json = request.get("cfg_json")
     if cfg_json is None:
@@ -381,6 +583,63 @@ async def analyze_comprehensive(request: Dict[str, Any]) -> JSONResponse:
         import traceback
         logger.error(f"Traceback: {traceback.format_exc()}")
         raise HTTPException(500, f"Internal error: {str(e)}")
+
+@app.get("/api/compare/objectives")
+async def compare_objectives(job_ids: str = Query(...)):
+    """
+    Compare results across multiple analysis jobs (for radar chart).
+    """
+    job_id_list = [job_id.strip() for job_id in job_ids.split(",")]
+    if not job_id_list:
+        raise HTTPException(status_code=422, detail="job_ids query parameter is required.")
+
+    comparison_data = []
+    async with httpx.AsyncClient() as client:
+        for job_id in job_id_list:
+            try:
+                response = await client.get(f"{ENGINE_URL}/api/job/{job_id}")
+                response.raise_for_status()
+                job_result = response.json()
+                
+                # Extract relevant data for comparison (e.g., CAS scores)
+                cas_scores = job_result.get("cas", {}).get("axes", {})
+                objective_name = job_result.get("objective_hints", {}).get("primary", "Unknown")
+
+                comparison_data.append({
+                    "job_id": job_id,
+                    "objective": objective_name,
+                    "cas_scores": cas_scores,
+                    "ate": job_result.get("results", [{}])[0].get("tau_hat", 0) # Simplified: get ATE of first estimator
+                })
+            except httpx.HTTPStatusError as e:
+                logger.error(f"Failed to get job {job_id}: {e}")
+                # Skip failed jobs for now
+                continue
+
+    # Format data for radar chart
+    if not comparison_data:
+        raise HTTPException(status_code=404, detail="Could not retrieve results for any of the provided job_ids.")
+
+    # Assume all jobs have the same CAS score axes
+    cas_axes = list(comparison_data[0].get("cas_scores", {}).keys())
+    
+    datasets = []
+    for item in comparison_data:
+        datasets.append({
+            "label": item["objective"],
+            "data": [item.get("cas_scores", {}).get(axis, 0) for axis in cas_axes]
+        })
+
+    radar_chart_data = {
+        "labels": cas_axes,
+        "datasets": datasets
+    }
+
+    return JSONResponse({
+        "ok": True,
+        "comparison_results": comparison_data,
+        "radar_chart_data": radar_chart_data
+    })
 
 # Setup observability (Metrics + Tracing)
 try:

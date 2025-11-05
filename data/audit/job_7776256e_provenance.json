@@ -1,0 +1,117 @@
+{
+  "metadata": {
+    "job_id": "job_7776256e",
+    "dataset_id": "525c1343f9e2409e9b6aaa1a330bdb80",
+    "created_at": "2025-10-30T06:56:28.737779",
+    "cqox_version": "1.0.0",
+    "python_version": "3.11"
+  },
+  "dictionary_version": {
+    "columns_version": "1.0.0",
+    "units_version": "1.0.0",
+    "validators_version": "1.0.0",
+    "columns_hash": "d809f71e",
+    "units_hash": "3c8aeb83",
+    "validators_hash": "f2ed05b3",
+    "timestamp": "2025-10-30T06:56:28.737886"
+  },
+  "mapping_decisions": [],
+  "transformations": [],
+  "random_seeds": [
+    {
+      "seed": 870797377,
+      "scope": "inference",
+      "algorithm": "numpy+random",
+      "timestamp": "2025-10-30T06:56:28.737910"
+    }
+  ],
+  "validations": [
+    {
+      "check_type": "leakage",
+      "passed": false,
+      "severity": "critical",
+      "details": {
+        "has_leakage": "True",
+        "suspicious_columns": "['cost', 'dose', 'x_education']",
+        "correlations": "{'cost': 0.9630934366769717, 'dose': 0.9358506969289312, 'x_age': 0.7009423209011045, 'x_income': 0.6669924755946581, 'x_education': 0.9640492223357993}",
+        "severity": "critical",
+        "recommendations": "[\"Remove 'cost' (correlation=0.963 with outcome, likely leakage)\", \"Remove 'dose' (correlation=0.936 with outcome, likely leakage)\", \"Remove 'x_education' (correlation=0.964 with outcome, likely leakage)\"]"
+      },
+      "recommendations": [
+        "Remove 'cost' (correlation=0.963 with outcome, likely leakage)",
+        "Remove 'dose' (correlation=0.936 with outcome, likely leakage)",
+        "Remove 'x_education' (correlation=0.964 with outcome, likely leakage)"
+      ],
+      "timestamp": "2025-10-30T06:56:28.744637"
+    },
+    {
+      "check_type": "vif",
+      "passed": true,
+      "severity": "warning",
+      "details": {
+        "has_multicollinearity": "True",
+        "vif_scores": "{'cost': 28.348403836072706, 'dose': 17.003683330856738, 'x_age': 4.447975975699106, 'x_income': 2.525435397084166, 'x_education': 7.538068319187083}",
+        "problematic_columns": "['cost', 'dose']",
+        "severity": "warning",
+        "recommendations": "[\"Remove or combine 'cost' (VIF=28.3, highly collinear)\", \"Remove or combine 'dose' (VIF=17.0, highly collinear)\"]"
+      },
+      "recommendations": [
+        "Remove or combine 'cost' (VIF=28.3, highly collinear)",
+        "Remove or combine 'dose' (VIF=17.0, highly collinear)"
+      ],
+      "timestamp": "2025-10-30T06:56:28.744653"
+    },
+    {
+      "check_type": "missing",
+      "passed": true,
+      "severity": "ok",
+      "details": {
+        "has_issues": "False",
+        "missing_rates": "{'unit_id': 0.0, 'treatment': 0.0, 'y': 0.0, 'time': 0.0, 'cost': 0.0, 'log_propensity': 0.0, 'cluster_id': 0.0, 'instrument': 0.0, 'domain': 0.0, 'strata': 0.0, 'dose': 0.0, 'x_age': 0.0, 'x_income': 0.0, 'x_education': 0.0}",
+        "missing_patterns": "{}",
+        "mechanism": "MCAR",
+        "severity": "ok",
+        "recommendations": "['No significant missing data']"
+      },
+      "recommendations": [
+        "No significant missing data"
+      ],
+      "timestamp": "2025-10-30T06:56:28.744660"
+    },
+    {
+      "check_type": "balance",
+      "passed": true,
+      "severity": "warning",
+      "details": {
+        "is_balanced": "False",
+        "smd_scores": "{'cost': 0, 'dose': 6.891426899117653, 'x_age': 2.5677629550654775, 'x_income': 1.7992003444833042, 'x_education': 3.8438762487084093}",
+        "imbalanced_columns": "['dose', 'x_age', 'x_income', 'x_education']",
+        "severity": "warning",
+        "recommendations": "[\"Adjust for 'dose' (SMD=6.891, imbalanced)\", \"Adjust for 'x_age' (SMD=2.568, imbalanced)\", \"Adjust for 'x_income' (SMD=1.799, imbalanced)\", \"Adjust for 'x_education' (SMD=3.844, imbalanced)\"]"
+      },
+      "recommendations": [
+        "Adjust for 'dose' (SMD=6.891, imbalanced)",
+        "Adjust for 'x_age' (SMD=2.568, imbalanced)",
+        "Adjust for 'x_income' (SMD=1.799, imbalanced)",
+        "Adjust for 'x_education' (SMD=3.844, imbalanced)"
+      ],
+      "timestamp": "2025-10-30T06:56:28.744667"
+    },
+    {
+      "check_type": "overlap",
+      "passed": true,
+      "severity": "ok",
+      "details": {
+        "has_overlap": "True",
+        "propensity_range": "(0.0, 1.0)",
+        "trimmed_fraction": "0.0",
+        "severity": "ok",
+        "recommendations": "['No propensity scores provided - skipping overlap check']"
+      },
+      "recommendations": [
+        "No propensity scores provided - skipping overlap check"
+      ],
+      "timestamp": "2025-10-30T06:56:28.744671"
+    }
+  ]
+}

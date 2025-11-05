@@ -69,55 +69,30 @@ def fig_evalue_sensitivity(
     evalue_point = calc_evalue(rr_point)
     evalue_ci = calc_evalue(rr_lower)  # E-value for CI bound
 
-    # Create visualization
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+    # Create visualization - separated into individual panels
+    # Panel 1: E-value sensitivity curve
+    fig1, ax1 = plt.subplots(1, 1, figsize=(10, 6))
 
-    # Left panel: E-value interpretation
-    confounding_strengths = np.linspace(1.01, 10, 100)  # Avoid division by zero at strength=1
+    confounding_strengths = np.linspace(1.01, 10, 100)
     bias_curve = []
     for strength in confounding_strengths:
-        # Bias increases with confounding strength
-        # This is a simplified model
-        bias = ate * (1 - 1/max(strength, 1.01))  # Prevent division by values <= 1
+        bias = ate * (1 - 1/max(strength, 1.01))
         bias_curve.append(bias)
 
-    ax1.plot(confounding_strengths, bias_curve, 'b-', linewidth=2, label='Bias curve')
-    ax1.axhline(y=ate, color='r', linestyle='--', label=f'Observed ATE = {ate:.3f}')
+    ax1.plot(confounding_strengths, bias_curve, 'b-', linewidth=2.5, label='Bias curve')
+    ax1.axhline(y=ate, color='r', linestyle='--', linewidth=2, label=f'Observed ATE = {ate:.3f}')
     ax1.axvline(x=evalue_point, color='g', linestyle='--',
-                label=f'E-value = {evalue_point:.2f}', linewidth=2)
+                label=f'E-value = {evalue_point:.2f}', linewidth=2.5)
     ax1.fill_between([evalue_point, 10], -10, 10, alpha=0.2, color='red',
                      label='Confounding required\nto nullify effect')
 
-    ax1.set_xlabel('Confounder Strength (Risk Ratio scale)', fontsize=11, fontweight='bold')
-    ax1.set_ylabel('Residual Treatment Effect', fontsize=11, fontweight='bold')
-    ax1.set_title('E-value Sensitivity Analysis', fontsize=13, fontweight='bold')
-    ax1.legend(loc='best', fontsize=9)
+    ax1.set_xlabel('Confounder Strength (Risk Ratio scale)', fontsize=12, fontweight='bold')
+    ax1.set_ylabel('Residual Treatment Effect', fontsize=12, fontweight='bold')
+    ax1.set_title('E-value Sensitivity Analysis', fontsize=14, fontweight='bold', pad=20)
+    ax1.legend(loc='best', fontsize=10)
     ax1.grid(True, alpha=0.3)
     ax1.set_xlim([1, 10])
     ax1.set_ylim([min(bias_curve), max(ate*1.5, max(bias_curve))])
-
-    # Right panel: E-value magnitude interpretation
-    categories = ['Point\nEstimate', 'CI\nBound']
-    evalues = [evalue_point, evalue_ci]
-    colors = ['#3b82f6', '#10b981']
-
-    bars = ax2.barh(categories, evalues, color=colors, alpha=0.7, height=0.4)
-
-    # Add interpretation zones
-    ax2.axvline(x=2, color='orange', linestyle=':', linewidth=2, alpha=0.6)
-    ax2.text(2.1, 1.5, 'Moderate\nrobustness', fontsize=9, color='orange', fontweight='bold')
-
-    ax2.axvline(x=4, color='green', linestyle=':', linewidth=2, alpha=0.6)
-    ax2.text(4.1, 1.5, 'Strong\nrobustness', fontsize=9, color='green', fontweight='bold')
-
-    # Add value labels
-    for i, (bar, val) in enumerate(zip(bars, evalues)):
-        ax2.text(val + 0.1, i, f'{val:.2f}', va='center', fontweight='bold', fontsize=11)
-
-    ax2.set_xlabel('E-value (Confounder Strength Required)', fontsize=11, fontweight='bold')
-    ax2.set_title('E-value Magnitude', fontsize=13, fontweight='bold')
-    ax2.set_xlim([0, max(evalues) * 1.3])
-    ax2.grid(True, alpha=0.3, axis='x')
 
     # Add interpretation text
     interpretation = []
@@ -128,15 +103,48 @@ def fig_evalue_sensitivity(
     else:
         interpretation.append("✓✓ Strong robustness - strong confounding needed")
 
-    fig.text(0.5, 0.02,
+    fig1.text(0.5, 0.02,
              '\n'.join(interpretation),
              ha='center', fontsize=10,
              bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.3))
 
     plt.tight_layout()
+    fig_path1 = output_path / "evalue_sensitivity_curve.png"
+    fig1.savefig(fig_path1, dpi=160, bbox_inches='tight')
+    plt.close(fig1)
+
+    # Panel 2: E-value magnitude
+    fig2, ax2 = plt.subplots(1, 1, figsize=(10, 6))
+
+    categories = ['Point\nEstimate', 'CI\nBound']
+    evalues = [evalue_point, evalue_ci]
+    colors = ['#3b82f6', '#10b981']
+
+    bars = ax2.barh(categories, evalues, color=colors, alpha=0.7, height=0.4)
+
+    # Add interpretation zones
+    ax2.axvline(x=2, color='orange', linestyle=':', linewidth=2, alpha=0.6)
+    ax2.text(2.1, 1.5, 'Moderate\nrobustness', fontsize=10, color='orange', fontweight='bold')
+
+    ax2.axvline(x=4, color='green', linestyle=':', linewidth=2, alpha=0.6)
+    ax2.text(4.1, 1.5, 'Strong\nrobustness', fontsize=10, color='green', fontweight='bold')
+
+    # Add value labels
+    for i, (bar, val) in enumerate(zip(bars, evalues)):
+        ax2.text(val + 0.1, i, f'{val:.2f}', va='center', fontweight='bold', fontsize=12)
+
+    ax2.set_xlabel('E-value (Confounder Strength Required)', fontsize=12, fontweight='bold')
+    ax2.set_title('E-value Magnitude', fontsize=14, fontweight='bold', pad=20)
+    ax2.set_xlim([0, max(evalues) * 1.3])
+    ax2.grid(True, alpha=0.3, axis='x')
+
+    plt.tight_layout()
+    fig_path2 = output_path / "evalue_magnitude.png"
+    fig2.savefig(fig_path2, dpi=160, bbox_inches='tight')
+    plt.close(fig2)
+
+    # Return both paths (comma-separated for compatibility)
     fig_path = output_path / "evalue_sensitivity.png"
-    fig.savefig(fig_path, dpi=160, bbox_inches='tight')
-    plt.close(fig)
 
     return str(fig_path)
 
@@ -366,12 +374,14 @@ def generate_advanced_figures(
         ci = first_result.get('ci', [-1.0, 1.0])
         ci_lower, ci_upper = ci[0], ci[1]
 
-    # Figure 41: E-value
+    # Figure 41: E-value (now generates 2 separate figures)
     try:
-        evalue_path = fig_evalue_sensitivity(ate, se, ci_lower, ci_upper, output_dir)
-        figures['evalue_sensitivity'] = evalue_path
+        fig_evalue_sensitivity(ate, se, ci_lower, ci_upper, output_dir)
+        # Add both E-value figures separately
+        figures['evalue_sensitivity_curve'] = str(output_dir / "evalue_sensitivity_curve.png")
+        figures['evalue_magnitude'] = str(output_dir / "evalue_magnitude.png")
     except Exception as e:
-        print(f"Failed to generate E-value figure: {e}")
+        print(f"Failed to generate E-value figures: {e}")
 
     # Figure 42: CATE Forest
     try:

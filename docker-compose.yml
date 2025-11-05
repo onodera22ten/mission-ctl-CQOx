@@ -16,35 +16,3 @@ services:
     build: { context: '.', dockerfile: Dockerfile.frontend }
     depends_on: [ gateway ]
     ports: [ "4000:80" ]
-  prometheus:
-    image: prom/prometheus
-    volumes: [ "./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml" ]
-    ports: [ "9090:9090" ]
-  loki:
-    image: grafana/loki:latest
-    ports: [ "3100:3100" ]
-    volumes:
-      - ./loki/loki-config.yml:/etc/loki/local-config.yaml:z
-      - ./loki/data:/loki:z
-    command: -config.file=/etc/loki/local-config.yaml
-  promtail:
-    image: grafana/promtail:latest
-    volumes:
-      - ./loki/promtail-config.yml:/etc/promtail/config.yml:z
-      - /var/log:/var/log:ro
-      - ./logs:/logs:ro
-    command: -config.file=/etc/promtail/config.yml
-    depends_on: [ loki ]
-  grafana:
-    image: grafana/grafana-oss
-    user: "root"
-    ports: [ "3000:3000" ]
-    volumes:
-      - ./grafana/provisioning:/etc/grafana/provisioning:z
-      - ./grafana/dashboards:/var/lib/grafana/dashboards:z
-    environment:
-      - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_USERS_DEFAULT_THEME=dark
-      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
-    depends_on: [ prometheus, loki ]
-

@@ -319,7 +319,7 @@ export default function FiguresPanel({ figures }: { figures: Record<string, stri
                       }}>
                         {key.replace(domain + "_", "").replace(/_/g, " ").replace(/\b\w/g, l => l.toUpperCase())}
                       </div>
-                      <Figure url={figures[key]} />
+                      <Figure src={figures[key]} />
                     </div>
                   ))}
                 </div>

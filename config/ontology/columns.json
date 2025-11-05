@@ -23,12 +23,14 @@
   "treatment": {
     "synonyms": [
       "treatment", "w", "treat", "intervention", "policy", "exposure",
-      "variant", "group", "arm", "condition", "dose", "drug", "therapy",
-      "campaign", "ad", "promotion", "program", "assigned", "treatment_group"
+      "variant", "arm", "condition", "dose", "drug", "therapy",
+      "campaign", "ad", "promotion", "program", "assigned", "treatment_group",
+      "tutoring", "tutored", "received", "participated", "enrolled", "attended"
     ],
     "description": "Treatment or intervention indicator",
     "required": true,
-    "priority": 95
+    "priority": 95,
+    "anti_patterns": ["age_group", "gender_group", "income_group", "demographic"]
   },
   "outcome": {
     "synonyms": [

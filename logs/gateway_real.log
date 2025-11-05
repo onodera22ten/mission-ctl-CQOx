@@ -1,0 +1,47 @@
+WARNING:gateway:[observability][gateway] tracing disabled: No module named 'opentelemetry.exporter.otlp'
+INFO:     Started server process [206448]
+INFO:     Waiting for application startup.
+INFO:gateway:[Gateway] Starting up...
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8081 (Press CTRL+C to quit)
+INFO:gateway:Incoming request: GET /api/health
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:45928 - "GET /api/health HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/upload
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Processing bd29876c871148bcab297a0ac56ebbf0_realistic_test_data.csv for dataset bd29876c871148bcab297a0ac56ebbf0 (skip_validation=True)
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Loaded 5000 rows, 13 columns
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Schema-free mode: skipping validation and causal prep
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Packet created successfully: /home/hirokionodera/cqox-complete (Copy 2)/data/packets/bd29876c871148bcab297a0ac56ebbf0
+ERROR:gateway:Failed to process uploaded file with Parquet pipeline: Must specify a fill 'value' or 'method'.
+ERROR:gateway:Fallback loader also failed: Must specify a fill 'value' or 'method'.
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:45944 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/roles/infer
+INFO:backend.inference.role_inference:[RoleInference] Analyzing 13 columns from dataframe
+INFO:backend.inference.role_inference:[RoleInference] unit_id -> 顧客ID (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] outcome -> キャンペーン適用 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] treatment -> Web閲覧時間_分 (confidence: 0.63)
+INFO:backend.inference.role_inference:[RoleInference] time -> 購入日時 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] propensity -> 売上金額 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] weight -> 顧客年齢 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] cost -> 購入回数 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] instrument -> メール開封率 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] policy_boundary -> 広告費 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] cluster -> 性別 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] auxiliary_outcome -> 前月購入額 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] covariate -> 地域 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] network_edge -> 商品カテゴリ (confidence: 0.45)
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Analyzing dataframe for objective
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Detected: education (confidence: 0.00)
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Hierarchy: causal_inference → human_behavior → education
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:38634 - "POST /api/roles/infer HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/upload
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Processing bfab15b4331543f48264bc5711dbfa29_realistic_test_data.csv for dataset bfab15b4331543f48264bc5711dbfa29 (skip_validation=True)
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Loaded 5000 rows, 13 columns
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Schema-free mode: skipping validation and causal prep
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Packet created successfully: /home/hirokionodera/cqox-complete (Copy 2)/data/packets/bfab15b4331543f48264bc5711dbfa29
+ERROR:gateway:Failed to process uploaded file with Parquet pipeline: Must specify a fill 'value' or 'method'.
+ERROR:gateway:Fallback loader also failed: Must specify a fill 'value' or 'method'.
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:55760 - "POST /api/upload HTTP/1.1" 200 OK

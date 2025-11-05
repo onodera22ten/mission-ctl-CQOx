@@ -1,0 +1,23 @@
+# ScenarioSpec: Budget増加 + 地理割当 + ネットワークβ変動
+scenario_id: cf_budget_geo_beta
+description: |
+  What-If Analysis:
+  - Budget +20%
+  - Tokyo 60%, Osaka 20% allocation
+  - Network spillover β=12%
+
+policy:
+  budget_multiplier: 1.20
+
+intervention:
+  geo_quota:
+    Tokyo: 0.60
+    Osaka: 0.20
+    Other: 0.20
+
+generative:
+  network:
+    beta: 0.12
+
+economics:
+  cost_multiplier: 1.10

@@ -1,0 +1,46 @@
+{
+  "objective_id": "profit_max",
+  "description": "増分利益最大化 (Incremental Profit Maximization)",
+  "roles": {
+    "unit_id": "user_id",
+    "time": "date",
+    "treatment": "treatment",
+    "outcome": "y",
+    "cost": "cost"
+  },
+  "outcome": {
+    "type": "continuous",
+    "value_per_unit": 1.0,
+    "margin": 0.30
+  },
+  "policy": {
+    "budget": 50000000,
+    "fairness": {
+      "group": "region",
+      "max_gap": 0.1
+    }
+  },
+  "risk": {
+    "cas_thresholds": {
+      "go": 70,
+      "canary": 50,
+      "hold": 30
+    }
+  },
+  "capabilities": {
+    "uplift": true,
+    "network": false,
+    "geo": true,
+    "time_varying": false,
+    "survival": false
+  },
+  "visuals": [
+    "effect_overview",
+    "budget_profit",
+    "love_plot",
+    "overlap",
+    "balance",
+    "sensitivity",
+    "cate_waterfall"
+  ]
+}

@@ -1,10 +1,9 @@
 # backend/ingestion/parquet_pipeline.py
 """
-Parquet Auto-Preprocessing Pipeline
-アップロードファイルを自動的にParquet化し、前処理してパケット化
+Unified Ingestion Pipeline for Causal Inference
 
 Pipeline:
-1. Upload → 2. Parquet変換 → 3. 前処理（欠損値、型変換） → 4. パケット保存
+1. Upload -> 2. Load & Validate -> 3. Causal Prep & Quality Gates -> 4. Packetize
 """
 import logging
 import pandas as pd
@@ -13,114 +12,251 @@ import pyarrow.parquet as pq
 from pathlib import Path
 from typing import Dict, Tuple, Any
 import json
+import magic
+import numpy as np
+from sklearn.impute import SimpleImputer
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
+
+# Use the newly centralized contract library
+from backend.common.contracts import load_contract, validate_dataframe
 
 logger = logging.getLogger(__name__)
 
-class ParquetPipeline:
-    """Parquet自動前処理パイプライン"""
+# --- Causal Preparation Logic (from prepare_causal.py) ---
 
-    def __init__(self, data_dir: Path):
+def _compute_smd(X_t, X_c):
+    """Compute Standardized Mean Difference (SMD)."""
+    mean_t = np.mean(X_t, axis=0)
+    mean_c = np.mean(X_c, axis=0)
+    var_t = np.var(X_t, axis=0, ddof=1)
+    var_c = np.var(X_c, axis=0, ddof=1)
+    pooled_std = np.sqrt((var_t + var_c) / 2)
+    pooled_std = np.where(pooled_std < 1e-8, 1.0, pooled_std)
+    smd = (mean_t - mean_c) / pooled_std
+    return smd
+
+# --- Main Pipeline Class ---
+
+class ParquetPipeline:
+    """Unified ingestion and causal preparation pipeline."""
+
+    def __init__(self, data_dir: Path, contract_path: str = None):
         self.data_dir = data_dir
+        self.contract_path = contract_path
         self.uploads_dir = data_dir / "uploads"
         self.parquet_dir = data_dir / "parquet"
         self.packets_dir = data_dir / "packets"
+        self.quarantine_dir = data_dir / "quarantine"
 
-        # Create directories
-        for d in [self.uploads_dir, self.parquet_dir, self.packets_dir]:
+        for d in [self.uploads_dir, self.parquet_dir, self.packets_dir, self.quarantine_dir]:
             d.mkdir(parents=True, exist_ok=True)
 
-    def process_upload(self, file_path: Path, dataset_id: str) -> Dict[str, Any]:
+        # Contract is optional - if not provided, skip validation (schema-free mode)
+        self.contract = load_contract(self.contract_path) if self.contract_path else None
+
+    def process_upload(self, file_path: Path, dataset_id: str, mapping: Dict[str, str] = None, skip_validation: bool = True) -> Dict[str, Any]:
         """
-        アップロードファイルを処理してパケット化
-
-        Steps:
-        1. Load file (using convert_any_to_parquet.load_one)
-        2. Preprocess (handle missing, convert types)
-        3. Convert to Parquet
-        4. Save as packet with metadata
-        5. Return packet info
-
+        Process an uploaded file through the full validation and causal prep pipeline.
+        
         Args:
-            file_path: アップロードされたファイルパス
-            dataset_id: データセットID
-
-        Returns:
-            {
-                "dataset_id": str,
-                "original_path": str,
-                "parquet_path": str,
-                "packet_path": str,
-                "rows": int,
-                "cols": int,
-                "size_bytes": int,
-                "preprocessing": {
-                    "missing_filled": int,
-                    "types_converted": dict,
-                    "outliers_handled": int
-                }
-            }
+            file_path: Path to uploaded file
+            dataset_id: Unique dataset identifier
+            mapping: Optional column mapping (e.g., {"y": "sales", "treatment": "treatment", "unit_id": "user_id"})
+            skip_validation: If True, skip contract validation (schema-free mode for flexible uploads)
         """
-        logger.info(f"[ParquetPipeline] Processing {file_path.name} → {dataset_id}")
+        logger.info(f"[Ingestion] Processing {file_path.name} for dataset {dataset_id} (skip_validation={skip_validation})")
 
-        # Step 1: Load file
-        df = self._load_file(file_path)
-        original_shape = df.shape
+        try:
+            # 1. Load file from various formats
+            df = self._load_file(file_path)
+            original_shape = df.shape
+            logger.info(f"[Ingestion] Loaded {original_shape[0]} rows, {original_shape[1]} columns")
 
-        # Step 2: Preprocess
-        df_processed, preproc_stats = self._preprocess(df)
+            # 2. Validate against contract (optional - skip for flexible uploads)
+            prep_metrics = {}
+            if not skip_validation and self.contract_path:
+                df = validate_dataframe(df, self.contract_path)
+                logger.info(f"[Ingestion] Contract validation passed.")
 
-        # Step 3: Convert to Parquet
-        parquet_path = self.parquet_dir / f"{dataset_id}.parquet"
-        self._save_parquet(df_processed, parquet_path)
+                # 3. Causal Preparation & Quality Gates
+                df_processed, prep_metrics = self._prepare_causal(df)
+                logger.info(f"[Ingestion] Causal preparation finished. Max |SMD|: {prep_metrics['max_smd']:.3f}")
 
-        # Step 4: Create packet (Parquet + metadata JSON)
+                # 4. Check Quality Gates
+                self._check_quality_gates(prep_metrics)
+                logger.info(f"[Ingestion] All quality gates passed.")
+            else:
+                # Schema-free mode: just save the data as-is
+                df_processed = df
+                logger.info(f"[Ingestion] Schema-free mode: skipping validation and causal prep")
+
+            # 5. Packetize: Save data and metadata
+            packet_info = self._create_packet(df_processed, dataset_id, file_path, original_shape, prep_metrics, mapping)
+            logger.info(f"[Ingestion] Packet created successfully: {packet_info['packet_path']}")
+            
+            return packet_info
+
+        except Exception as e:
+            logger.error(f"[Ingestion] FAILED for {dataset_id}: {e}")
+            self._quarantine_file(file_path, dataset_id, str(e))
+            raise
+
+    def _load_file(self, path: Path) -> pd.DataFrame:
+        """Load a single file with magic number validation (from convert_any_to_parquet.py)."""
+        mime = magic.from_file(str(path), mime=True)
+        p_lower = str(path).lower()
+
+        if "csv" in mime or p_lower.endswith((".csv", ".csv.gz", ".csv.bz2")):
+            return pd.read_csv(path)
+        if "tsv" in mime or p_lower.endswith((".tsv", ".tsv.gz", ".tsv.bz2")):
+            return pd.read_csv(path, sep="\t")
+        if "json" in mime or p_lower.endswith((".jsonl", ".jsonl.gz", ".ndjson")):
+            return pd.read_json(path, lines=True)
+        if "excel" in mime or "openxmlformats-officedocument" in mime or p_lower.endswith(".xlsx"):
+            return pd.read_excel(path)
+        if "parquet" in mime or p_lower.endswith(".parquet"):
+            return pd.read_parquet(path)
+        if "feather" in mime or p_lower.endswith(".feather"):
+            return pd.read_feather(path)
+
+        raise ValueError(f"Unsupported file type: {path} (mime={mime})")
+
+    def _prepare_causal(self, df: pd.DataFrame) -> Tuple[pd.DataFrame, Dict]:
+        """Run causal safety preparation (from prepare_causal.py)."""
+        X_cols = self.contract["covariate_cols"]
+        t_col = self.contract["treatment_col"]
+        
+        X_numeric = df[X_cols].select_dtypes(include=[np.number])
+        if X_numeric.shape[1] == 0:
+            raise ValueError("No numeric covariates found for propensity score estimation.")
+
+        imputer = SimpleImputer(strategy="median")
+        X_imputed = imputer.fit_transform(X_numeric)
+        
+        scaler = StandardScaler()
+        X_scaled = scaler.fit_transform(X_imputed)
+
+        lr = LogisticRegression(max_iter=1000, random_state=42)
+        lr.fit(X_scaled, df[t_col].values)
+        ps_hat = lr.predict_proba(X_scaled)[:, 1]
+        df["propensity_score"] = ps_hat
+
+        overlap_mask = (ps_hat > 0.05) & (ps_hat < 0.95)
+        overlap_ratio = float(overlap_mask.mean())
+
+        treated_mask = df[t_col] == 1
+        control_mask = df[t_col] == 0
+        smd = _compute_smd(X_scaled[treated_mask.to_numpy()], X_scaled[control_mask.to_numpy()])
+        max_smd_value = float(np.max(np.abs(smd)))
+        smd_dict = {col: float(val) for col, val in zip(X_numeric.columns, smd)}
+
+        metrics = {
+            "overlap_ratio": overlap_ratio,
+            "smd_by_covariate": smd_dict,
+            "max_smd": max_smd_value,
+            "propensity_score_summary": {
+                "mean": float(ps_hat.mean()),
+                "std": float(ps_hat.std()),
+                "min": float(ps_hat.min()),
+                "max": float(ps_hat.max()),
+            }
+        }
+        return df, metrics
+
+    def _check_quality_gates(self, metrics: Dict):
+        """Check metrics against quality gates from the contract."""
+        gates = self.contract.get("quality_gates", {})
+        overlap_threshold = gates.get("overlap_threshold", 0.1)
+        max_smd = gates.get("max_smd", 0.1)
+        
+        violations = []
+        if metrics["overlap_ratio"] < overlap_threshold:
+            violations.append(f"Overlap ratio {metrics['overlap_ratio']:.3f} is below threshold {overlap_threshold}")
+        if metrics["max_smd"] > max_smd:
+            violations.append(f"Max |SMD| {metrics['max_smd']:.3f} is above threshold {max_smd}")
+
+        if violations:
+            raise ValueError(f"Quality gate(s) failed: {'; '.join(violations)}")
+
+    def _create_packet(self, df: pd.DataFrame, dataset_id: str, original_path: Path, original_shape: tuple, prep_metrics: dict, mapping: Dict[str, str] = None) -> Dict:
+        """Save the processed data and metadata into a packet."""
         packet_path = self.packets_dir / dataset_id
         packet_path.mkdir(parents=True, exist_ok=True)
-
         packet_data_path = packet_path / "data.parquet"
         packet_meta_path = packet_path / "metadata.json"
 
-        self._save_parquet(df_processed, packet_data_path)
+        self._save_parquet(df, packet_data_path)
 
         metadata = {
             "dataset_id": dataset_id,
-            "original_file": str(file_path.name),
+            "original_file": str(original_path.name),
             "original_shape": {"rows": original_shape[0], "cols": original_shape[1]},
-            "processed_shape": {"rows": df_processed.shape[0], "cols": df_processed.shape[1]},
-            "columns": list(df_processed.columns),
-            "dtypes": {col: str(dtype) for col, dtype in df_processed.dtypes.items()},
-            "preprocessing": preproc_stats,
+            "processed_shape": {"rows": df.shape[0], "cols": df.shape[1]},
+            "columns": list(df.columns),
+            "dtypes": {col: str(dtype) for col, dtype in df.dtypes.items()},
+            "causal_prep_metrics": prep_metrics if prep_metrics else {},
+            "mapping": mapping if mapping else {},
             "packet_format": "parquet+json",
-            "size_bytes": packet_data_path.stat().st_size
+            "size_bytes": packet_data_path.stat().st_size,
+            "contract_path": self.contract_path if self.contract_path else None
         }
 
         with open(packet_meta_path, "w") as f:
             json.dump(metadata, f, indent=2)
-
-        logger.info(f"[ParquetPipeline] Packet created: {packet_path}")
-        logger.info(f"[ParquetPipeline] {original_shape[0]} rows → {df_processed.shape[0]} rows ({preproc_stats['missing_filled']} missing filled)")
-
+        
         return {
             "dataset_id": dataset_id,
-            "original_path": str(file_path),
-            "parquet_path": str(parquet_path),
             "packet_path": str(packet_path),
-            "rows": df_processed.shape[0],
-            "cols": df_processed.shape[1],
-            "size_bytes": metadata["size_bytes"],
-            "preprocessing": preproc_stats
+            "rows": df.shape[0],
+            "cols": df.shape[1],
+            "columns": list(df.columns),
+            "quality_gates_status": "PASSED" if prep_metrics else "SKIPPED",
+            "preprocessing": {
+                "validation_performed": bool(prep_metrics),
+                "missing_filled": 0,  # TODO: track this properly
+            },
+            **prep_metrics
         }
 
+    def _quarantine_file(self, file_path: Path, dataset_id: str, reason: str):
+        """Move a failed file to quarantine with a reason."""
+        quarantine_path = self.quarantine_dir / dataset_id
+        quarantine_path.mkdir(parents=True, exist_ok=True)
+        
+        # Move the original file
+        file_path.rename(quarantine_path / file_path.name)
+
+        # Write reason to a metadata file
+        meta = {
+            "dataset_id": dataset_id,
+            "failed_at": pd.Timestamp.utcnow().isoformat(),
+            "reason": reason,
+            "original_file": file_path.name
+        }
+        with open(quarantine_path / "failure_metadata.json", "w") as f:
+            json.dump(meta, f, indent=2)
+        logger.warning(f"[Ingestion] File {file_path.name} moved to quarantine: {quarantine_path}")
+
+    def _save_parquet(self, df: pd.DataFrame, path: Path):
+        """Save DataFrame to Parquet with efficient settings (UTF-8 compatible for Japanese)."""
+        # Ensure all string columns are properly encoded
+        for col in df.select_dtypes(include=['object']).columns:
+            df[col] = df[col].astype(str)
+        
+        table = pa.Table.from_pandas(df, preserve_index=False)
+        pq.write_table(
+            table, 
+            path, 
+            compression='snappy', 
+            use_dictionary=True,
+            # Explicitly use default UTF-8 encoding
+            coerce_timestamps='ms',
+            allow_truncated_timestamps=False
+        )
+
     def load_packet(self, dataset_id: str) -> Tuple[pd.DataFrame, Dict]:
-        """
-        パケットからデータとメタデータを読み込み
-
-        Args:
-            dataset_id: データセットID
-
-        Returns:
-            (DataFrame, metadata_dict)
-        """
+        """Load data and metadata from a packet."""
         packet_path = self.packets_dir / dataset_id
         packet_data_path = packet_path / "data.parquet"
         packet_meta_path = packet_path / "metadata.json"
@@ -129,88 +265,6 @@ class ParquetPipeline:
             raise FileNotFoundError(f"Packet not found: {dataset_id}")
 
         df = pd.read_parquet(packet_data_path)
-
         with open(packet_meta_path, "r") as f:
             metadata = json.load(f)
-
         return df, metadata
-
-    def _load_file(self, file_path: Path) -> pd.DataFrame:
-        """ファイルをロード（convert_any_to_parquet.load_oneを使用）"""
-        from ciq.scripts.convert_any_to_parquet import load_one
-        return load_one(file_path)
-
-    def _preprocess(self, df: pd.DataFrame) -> Tuple[pd.DataFrame, Dict]:
-        """
-        前処理パイプライン
-
-        1. 欠損値処理
-        2. 型変換
-        3. 外れ値処理（将来実装）
-
-        Returns:
-            (processed_df, stats)
-        """
-        stats = {
-            "missing_filled": 0,
-            "types_converted": {},
-            "outliers_handled": 0
-        }
-
-        df_processed = df.copy()
-
-        # 1. 欠損値処理
-        missing_counts = df_processed.isnull().sum()
-        for col in df_processed.columns:
-            if missing_counts[col] > 0:
-                if df_processed[col].dtype in ['int64', 'float64']:
-                    # 数値: 中央値で埋める
-                    df_processed[col].fillna(df_processed[col].median(), inplace=True)
-                    stats["missing_filled"] += missing_counts[col]
-                elif df_processed[col].dtype == 'object':
-                    # 文字列: "MISSING"で埋める
-                    df_processed[col].fillna("MISSING", inplace=True)
-                    stats["missing_filled"] += missing_counts[col]
-
-        # 2. 型変換（stringをcategoryに変換してメモリ削減）
-        for col in df_processed.select_dtypes(include=['object']).columns:
-            unique_ratio = df_processed[col].nunique() / len(df_processed)
-            if unique_ratio < 0.5:  # 50%以下のユニーク値ならcategoryに
-                df_processed[col] = df_processed[col].astype('category')
-                stats["types_converted"][col] = "object→category"
-
-        # 3. 外れ値処理（将来実装: IQR method等）
-        # stats["outliers_handled"] = 0
-
-        return df_processed, stats
-
-    def _save_parquet(self, df: pd.DataFrame, path: Path):
-        """DataFrameをParquetに保存"""
-        table = pa.Table.from_pandas(df, preserve_index=False)
-        pq.write_table(
-            table,
-            path,
-            compression='snappy',  # 高速圧縮
-            use_dictionary=True     # Dictionary encoding for strings
-        )
-
-
-# Convenience function
-def process_and_save(file_path: Path, dataset_id: str, data_dir: Path) -> Dict:
-    """
-    ファイルを処理してパケット化（便利関数）
-
-    Usage:
-        from backend.ingestion.parquet_pipeline import process_and_save
-
-        result = process_and_save(
-            file_path=Path("uploads/data.csv"),
-            dataset_id="abc123",
-            data_dir=Path("data")
-        )
-
-        print(f"Processed {result['rows']} rows")
-        print(f"Packet: {result['packet_path']}")
-    """
-    pipeline = ParquetPipeline(data_dir)
-    return pipeline.process_upload(file_path, dataset_id)

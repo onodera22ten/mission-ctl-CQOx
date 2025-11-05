@@ -1,5 +1,6 @@
 // frontend/src/components/MetricsDashboard.tsx
 import React from "react";
+import ObjectiveComparison from "./ObjectiveComparison";
 
 interface MetricsProps {
   result: any;
@@ -67,71 +68,74 @@ export default function MetricsDashboard({ result }: MetricsProps) {
   ];
 
   return (
-    <div style={{
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-      gap: 16,
-      marginBottom: 24,
-    }}>
-      {metrics.map((metric, idx) => (
-        <div
-          key={idx}
-          style={{
-            background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
-            border: `1px solid ${metric.color}40`,
-            borderRadius: 12,
-            padding: 20,
-            position: "relative",
-            overflow: "hidden",
-          }}
-        >
+    <>
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+        gap: 16,
+        marginBottom: 24,
+      }}>
+        {metrics.map((metric, idx) => (
           <div
+            key={idx}
             style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "4px",
-              background: metric.color,
+              background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+              border: `1px solid ${metric.color}40`,
+              borderRadius: 12,
+              padding: 20,
+              position: "relative",
+              overflow: "hidden",
             }}
-          />
-          <div style={{
-            fontSize: 13,
-            color: "#94a3b8",
-            fontWeight: 500,
-            marginBottom: 8,
-            textTransform: "uppercase",
-            letterSpacing: "0.5px",
-          }}>
-            {metric.label}
-          </div>
-          <div style={{ display: "flex", alignItems: "baseline", gap: 4 }}>
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "4px",
+                background: metric.color,
+              }}
+            />
             <div style={{
-              fontSize: 32,
-              fontWeight: 700,
-              color: metric.color,
-              lineHeight: 1,
-            }}>
-              {metric.value}
-            </div>
-            <div style={{
-              fontSize: 14,
-              color: "#64748b",
+              fontSize: 13,
+              color: "#94a3b8",
               fontWeight: 500,
+              marginBottom: 8,
+              textTransform: "uppercase",
+              letterSpacing: "0.5px",
             }}>
-              {metric.unit}
+              {metric.label}
+            </div>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 4 }}>
+              <div style={{
+                fontSize: 32,
+                fontWeight: 700,
+                color: metric.color,
+                lineHeight: 1,
+              }}>
+                {metric.value}
+              </div>
+              <div style={{
+                fontSize: 14,
+                color: "#64748b",
+                fontWeight: 500,
+              }}>
+                {metric.unit}
+              </div>
+            </div>
+            <div style={{
+              fontSize: 11,
+              color: "#64748b",
+              marginTop: 6,
+              opacity: 0.8,
+            }}>
+              {metric.detail}
             </div>
           </div>
-          <div style={{
-            fontSize: 11,
-            color: "#64748b",
-            marginTop: 6,
-            opacity: 0.8,
-          }}>
-            {metric.detail}
-          </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+      <ObjectiveComparison />
+    </>
   );
 }

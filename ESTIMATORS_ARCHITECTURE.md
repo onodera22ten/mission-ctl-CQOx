@@ -59,6 +59,11 @@ result_dml = estimate_ate_dml(X, y, treatment, method="irm")
 
 **Verdict**: TVCE is the **naive baseline**. Double ML is the **research-grade version**.
 
+**Status**: ✅ **IMPLEMENTED** (2025-10-31)
+- TVCE now uses Double ML-PLR for robust covariate-adjusted ATE estimation
+- Implemented in `backend/engine/server.py` (lines 288-313)
+- Fallback to baseline if covariates unavailable or estimation fails
+
 ---
 
 #### **2. OPE (Observational Policy Evaluation)** - v1.0 ✅
@@ -91,6 +96,11 @@ def fit_irm(self, X, y, d):
 ```
 
 **Verdict**: OPE mock should be **replaced by Double ML-IRM**. Already implemented!
+
+**Status**: ✅ **IMPLEMENTED** (2025-10-31)
+- OPE now uses Double ML-IRM (AIPW) for doubly-robust policy evaluation
+- Implemented in `backend/engine/server.py` (lines 315-340)
+- Provides robust inference even with model misspecification
 
 ---
 
@@ -415,8 +425,8 @@ class EstimatorFactory:
 
 | Estimator | v1.0 Status | v2.0 Status | Implementation Priority |
 |-----------|-------------|-------------|------------------------|
-| **TVCE** | Mock | → **Double ML-PLR** ✅ | Replaced |
-| **OPE** | Mock | → **Double ML-IRM** ✅ | Replaced |
+| **TVCE** | Mock | → **Double ML-PLR** ✅ | **COMPLETED** - server.py line 288-313 |
+| **OPE** | Mock | → **Double ML-IRM** ✅ | **COMPLETED** - server.py line 315-340 |
 | **Hidden** | Mock | → **Sensitivity Analysis** ⏳ | Week 3 |
 | **IV** | Mock | → **2SLS/GMM** ⏳ | Week 3 |
 | **Transport** | Mock | → **IPSW/Calibration** ⏳ | Phase 3 |

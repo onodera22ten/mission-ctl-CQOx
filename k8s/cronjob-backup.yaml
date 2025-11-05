@@ -1,0 +1,342 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres-backup
+  namespace: default
+  labels:
+    app: cqox
+    component: backup
+    tier: data
+spec:
+  # Run every 15 minutes for PITR (RPO < 1h requirement)
+  schedule: "*/15 * * * *"
+
+  # Keep last 3 successful and 1 failed job for debugging
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+
+  # Don't allow concurrent backup jobs
+  concurrencyPolicy: Forbid
+
+  # Start new job even if previous one didn't finish
+  startingDeadlineSeconds: 600  # 10 minutes
+
+  jobTemplate:
+    spec:
+      # Retry failed backups up to 3 times
+      backoffLimit: 3
+
+      # Timeout after 30 minutes
+      activeDeadlineSeconds: 1800
+
+      template:
+        metadata:
+          labels:
+            app: cqox-backup
+            component: postgres
+        spec:
+          restartPolicy: OnFailure
+
+          # Use a service account with backup permissions
+          serviceAccountName: cqox-backup-sa
+
+          containers:
+            - name: postgres-backup
+              image: postgres:15-alpine
+
+              env:
+                - name: POSTGRES_HOST
+                  value: "cqox-postgres-primary"
+                - name: POSTGRES_PORT
+                  value: "5432"
+                - name: POSTGRES_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-credentials
+                      key: username
+                - name: POSTGRES_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-credentials
+                      key: password
+                - name: POSTGRES_DB
+                  value: "cqox_prod"
+                - name: BACKUP_DIR
+                  value: "/backups"
+                - name: RETENTION_DAYS
+                  value: "30"
+                # S3 credentials for cloud upload
+                - name: AWS_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: aws-credentials
+                      key: access_key_id
+                      optional: true
+                - name: AWS_SECRET_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: aws-credentials
+                      key: secret_access_key
+                      optional: true
+                - name: S3_BUCKET
+                  value: "s3://cqox-backups/postgres/"
+
+              command: ["/bin/sh", "-c"]
+              args:
+                - |
+                  set -euo pipefail
+
+                  echo "========================================="
+                  echo "CQOx PostgreSQL Backup (Automated)"
+                  echo "Started at: $(date -Iseconds)"
+                  echo "========================================="
+
+                  # Install required tools
+                  apk add --no-cache aws-cli postgresql15-client gzip
+
+                  # Create timestamp
+                  TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+                  BACKUP_PATH="${BACKUP_DIR}/backup_${TIMESTAMP}"
+
+                  # Run backup script
+                  export BACKUP_DIR RETENTION_DAYS POSTGRES_HOST POSTGRES_PORT
+                  export POSTGRES_USER POSTGRES_DB S3_BUCKET
+
+                  # Execute the backup
+                  /scripts/backup_postgres.sh || {
+                    echo "❌ Backup failed with exit code $?"
+                    exit 1
+                  }
+
+                  echo "✅ Backup completed successfully"
+                  echo "Backup location: ${BACKUP_PATH}"
+                  echo "Completed at: $(date -Iseconds)"
+
+              volumeMounts:
+                - name: backup-storage
+                  mountPath: /backups
+                - name: wal-archive
+                  mountPath: /mnt/wal_archive
+                - name: backup-script
+                  mountPath: /scripts
+                  readOnly: true
+
+              resources:
+                requests:
+                  memory: "512Mi"
+                  cpu: "250m"
+                limits:
+                  memory: "2Gi"
+                  cpu: "1000m"
+
+          volumes:
+            - name: backup-storage
+              persistentVolumeClaim:
+                claimName: postgres-backup-pvc
+            - name: wal-archive
+              persistentVolumeClaim:
+                claimName: postgres-wal-archive-pvc
+            - name: backup-script
+              configMap:
+                name: backup-scripts
+                defaultMode: 0755
+
+---
+# PersistentVolumeClaim for backup storage
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-backup-pvc
+  namespace: default
+  labels:
+    app: cqox
+    component: backup
+spec:
+  accessModes:
+    - ReadWriteMany  # Multiple backup jobs can write
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 100Gi  # Adjust based on database size
+
+---
+# PersistentVolumeClaim for WAL archive (for PITR)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-wal-archive-pvc
+  namespace: default
+  labels:
+    app: cqox
+    component: backup
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 50Gi
+
+---
+# ServiceAccount for backup jobs
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cqox-backup-sa
+  namespace: default
+  labels:
+    app: cqox
+    component: backup
+
+---
+# ConfigMap with backup script
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backup-scripts
+  namespace: default
+  labels:
+    app: cqox
+    component: backup
+data:
+  backup_postgres.sh: |
+    #!/bin/bash
+    # This file is mounted from the repository's scripts/backup_postgres.sh
+    # In production, this would reference the actual script file
+    # For now, it's a placeholder that calls the main backup logic
+
+    echo "Backup script placeholder"
+    echo "In production, mount: /path/to/scripts/backup_postgres.sh"
+
+    # Simplified backup for K8s
+    TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+    BACKUP_FILE="${BACKUP_DIR}/backup_${TIMESTAMP}.sql.gz"
+
+    echo "Creating backup: ${BACKUP_FILE}"
+    PGPASSWORD="${POSTGRES_PASSWORD}" pg_dump \
+      -h "${POSTGRES_HOST}" \
+      -p "${POSTGRES_PORT}" \
+      -U "${POSTGRES_USER}" \
+      -d "${POSTGRES_DB}" \
+      --format=custom \
+      --compress=9 \
+      --verbose \
+      | gzip > "${BACKUP_FILE}"
+
+    # Upload to S3 if configured
+    if [ -n "${AWS_ACCESS_KEY_ID}" ] && [ -n "${S3_BUCKET}" ]; then
+      echo "Uploading to S3: ${S3_BUCKET}"
+      aws s3 cp "${BACKUP_FILE}" "${S3_BUCKET}" --storage-class STANDARD_IA
+    fi
+
+    # Cleanup old backups
+    echo "Cleaning up backups older than ${RETENTION_DAYS} days"
+    find "${BACKUP_DIR}" -name "backup_*.sql.gz" -mtime +${RETENTION_DAYS} -delete
+
+    echo "Backup completed successfully"
+
+---
+# Additional CronJob for weekly full backups (pg_basebackup)
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres-full-backup
+  namespace: default
+  labels:
+    app: cqox
+    component: backup
+    type: full
+spec:
+  # Run every Sunday at 2 AM
+  schedule: "0 2 * * 0"
+
+  successfulJobsHistoryLimit: 4  # Keep last 4 weeks
+  failedJobsHistoryLimit: 2
+
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 3600  # 1 hour
+
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 7200  # 2 hours for full backup
+
+      template:
+        metadata:
+          labels:
+            app: cqox-backup
+            type: full
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: cqox-backup-sa
+
+          containers:
+            - name: full-backup
+              image: postgres:15-alpine
+
+              env:
+                - name: POSTGRES_HOST
+                  value: "cqox-postgres-primary"
+                - name: POSTGRES_PORT
+                  value: "5432"
+                - name: POSTGRES_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-credentials
+                      key: username
+                - name: POSTGRES_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres-credentials
+                      key: password
+                - name: BACKUP_DIR
+                  value: "/backups/full"
+
+              command: ["/bin/sh", "-c"]
+              args:
+                - |
+                  set -euo pipefail
+
+                  echo "========================================="
+                  echo "Full PostgreSQL Backup (pg_basebackup)"
+                  echo "Started at: $(date -Iseconds)"
+                  echo "========================================="
+
+                  TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+                  BACKUP_PATH="${BACKUP_DIR}/base_${TIMESTAMP}"
+
+                  mkdir -p "${BACKUP_PATH}"
+
+                  echo "Running pg_basebackup..."
+                  PGPASSWORD="${POSTGRES_PASSWORD}" pg_basebackup \
+                    -h "${POSTGRES_HOST}" \
+                    -p "${POSTGRES_PORT}" \
+                    -U "${POSTGRES_USER}" \
+                    -D "${BACKUP_PATH}" \
+                    -Ft \
+                    -z \
+                    -P \
+                    --wal-method=fetch
+
+                  echo "✅ Full backup completed"
+                  echo "Location: ${BACKUP_PATH}"
+
+                  # Cleanup old full backups (keep last 4 weeks)
+                  find "${BACKUP_DIR}" -name "base_*" -mtime +28 -exec rm -rf {} \;
+
+              volumeMounts:
+                - name: backup-storage
+                  mountPath: /backups
+
+              resources:
+                requests:
+                  memory: "1Gi"
+                  cpu: "500m"
+                limits:
+                  memory: "4Gi"
+                  cpu: "2000m"
+
+          volumes:
+            - name: backup-storage
+              persistentVolumeClaim:
+                claimName: postgres-backup-pvc

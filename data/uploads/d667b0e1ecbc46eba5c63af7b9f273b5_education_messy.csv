@@ -1,0 +1,101 @@
+student_id,name,age_group,test_score_raw,received_tutoring,prior_gpa_text,gender_code,missing_days,household_income_range,parent_education
+S001,Alice Smith,15-16,85.5,Yes,3.2,F,2,$50k-75k,College
+S002,Bob Johnson,16-17,,No,2.8,M,5,$30k-50k,High School
+S003,Carol White,15-16,92.3,Yes,3.7,F,0,$75k-100k,Graduate
+S004,David Brown,17-18,78.9,No,,M,8,$20k-30k,Some College
+S005,Eve Davis,16-17,88.1,Yes,3.4,F,1,$100k+,Graduate
+S006,Frank Miller,15-16,N/A,No,2.5,M,12,$30k-50k,High School
+S007,Grace Wilson,17-18,94.7,Yes,3.9,F,0,$100k+,Graduate
+S008,Henry Moore,16-17,81.2,No,2.9,M,3,$50k-75k,College
+S009,Ivy Taylor,15-16,87.6,Yes,3.5,F,1,$75k-100k,College
+S010,Jack Anderson,17-18,76.4,No,2.6,M,7,$20k-30k,Some College
+S011,Kate Thomas,16-17,90.8,Yes,3.6,F,0,$100k+,Graduate
+S012,Leo Jackson,15-16,79.3,No,2.7,M,4,$30k-50k,High School
+S013,Mia White,17-18,93.5,Yes,3.8,F,0,$100k+,Graduate
+S014,Noah Harris,16-17,82.7,No,3.0,M,2,$50k-75k,College
+S015,Olivia Martin,15-16,,Yes,3.3,F,1,$75k-100k,College
+S016,Paul Thompson,17-18,77.8,No,2.5,M,6,$20k-30k,Some College
+S017,Quinn Garcia,16-17,89.4,Yes,3.5,F,0,$100k+,Graduate
+S018,Ryan Martinez,15-16,80.6,No,2.8,M,3,$50k-75k,College
+S019,Sophia Robinson,17-18,95.2,Yes,3.9,F,0,$100k+,Graduate
+S020,Tom Clark,16-17,83.9,No,3.1,M,2,$75k-100k,College
+S021,Uma Rodriguez,15-16,88.7,Yes,3.4,F,1,$100k+,Graduate
+S022,Victor Lewis,17-18,75.1,No,2.4,M,9,$20k-30k,Some College
+S023,Wendy Lee,16-17,91.3,Yes,3.7,F,0,$100k+,Graduate
+S024,Xavier Walker,15-16,79.9,No,2.7,M,4,$30k-50k,High School
+S025,Yara Hall,17-18,94.1,Yes,3.8,F,0,$100k+,Graduate
+S026,Zach Allen,16-17,81.5,No,2.9,M,3,$50k-75k,College
+S027,Amy Young,15-16,86.8,Yes,3.3,F,1,$75k-100k,College
+S028,Ben Hernandez,17-18,78.2,No,2.6,M,5,$30k-50k,High School
+S029,Chloe King,16-17,92.6,Yes,3.7,F,0,$100k+,Graduate
+S030,Dan Wright,15-16,80.4,No,2.8,M,3,$50k-75k,College
+S031,Emma Lopez,17-18,96.3,Yes,4.0,F,0,$100k+,Graduate
+S032,Felix Hill,16-17,77.6,No,2.5,M,6,$20k-30k,Some College
+S033,Gina Scott,15-16,89.9,Yes,3.6,F,0,$100k+,Graduate
+S034,Hugo Green,17-18,82.1,No,3.0,M,2,$75k-100k,College
+S035,Iris Adams,16-17,90.2,Yes,3.5,F,1,$100k+,Graduate
+S036,Jake Baker,15-16,76.8,No,2.6,M,7,$20k-30k,Some College
+S037,Kelly Gonzalez,17-18,93.8,Yes,3.8,F,0,$100k+,Graduate
+S038,Luke Nelson,16-17,81.9,No,2.9,M,3,$50k-75k,College
+S039,Maya Carter,15-16,87.3,Yes,3.4,F,1,$75k-100k,College
+S040,Nick Mitchell,17-18,79.7,No,2.7,M,4,$30k-50k,High School
+S041,Opal Perez,16-17,91.8,Yes,3.7,F,0,$100k+,Graduate
+S042,Pete Roberts,15-16,80.1,No,2.8,M,3,$50k-75k,College
+S043,Quincy Turner,17-18,95.6,Yes,3.9,F,0,$100k+,Graduate
+S044,Rose Phillips,16-17,83.4,No,3.1,M,2,$75k-100k,College
+S045,Sam Campbell,15-16,88.2,Yes,3.4,F,1,$100k+,Graduate
+S046,Tina Parker,17-18,74.9,No,2.4,M,8,$20k-30k,Some College
+S047,Umar Evans,16-17,90.7,Yes,3.6,F,0,$100k+,Graduate
+S048,Vera Edwards,15-16,79.5,No,2.7,M,4,$30k-50k,High School
+S049,Wade Collins,17-18,94.4,Yes,3.8,F,0,$100k+,Graduate
+S050,Xena Stewart,16-17,82.6,No,3.0,M,2,$50k-75k,College
+S051,Yale Sanchez,15-16,86.9,Yes,3.3,F,1,$75k-100k,College
+S052,Zoe Morris,17-18,78.8,No,2.6,M,5,$30k-50k,High School
+S053,Aaron Rogers,16-17,92.1,Yes,3.7,F,0,$100k+,Graduate
+S054,Bella Reed,15-16,80.8,No,2.8,M,3,$50k-75k,College
+S055,Colin Cook,17-18,95.9,Yes,3.9,F,0,$100k+,Graduate
+S056,Diana Morgan,16-17,83.2,No,3.1,M,2,$75k-100k,College
+S057,Ethan Bell,15-16,87.5,Yes,3.4,F,1,$100k+,Graduate
+S058,Fiona Murphy,17-18,76.3,No,2.5,M,6,$20k-30k,Some College
+S059,Greg Bailey,16-17,91.6,Yes,3.7,F,0,$100k+,Graduate
+S060,Hannah Rivera,15-16,79.2,No,2.7,M,4,$30k-50k,High School
+S061,Ian Cooper,17-18,93.2,Yes,3.8,F,0,$100k+,Graduate
+S062,Jade Richardson,16-17,81.4,No,2.9,M,3,$50k-75k,College
+S063,Kyle Cox,15-16,88.6,Yes,3.5,F,1,$75k-100k,College
+S064,Luna Howard,17-18,77.1,No,2.6,M,5,$30k-50k,High School
+S065,Mark Ward,16-17,92.9,Yes,3.7,F,0,$100k+,Graduate
+S066,Nina Torres,15-16,80.3,No,2.8,M,3,$50k-75k,College
+S067,Oscar Peterson,17-18,96.7,Yes,4.0,F,0,$100k+,Graduate
+S068,Pam Gray,16-17,83.7,No,3.1,M,2,$75k-100k,College
+S069,Quinton Ramirez,15-16,89.1,Yes,3.5,F,1,$100k+,Graduate
+S070,Rita James,17-18,75.6,No,2.5,M,7,$20k-30k,Some College
+S071,Seth Watson,16-17,90.4,Yes,3.6,F,0,$100k+,Graduate
+S072,Tara Brooks,15-16,79.8,No,2.7,M,4,$30k-50k,High School
+S073,Ulysses Kelly,17-18,94.8,Yes,3.8,F,0,$100k+,Graduate
+S074,Vicky Sanders,16-17,82.3,No,3.0,M,2,$50k-75k,College
+S075,Will Price,15-16,87.9,Yes,3.4,F,1,$75k-100k,College
+S076,Xander Bennett,17-18,78.5,No,2.6,M,5,$30k-50k,High School
+S077,Yasmin Wood,16-17,91.1,Yes,3.6,F,0,$100k+,Graduate
+S078,Zane Barnes,15-16,80.7,No,2.8,M,3,$50k-75k,College
+S079,Aria Ross,17-18,95.4,Yes,3.9,F,0,$100k+,Graduate
+S080,Blake Henderson,16-17,83.6,No,3.1,M,2,$75k-100k,College
+S081,Cara Coleman,15-16,88.4,Yes,3.4,F,1,$100k+,Graduate
+S082,Drew Jenkins,17-18,76.7,No,2.5,M,6,$20k-30k,Some College
+S083,Ella Perry,16-17,92.3,Yes,3.7,F,0,$100k+,Graduate
+S084,Finn Powell,15-16,79.6,No,2.7,M,4,$30k-50k,High School
+S085,Gwen Long,17-18,93.7,Yes,3.8,F,0,$100k+,Graduate
+S086,Hank Patterson,16-17,81.8,No,2.9,M,3,$50k-75k,College
+S087,Isla Hughes,15-16,86.5,Yes,3.3,F,1,$75k-100k,College
+S088,Jude Flores,17-18,78.1,No,2.6,M,5,$30k-50k,High School
+S089,Kara Washington,16-17,90.9,Yes,3.6,F,0,$100k+,Graduate
+S090,Liam Butler,15-16,80.9,No,2.8,M,3,$50k-75k,College
+S091,Mona Simmons,17-18,96.1,Yes,4.0,F,0,$100k+,Graduate
+S092,Nate Foster,16-17,83.1,No,3.1,M,2,$75k-100k,College
+S093,Orla Gonzales,15-16,87.7,Yes,3.4,F,1,$100k+,Graduate
+S094,Percy Bryant,17-18,75.3,No,2.4,M,8,$20k-30k,Some College
+S095,Queen Alexander,16-17,91.5,Yes,3.7,F,0,$100k+,Graduate
+S096,Remy Russell,15-16,79.4,No,2.7,M,4,$30k-50k,High School
+S097,Sage Griffin,17-18,94.2,Yes,3.8,F,0,$100k+,Graduate
+S098,Troy Diaz,16-17,82.8,No,3.0,M,2,$50k-75k,College
+S099,Unity Hayes,15-16,88.9,Yes,3.5,F,1,$75k-100k,College
+S100,Vince Myers,17-18,77.4,No,2.6,M,6,$20k-30k,Some College

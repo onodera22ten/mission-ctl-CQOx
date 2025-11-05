@@ -1,0 +1,37 @@
+{
+  "dataset_id": "d667b0e1ecbc46eba5c63af7b9f273b5",
+  "original_file": "d667b0e1ecbc46eba5c63af7b9f273b5_education_messy.csv",
+  "original_shape": {
+    "rows": 100,
+    "cols": 10
+  },
+  "processed_shape": {
+    "rows": 100,
+    "cols": 10
+  },
+  "columns": [
+    "student_id",
+    "name",
+    "age_group",
+    "test_score_raw",
+    "received_tutoring",
+    "prior_gpa_text",
+    "gender_code",
+    "missing_days",
+    "household_income_range",
+    "parent_education"
+  ],
+  "dtypes": {
+    "student_id": "object",
+    "name": "object",
+    "age_group": "category",
+    "test_score_raw": "float64",
+    "received_tutoring": "category",
+    "prior_gpa_text": "float64",
+    "gender_code": "category",
+    "missing_days": "int64",
+    "household_income_range": "category",
+    "parent_education": "category"
+  },
+  "preprocessing": {
+    "missing_filled": 

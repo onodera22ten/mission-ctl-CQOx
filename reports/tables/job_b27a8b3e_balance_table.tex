@@ -1,0 +1,25 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Covariate Balance Table}
+\label{tab:balance_job_b27a8b3e}
+\begin{tabular}{lcccccccc}
+\hline\hline
+Variable & Mean\\(Treated) & Mean\\(Control) & Difference & SMD & t-stat & p-value & N\\(Treated) & N\\(Control) \\
+\hline
+Log Propensity & 0.162 & -0.337 & 0.500 & 0.687$^\dagger$ & 23.081 & $<0.001$*** & 2145 & 2479 \\
+Propensity Score & 0.531 & 0.422 & 0.109 & 0.713$^\dagger$ & 24.066 & $<0.001$*** & 2145 & 2479 \\
+Age & 47.181 & 42.890 & 4.290 & 0.293$^\dagger$ & 10.126 & $<0.001$*** & 2145 & 2702 \\
+Income & 61070.280 & 42520.767 & 18549.514 & 0.366$^\dagger$ & 12.233 & $<0.001$*** & 2145 & 2627 \\
+W Neg & 0.001 & 0.012 & -0.010 & -0.010 & -0.366 & 0.714 & 2145 & 2855 \\
+Z Neg & -0.026 & 0.010 & -0.036 & -0.036 & -1.244 & 0.213 & 2145 & 2855 \\
+Cluster Id & 25.812 & 25.508 & 0.304 & 0.021 & 0.743 & 0.458 & 2145 & 2855 \\
+Neighbor Exposure & 0.429 & 0.429 & 0.000 & 0.003 & 0.095 & 0.924 & 2145 & 2855 \\
+\hline\hline
+\end{tabular}
+\vspace{0.2cm}
+\begin{minipage}{\linewidth}
+\footnotesize
+\textit{Notes:} SMD = Standardized Mean Difference. Variables with $|\text{SMD}| > 0.1$ are flagged with $\dagger$. Significance levels: * $p<0.10$, ** $p<0.05$, *** $p<0.01$.
+\end{minipage}
+\end{table}

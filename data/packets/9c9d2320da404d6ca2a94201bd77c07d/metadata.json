@@ -1,0 +1,55 @@
+{
+  "dataset_id": "9c9d2320da404d6ca2a94201bd77c07d",
+  "original_file": "9c9d2320da404d6ca2a94201bd77c07d_ecommerce_transactions.xlsx.tsv",
+  "original_shape": {
+    "rows": 50,
+    "cols": 19
+  },
+  "processed_shape": {
+    "rows": 50,
+    "cols": 19
+  },
+  "columns": [
+    "transaction_id",
+    "customer_segment",
+    "product_category",
+    "purchase_amount_usd",
+    "received_discount_code",
+    "days_since_last_purchase",
+    "customer_lifetime_value_tier",
+    "device_type",
+    "time_on_site_minutes",
+    "cart_abandonment_history",
+    "email_engagement_score",
+    "geographic_region",
+    "payment_method",
+    "shipping_speed_preference",
+    "product_rating_avg",
+    "number_of_items",
+    "season",
+    "is_repeat_customer",
+    "referral_source"
+  ],
+  "dtypes": {
+    "transaction_id": "object",
+    "customer_segment": "category",
+    "product_category": "category",
+    "purchase_amount_usd": "object",
+    "received_discount_code": "category",
+    "days_since_last_purchase": "float64",
+    "customer_lifetime_value_tier": "category",
+    "device_type": "category",
+    "time_on_site_minutes": "float64",
+    "cart_abandonment_history": "category",
+    "email_engagement_score": "float64",
+    "geographic_region": "category",
+    "payment_method": "category",
+    "shipping_speed_preference": "category",
+    "product_rating_avg": "float64",
+    "number_of_items": "int64",
+    "season": "category",
+    "is_repeat_customer": "bool",
+    "referral_source": "category"
+  },
+  "preprocessing": {
+    "missing_filled": 

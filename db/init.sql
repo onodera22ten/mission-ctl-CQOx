@@ -88,11 +88,11 @@ CREATE TABLE IF NOT EXISTS cas_scores (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     job_id VARCHAR(255) REFERENCES analysis_jobs(job_id),
     overall_score REAL NOT NULL,
-    gate_pass_score REAL,
-    sign_consensus_score REAL,
-    ci_overlap_score REAL,
-    data_health_score REAL,
-    sensitivity_score REAL,
+    internal_validity REAL,
+    external_validity REAL,
+    statistical_significance REAL,
+    model_stability REAL,
+    data_quality REAL,
     grade VARCHAR(20),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -136,19 +136,19 @@ CREATE INDEX idx_audit_created_at ON audit_log(created_at DESC);
 CREATE INDEX idx_audit_user_id ON audit_log(user_id);
 
 -- ========================================
--- Domain Inference Cache table
+-- Objective Inference Cache table
 -- ========================================
-CREATE TABLE IF NOT EXISTS domain_inference_cache (
+CREATE TABLE IF NOT EXISTS objective_inference_cache (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     dataset_id VARCHAR(255) UNIQUE NOT NULL,
-    domain_hints JSONB NOT NULL,
+    objective_hints JSONB NOT NULL,
     confidence_scores JSONB,
     column_patterns JSONB,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_domain_cache_dataset_id ON domain_inference_cache(dataset_id);
+CREATE INDEX idx_objective_cache_dataset_id ON objective_inference_cache(dataset_id);
 
 -- ========================================
 -- Initial data / Sample queries
@@ -211,4 +211,4 @@ COMMENT ON TABLE quality_gates IS 'Quality gate evaluation results';
 COMMENT ON TABLE cas_scores IS 'Causal Assurance Score (CAS) tracking';
 COMMENT ON TABLE observability_metrics IS 'System metrics for 37-panel dashboard';
 COMMENT ON TABLE audit_log IS 'User action audit trail';
-COMMENT ON TABLE domain_inference_cache IS 'Cached domain auto-detection results';
+COMMENT ON TABLE objective_inference_cache IS 'Cached objective auto-detection results';
