@@ -16,7 +16,7 @@ export function FigureImage({ title, subtitle, src, alt }: FigureProps) {
       <img
         src={src}
         alt={alt ?? title ?? src}
-        style={{ width: "100%", height: 380, objectFit: "contain", display: "block",
+        style={{ width: "100%", maxHeight: 400, objectFit: "contain", display: "block",
                  border: "1px dashed #ccc", borderRadius: 8, background: "#fff" }}
       />
     </div>
@@ -42,7 +42,7 @@ export function FigureHTML({ title, subtitle, src }: FigureProps) {
       {subtitle && <div style={{ opacity: 0.7, fontSize: 12 }}>{subtitle}</div>}
       <iframe
         src={src}
-        style={{ width: "100%", height: 380, border: "1px dashed #ccc",
+        style={{ width: "100%", maxHeight: 400, height: 400, border: "1px dashed #ccc",
                  borderRadius: 8, background: "#fff" }}
       />
     </div>
