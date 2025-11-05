@@ -155,14 +155,14 @@ const ObjectiveComparison = () => {
                       /\.html?(\?|$)/i.test(urls.s0 as string) ? (
                         <iframe
                           src={urls.s0 as string}
-                          className="w-full h-96 rounded border-0"
+                          className="w-full h-64 rounded border-0"
                           title={`${panelName} S0 interactive`}
                         />
                       ) : (
                         <img
                           src={urls.s0 as string}
                           alt={`${panelName} S0`}
-                          className="w-full h-auto rounded"
+                          className="w-full h-64 object-contain rounded bg-white"
                           onError={(e) => {
                             (e.target as HTMLImageElement).style.display = 'none';
                           }}
@@ -185,14 +185,14 @@ const ObjectiveComparison = () => {
                       /\.html?(\?|$)/i.test(urls.s1 as string) ? (
                         <iframe
                           src={urls.s1 as string}
-                          className="w-full h-96 rounded border-0"
+                          className="w-full h-64 rounded border-0"
                           title={`${panelName} S1 interactive`}
                         />
                       ) : (
                         <img
                           src={urls.s1 as string}
                           alt={`${panelName} S1`}
-                          className="w-full h-auto rounded"
+                          className="w-full h-64 object-contain rounded bg-white"
                           onError={(e) => {
                             (e.target as HTMLImageElement).style.display = 'none';
                           }}
