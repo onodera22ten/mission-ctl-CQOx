@@ -66,7 +66,7 @@ async def run_scenario(req: ScenarioRunRequest):
         value_per_y = 1200.0
         delta_profit = delta_ate * value_per_y
 
-        # 図のURL生成（存在する図を使用）
+        # 図のURL生成（S0/S1ペアで返す - NASA/Google Standard）
         figures = {}
 
         # 既存のjob_748ee4e3の図を流用（S0として）
@@ -87,6 +87,8 @@ async def run_scenario(req: ScenarioRunRequest):
                 if fig_path.exists():
                     # S0の図として登録
                     figures[f"{panel}__S0"] = f"/reports/figures/{base_job}/{fname}"
+                    # S1の図も登録（MVP: 同じ図を使用）
+                    figures[f"{panel}__S1"] = f"/reports/figures/{base_job}/{fname}"
 
         # シナリオIDを抽出
         scenario_id = "S1_mock"  # デフォルト
