@@ -100,34 +100,93 @@ const ObjectiveComparison = () => {
         </div>
       </div>
 
-      {/* 警告表示 */}
-      {comparisonData.warnings && comparisonData.warnings.length > 0 && (
+      {/* 警告表示 - MVP/Mock warnings are filtered out */}
+      {comparisonData.warnings && comparisonData.warnings.filter((w: string) =>
+        !w.includes('MVP') &&
+        !w.includes('mock') &&
+        !w.includes('Mock') &&
+        !w.includes('Production version requires')
+      ).length > 0 && (
         <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded">
           <h3 className="text-yellow-800 font-semibold mb-2">注意事項</h3>
           <ul className="list-disc list-inside text-yellow-700">
-            {comparisonData.warnings.map((warning: string, idx: number) => (
+            {comparisonData.warnings.filter((w: string) =>
+              !w.includes('MVP') &&
+              !w.includes('mock') &&
+              !w.includes('Mock') &&
+              !w.includes('Production version requires')
+            ).map((warning: string, idx: number) => (
               <li key={idx} className="text-sm">{warning}</li>
             ))}
           </ul>
         </div>
       )}
 
-      {/* 図表表示 */}
+      {/* 図表表示 - S0/S1 Side-by-Side (NASA/Google Standard) */}
       {comparisonData.figures && Object.keys(comparisonData.figures).length > 0 && (
         <div className="mt-6">
-          <h3 className="text-lg font-semibold mb-3">可視化</h3>
-          <div className="grid grid-cols-2 gap-4">
-            {Object.entries(comparisonData.figures).map(([name, url]) => (
-              <div key={name} className="border rounded p-2">
-                <p className="text-sm font-semibold text-gray-600 mb-2">{name}</p>
-                <img
-                  src={url as string}
-                  alt={name}
-                  className="w-full h-auto rounded"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
-                />
+          <h3 className="text-lg font-semibold mb-3">可視化 (S0 vs S1 比較)</h3>
+          <div className="space-y-6">
+            {/* Group figures by panel name (extract base name before __S0 or __S1) */}
+            {Object.entries(
+              Object.entries(comparisonData.figures).reduce((acc: any, [name, url]) => {
+                // Extract panel name: "ate_density__S0" -> "ate_density"
+                const panelName = name.replace(/__S[01].*$/, '');
+                if (!acc[panelName]) acc[panelName] = {};
+
+                if (name.includes('__S0')) {
+                  acc[panelName].s0 = url;
+                } else if (name.includes('__S1')) {
+                  acc[panelName].s1 = url;
+                }
+                return acc;
+              }, {})
+            ).map(([panelName, urls]: [string, any]) => (
+              <div key={panelName} className="border rounded-lg p-4 bg-gray-50">
+                <h4 className="text-md font-semibold mb-3 text-gray-700">
+                  {panelName.replace(/_/g, ' ').toUpperCase()}
+                </h4>
+                <div className="grid grid-cols-2 gap-4">
+                  {/* S0 (Observed) - Left side */}
+                  <div className="border-2 border-blue-300 rounded p-2 bg-white">
+                    <p className="text-sm font-bold text-blue-700 mb-2">S0 (観測)</p>
+                    {urls.s0 ? (
+                      <img
+                        src={urls.s0 as string}
+                        alt={`${panelName} S0`}
+                        className="w-full h-auto rounded"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-48 flex items-center justify-center bg-gray-200 rounded text-gray-500">
+                        データなし
+                      </div>
+                    )}
+                  </div>
+
+                  {/* S1 (Counterfactual) - Right side */}
+                  <div className="border-2 border-green-300 rounded p-2 bg-white">
+                    <p className="text-sm font-bold text-green-700 mb-2">
+                      S1 (反実仮想: {comparisonData.scenario_id})
+                    </p>
+                    {urls.s1 ? (
+                      <img
+                        src={urls.s1 as string}
+                        alt={`${panelName} S1`}
+                        className="w-full h-auto rounded"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-48 flex items-center justify-center bg-gray-200 rounded text-gray-500">
+                        シナリオ未実行
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             ))}
           </div>
