@@ -151,14 +151,23 @@ const ObjectiveComparison = () => {
                   <div className="border-2 border-blue-300 rounded p-2 bg-white">
                     <p className="text-sm font-bold text-blue-700 mb-2">S0 (観測)</p>
                     {urls.s0 ? (
-                      <img
-                        src={urls.s0 as string}
-                        alt={`${panelName} S0`}
-                        className="w-full h-auto rounded"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).style.display = 'none';
-                        }}
-                      />
+                      // Auto-detect HTML vs image (Wolfram HTML uses iframe)
+                      /\.html?(\?|$)/i.test(urls.s0 as string) ? (
+                        <iframe
+                          src={urls.s0 as string}
+                          className="w-full h-96 rounded border-0"
+                          title={`${panelName} S0 interactive`}
+                        />
+                      ) : (
+                        <img
+                          src={urls.s0 as string}
+                          alt={`${panelName} S0`}
+                          className="w-full h-auto rounded"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = 'none';
+                          }}
+                        />
+                      )
                     ) : (
                       <div className="w-full h-48 flex items-center justify-center bg-gray-200 rounded text-gray-500">
                         データなし
@@ -172,14 +181,23 @@ const ObjectiveComparison = () => {
                       S1 (反実仮想: {comparisonData.scenario_id})
                     </p>
                     {urls.s1 ? (
-                      <img
-                        src={urls.s1 as string}
-                        alt={`${panelName} S1`}
-                        className="w-full h-auto rounded"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).style.display = 'none';
-                        }}
-                      />
+                      // Auto-detect HTML vs image (Wolfram HTML uses iframe)
+                      /\.html?(\?|$)/i.test(urls.s1 as string) ? (
+                        <iframe
+                          src={urls.s1 as string}
+                          className="w-full h-96 rounded border-0"
+                          title={`${panelName} S1 interactive`}
+                        />
+                      ) : (
+                        <img
+                          src={urls.s1 as string}
+                          alt={`${panelName} S1`}
+                          className="w-full h-auto rounded"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = 'none';
+                          }}
+                        />
+                      )
                     ) : (
                       <div className="w-full h-48 flex items-center justify-center bg-gray-200 rounded text-gray-500">
                         シナリオ未実行
