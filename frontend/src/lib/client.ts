@@ -83,6 +83,45 @@ export async function compareObjectives(job_ids: string[]) {
   };
 }
 
+// 反実仮想シナリオ実行
+export async function runScenario(args: {
+  dataset_id: string;
+  scenario: string;
+  mode?: "ope" | "gcomp";
+}) {
+  const { data } = await api.post("/scenario/run", {
+    dataset_id: args.dataset_id,
+    scenario: args.scenario,
+    mode: args.mode || "ope",
+  });
+  return data as {
+    status: string;
+    scenario_id: string;
+    mode: string;
+    ate_s0: number;
+    ate_s1: number;
+    delta_ate: number;
+    delta_profit: number;
+    warnings: string[];
+    figures: Record<string, string>;
+  };
+}
+
+// シナリオ一覧取得
+export async function listScenarios(dataset_id: string) {
+  const { data } = await api.get("/scenario/list", {
+    params: { dataset_id },
+  });
+  return data as {
+    scenarios: Array<{
+      id: string;
+      path: string;
+      label: string;
+    }>;
+    count: number;
+  };
+}
+
 // デバッグ用スモーク
 export async function testAPI(file: File) {
   const up = await uploadFile(file);
