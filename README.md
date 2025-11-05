@@ -50,39 +50,55 @@
 │ Layer 7: Presentation (React/TypeScript)                        │
 │          - Real-time Dashboard                                  │
 │          - Interactive Visualizations                           │
+│          📄 frontend/src/App.tsx                                │
+│          📄 frontend/src/components/Dashboard.tsx               │
 ├─────────────────────────────────────────────────────────────────┤
 │ Layer 6: API Gateway (FastAPI + Auth + CORS)                   │
 │          - Rate Limiting (Token Bucket)                         │
 │          - Circuit Breaker                                      │
 │          - Multi-Format Upload (CSV/JSON/Excel/Parquet)        │
+│          📄 backend/engine/server.py                            │
+│          📄 backend/engine/router_comprehensive.py              │
 ├─────────────────────────────────────────────────────────────────┤
 │ Layer 5: Business Logic (Causal Inference Engine)              │
 │          - 20+ Estimators                                       │
 │          - Parallel Execution (ThreadPoolExecutor)             │
 │          - Quality Gates (SMD/VIF/Overlap Diagnostics)         │
+│          📄 backend/engine/composer.py                          │
+│          📄 backend/engine/estimators/*.py (20+ files)          │
+│          📄 backend/engine/tasks/*.py (10 tasks)                │
 ├─────────────────────────────────────────────────────────────────┤
 │ Layer 4: Data Processing (Parquet Pipeline)                    │
 │          - Auto Encoding Detection (UTF-8/Shift-JIS/CP932)     │
 │          - Column Mapping Inference                             │
 │          - Validation & Transformation                          │
+│          📄 backend/pipeline/parquet_pipeline.py                │
+│          📄 backend/pipeline/encoding_detector.py               │
 ├─────────────────────────────────────────────────────────────────┤
 │ Layer 3: Storage (PostgreSQL + TimescaleDB + Redis + S3)       │
 │          - TimescaleDB: Time-series metrics (100K rows/sec)    │
 │          - Redis: Cache + Rate Limiting                         │
 │          - PostgreSQL: Job metadata                             │
 │          - S3: Figure storage                                   │
+│          📄 backend/storage/timescaledb_client.py               │
+│          📄 backend/storage/redis_cache.py                      │
 ├─────────────────────────────────────────────────────────────────┤
 │ Layer 2: Observability (Prometheus + Grafana + Loki + Jaeger)  │
 │          - Metrics: RED (Rate/Errors/Duration)                 │
 │          - Logs: Structured JSON with trace correlation        │
 │          - Tracing: OpenTelemetry + Jaeger                     │
 │          - Alerts: PagerDuty integration                        │
+│          📄 backend/monitoring/metrics.py                       │
+│          📄 backend/monitoring/tracing.py                       │
 ├─────────────────────────────────────────────────────────────────┤
 │ Layer 1: Infrastructure (Docker + Kubernetes + ArgoCD)         │
 │          - GitOps: Declarative deployment                       │
 │          - Argo Rollouts: Progressive delivery (canary)        │
 │          - HPA: Auto-scaling (2-10 replicas)                   │
 │          - Multi-AZ: 99.9% availability                         │
+│          📄 k8s/argocd-install.yaml                             │
+│          📄 argocd/applications/cqox-engine.yaml                │
+│          📄 argocd/rollouts/engine-rollout.yaml                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -277,12 +293,14 @@ CSV/JSON/Excel/Parquet
 
 CQOx provides **42+ world-class visualizations** in multiple formats:
 
-| Format | Count | Engine | Examples |
-|--------|-------|--------|----------|
-| **2D Static** | 28 | Matplotlib | ATE distributions, CI plots, diagnostics |
-| **3D Static** | 7 | WolframONE | Causal surface, policy evaluation manifold |
-| **Animated** | 7 | WolframONE | Temporal ATE evolution, spillover dynamics |
-| **Total** | **42** | - | - |
+| Format | Count | Engine | Examples | Implementation |
+|--------|-------|--------|----------|----------------|
+| **2D Static** | 28 | Matplotlib | ATE distributions, CI plots, diagnostics | `backend/engine/figures_*.py` |
+| **Interactive** | 1 | Plotly | Event study (HTML) | `backend/engine/figures_primitives.py` |
+| **3D/Animated** | 14 | WolframONE | Causal surface, temporal evolution | `wolfram/animations.wl` |
+| **Total** | **43** | - | - | - |
+
+**Note**: Interactive Plotly visualizations (`event_study.html`) include dynamic tooltips, zoom, and pan controls.
 
 ### Matplotlib Primitives (28 Figures)
 
