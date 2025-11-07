@@ -24,3 +24,13 @@ __pycache__/
 *.parquet
 uploads/*.csv
 reports/**/*.csv
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.mypy_cache/
+# data は原則無視、ただし小さなサンプルは許可
+data/**
+!data/samples/**
+uploads/**
+reports/**
