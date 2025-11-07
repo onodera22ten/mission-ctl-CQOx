@@ -54,3 +54,45 @@ data/
 *.jpeg
 *.gif
 *.svg
+
+# --- track exceptions for images/animations/docs ---
+!docs/**
+!**/assets/**
+!**/public/**
+!**/figures/**
+!objective_specs/**
+
+# track common asset types anywhere (ignoredディレクトリはそのまま)
+!*.png
+!*.jpg
+!*.jpeg
+!*.gif
+!*.svg
+!*.webp
+!*.mp4
+!*.webm
+!*.mov
+!*.pdf
+
+# さらに reports/ と uploads/ の配下にある画像/動画/PDF も許可（CSV 等は無視のまま）
+!reports/**/*.png
+!reports/**/*.jpg
+!reports/**/*.jpeg
+!reports/**/*.gif
+!reports/**/*.svg
+!reports/**/*.webp
+!reports/**/*.mp4
+!reports/**/*.webm
+!reports/**/*.mov
+!reports/**/*.pdf
+
+!uploads/**/*.png
+!uploads/**/*.jpg
+!uploads/**/*.jpeg
+!uploads/**/*.gif
+!uploads/**/*.svg
+!uploads/**/*.webp
+!uploads/**/*.mp4
+!uploads/**/*.webm
+!uploads/**/*.mov
+!uploads/**/*.pdf
