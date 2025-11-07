@@ -18,3 +18,9 @@ data/
 *.so
 dist/
 node_modules/
+
+.venv/
+__pycache__/
+*.parquet
+uploads/*.csv
+reports/**/*.csv
