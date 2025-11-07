@@ -7,3 +7,14 @@ reports/*.csv
 *.svg
 *.gif
 *.ipynb_checkpoints/
+.venv/
+__pycache__/
+*.py[cod]
+uploads/
+reports/
+data/
+*.csv
+*.parquet
+*.so
+dist/
+node_modules/
