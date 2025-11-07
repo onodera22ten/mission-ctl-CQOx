@@ -86,6 +86,10 @@ REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 app.mount("/reports", StaticFiles(directory=str(REPORTS_DIR), html=False), name="reports")
 
+# Register counterfactual router
+from backend.engine.router_counterfactual import router as counterfactual_router
+app.include_router(counterfactual_router)
+
 def validate_estimator_requirements(df: pd.DataFrame, mapping: Dict[str, str], estimator: str) -> tuple[bool, list[str]]:
     """
     Validate if the dataframe has required columns for the given estimator.

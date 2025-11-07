@@ -1,0 +1,9 @@
+uploads/
+exports/
+figures/
+reports/*.csv
+*.png
+*.pdf
+*.svg
+*.gif
+*.ipynb_checkpoints/
