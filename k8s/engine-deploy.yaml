@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: cqox-engine }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: cqox-engine } }
+  template:
+    metadata: { labels: { app: cqox-engine } }
+    spec:
+      containers:
+        - name: engine
+          image: cqox/engine:latest
+          ports: [ {containerPort: 8080} ]
+          volumeMounts: [ { name: reports, mountPath: /app/reports } ]
+      volumes: [ { name: reports, emptyDir: {} } ]
+---
+apiVersion: v1
+kind: Service
+metadata: { name: cqox-engine }
+spec:
+  selector: { app: cqox-engine }
+  ports: [ { port: 8080, targetPort: 8080 } ]
+

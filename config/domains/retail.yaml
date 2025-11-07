@@ -1,0 +1,62 @@
+# config/domains/retail.yaml
+required_columns:
+  - user_id
+  - date
+  - treatment   # w
+  - y
+optional_columns:
+  - cost
+  - log_propensity
+  - z           # instrument
+  - segment
+  - transport_weight
+  - x1
+  - x2
+  - x3
+  - x4
+  - x5
+
+visualizations:
+  - key: parallel_trends
+    title: Parallel Trends (DID)
+    requires: [y, treatment, date]
+  - key: event_study
+    title: Event Study Coefficients
+    requires: [y, treatment, date]
+  - key: ate_density
+    title: ATE Density (by group)
+    requires: [y, treatment]
+  - key: propensity_overlap
+    title: Propensity Overlap Histogram
+    requires: [log_propensity, treatment]
+  - key: balance_smd
+    title: Balance SMD Lollipop
+    requires: [treatment]
+  - key: rosenbaum_gamma
+    title: Rosenbaum Sensitivity Curve
+    requires: [y, treatment]
+  - key: iv_first_stage_f
+    title: IV First-Stage F
+    requires: [treatment, z]
+  - key: iv_strength_vs_2sls
+    title: IV Strength vs 2SLS
+    requires: [y, treatment, z]
+  - key: transport_weights
+    title: Transport Weights Distribution
+    requires: []
+  - key: tvce_line
+    title: Time-Varying Effect Line
+    requires: [y, treatment, date]
+  - key: network_spillover
+    title: Network Spillover Heatmap
+    requires: []
+  - key: heterogeneity_waterfall
+    title: Heterogeneity Waterfall (Top 10)
+    requires: [y, treatment, segment]
+  - key: quality_gates_board
+    title: Quality Gates Board
+    requires: []
+  - key: cas_radar
+    title: CAS Radar (5 axes)
+    requires: []
+

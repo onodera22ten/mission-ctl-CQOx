@@ -1,0 +1,390 @@
+WARNING:gateway:[observability][gateway] tracing disabled: No module named 'opentelemetry.exporter.otlp'
+INFO:     Started server process [214830]
+INFO:     Waiting for application startup.
+INFO:gateway:[Gateway] Starting up...
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8081 (Press CTRL+C to quit)
+INFO:gateway:Incoming request: GET /api/health
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:43530 - "GET /api/health HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: GET /reports/figures/ate_estimate.png
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:34906 - "GET /reports/figures/ate_estimate.png HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/upload
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Processing 78107285c50a4b8481aa22a5f1b08260_realistic_test_data.csv for dataset 78107285c50a4b8481aa22a5f1b08260 (skip_validation=True)
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Loaded 5000 rows, 13 columns
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Schema-free mode: skipping validation and causal prep
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Packet created successfully: /home/hirokionodera/cqox-complete (Copy 2)/data/packets/78107285c50a4b8481aa22a5f1b08260
+ERROR:gateway:Failed to process uploaded file with Parquet pipeline: Must specify a fill 'value' or 'method'.
+ERROR:gateway:Fallback loader also failed: Must specify a fill 'value' or 'method'.
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:34438 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/roles/infer
+INFO:backend.inference.role_inference:[RoleInference] Analyzing 13 columns from dataframe
+INFO:backend.inference.role_inference:[RoleInference] unit_id -> 顧客ID (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] outcome -> キャンペーン適用 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] treatment -> Web閲覧時間_分 (confidence: 0.63)
+INFO:backend.inference.role_inference:[RoleInference] time -> 購入日時 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] propensity -> 売上金額 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] weight -> 顧客年齢 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] cost -> 購入回数 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] instrument -> メール開封率 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] policy_boundary -> 広告費 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] cluster -> 性別 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] auxiliary_outcome -> 前月購入額 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] covariate -> 地域 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] network_edge -> 商品カテゴリ (confidence: 0.45)
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Analyzing dataframe for objective
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Detected: education (confidence: 0.00)
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Hierarchy: causal_inference → human_behavior → education
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:34452 - "POST /api/roles/infer HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/analyze/comprehensive
+INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 500 Internal Server Error"
+ERROR:gateway:Engine call failed (HTTPError): HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+ERROR:gateway:Exception details: HTTPStatusError("Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500")
+ERROR:gateway:Traceback: Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 573, in analyze_comprehensive
+    result = await _call_engine_analyze(forward_payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 430, in _call_engine_analyze
+    r.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+
+INFO:gateway:Response status: 503
+INFO:     127.0.0.1:34466 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable
+INFO:gateway:Incoming request: POST /api/analyze/comprehensive
+INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 500 Internal Server Error"
+ERROR:gateway:Engine call failed (HTTPError): HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+ERROR:gateway:Exception details: HTTPStatusError("Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500")
+ERROR:gateway:Traceback: Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 573, in analyze_comprehensive
+    result = await _call_engine_analyze(forward_payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 430, in _call_engine_analyze
+    r.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+
+INFO:gateway:Response status: 503
+INFO:     127.0.0.1:39476 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable
+INFO:gateway:Incoming request: POST /api/analyze/comprehensive
+INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 500 Internal Server Error"
+ERROR:gateway:Engine call failed (HTTPError): HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+ERROR:gateway:Exception details: HTTPStatusError("Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500")
+ERROR:gateway:Traceback: Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 573, in analyze_comprehensive
+    result = await _call_engine_analyze(forward_payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 430, in _call_engine_analyze
+    r.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+
+INFO:gateway:Response status: 503
+INFO:     127.0.0.1:41350 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable
+INFO:gateway:Incoming request: POST /api/analyze/comprehensive
+INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 500 Internal Server Error"
+ERROR:gateway:Engine call failed (HTTPError): HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+ERROR:gateway:Exception details: HTTPStatusError("Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500")
+ERROR:gateway:Traceback: Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 573, in analyze_comprehensive
+    result = await _call_engine_analyze(forward_payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 430, in _call_engine_analyze
+    r.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+
+INFO:gateway:Response status: 503
+INFO:     127.0.0.1:41366 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable
+INFO:gateway:Incoming request: POST /api/analyze/comprehensive
+INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 500 Internal Server Error"
+ERROR:gateway:Engine call failed (HTTPError): HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+ERROR:gateway:Exception details: HTTPStatusError("Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500")
+ERROR:gateway:Traceback: Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 573, in analyze_comprehensive
+    result = await _call_engine_analyze(forward_payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 430, in _call_engine_analyze
+    r.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+
+INFO:gateway:Response status: 503
+INFO:     127.0.0.1:41368 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable
+INFO:gateway:Incoming request: POST /api/analyze/comprehensive
+INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 500 Internal Server Error"
+ERROR:gateway:Engine call failed (HTTPError): HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+ERROR:gateway:Exception details: HTTPStatusError("Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500")
+ERROR:gateway:Traceback: Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 573, in analyze_comprehensive
+    result = await _call_engine_analyze(forward_payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 430, in _call_engine_analyze
+    r.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+
+INFO:gateway:Response status: 503
+INFO:     127.0.0.1:41374 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable
+INFO:gateway:Incoming request: POST /api/upload
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Processing b0c6d3d8f3164c589af2ce9b0eb606a0_test_simple.csv for dataset b0c6d3d8f3164c589af2ce9b0eb606a0 (skip_validation=True)
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Loaded 10 rows, 5 columns
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Schema-free mode: skipping validation and causal prep
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Packet created successfully: /home/hirokionodera/cqox-complete (Copy 2)/data/packets/b0c6d3d8f3164c589af2ce9b0eb606a0
+ERROR:gateway:Failed to process uploaded file with Parquet pipeline: Must specify a fill 'value' or 'method'.
+ERROR:gateway:Fallback loader also failed: Must specify a fill 'value' or 'method'.
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:58772 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/roles/infer
+INFO:backend.inference.role_inference:[RoleInference] Analyzing 5 columns from dataframe
+INFO:backend.inference.role_inference:[RoleInference] unit_id -> id (confidence: 0.95)
+INFO:backend.inference.role_inference:[RoleInference] outcome -> outcome (confidence: 0.95)
+INFO:backend.inference.role_inference:[RoleInference] treatment -> treatment (confidence: 0.98)
+INFO:backend.inference.role_inference:[RoleInference] time -> age (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] propensity -> income (confidence: 0.41)
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Analyzing dataframe for objective
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Detected: medical (confidence: 0.50)
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Hierarchy: causal_inference → human_behavior → medical
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:58780 - "POST /api/roles/infer HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/analyze/comprehensive
+INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 500 Internal Server Error"
+ERROR:gateway:Engine call failed (HTTPError): HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+ERROR:gateway:Exception details: HTTPStatusError("Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500")
+ERROR:gateway:Traceback: Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 573, in analyze_comprehensive
+    result = await _call_engine_analyze(forward_payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 430, in _call_engine_analyze
+    r.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+
+INFO:gateway:Response status: 503
+INFO:     127.0.0.1:58784 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable
+INFO:gateway:Incoming request: POST /api/upload
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Processing faf9d4c462264a1f8d40219fb872a181_mini_retail_complete.csv for dataset faf9d4c462264a1f8d40219fb872a181 (skip_validation=True)
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Loaded 20 rows, 6 columns
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Schema-free mode: skipping validation and causal prep
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Packet created successfully: /home/hirokionodera/cqox-complete (Copy 2)/data/packets/faf9d4c462264a1f8d40219fb872a181
+ERROR:gateway:Failed to process uploaded file with Parquet pipeline: Must specify a fill 'value' or 'method'.
+ERROR:gateway:Fallback loader also failed: Must specify a fill 'value' or 'method'.
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:40508 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/roles/infer
+INFO:backend.inference.role_inference:[RoleInference] Analyzing 6 columns from dataframe
+INFO:backend.inference.role_inference:[RoleInference] unit_id -> user_id (confidence: 0.95)
+INFO:backend.inference.role_inference:[RoleInference] outcome -> y (confidence: 0.95)
+INFO:backend.inference.role_inference:[RoleInference] treatment -> treatment (confidence: 0.98)
+INFO:backend.inference.role_inference:[RoleInference] time -> date (confidence: 0.95)
+INFO:backend.inference.role_inference:[RoleInference] propensity -> log_propensity (confidence: 0.95)
+INFO:backend.inference.role_inference:[RoleInference] weight -> cost (confidence: 0.45)
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Analyzing dataframe for objective
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Detected: medical (confidence: 0.50)
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Hierarchy: causal_inference → human_behavior → medical
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:40512 - "POST /api/roles/infer HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/analyze/comprehensive
+INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 500 Internal Server Error"
+ERROR:gateway:Engine call failed (HTTPError): HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+ERROR:gateway:Exception details: HTTPStatusError("Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500")
+ERROR:gateway:Traceback: Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 573, in analyze_comprehensive
+    result = await _call_engine_analyze(forward_payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 430, in _call_engine_analyze
+    r.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+
+INFO:gateway:Response status: 503
+INFO:     127.0.0.1:40518 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable
+INFO:gateway:Incoming request: POST /api/upload
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Processing 2cded410978b420486cc6fea35c67ed6_realistic_test_data.csv for dataset 2cded410978b420486cc6fea35c67ed6 (skip_validation=True)
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Loaded 5000 rows, 13 columns
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Schema-free mode: skipping validation and causal prep
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Packet created successfully: /home/hirokionodera/cqox-complete (Copy 2)/data/packets/2cded410978b420486cc6fea35c67ed6
+ERROR:gateway:Failed to process uploaded file with Parquet pipeline: Must specify a fill 'value' or 'method'.
+ERROR:gateway:Fallback loader also failed: Must specify a fill 'value' or 'method'.
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:34750 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/roles/infer
+INFO:backend.inference.role_inference:[RoleInference] Analyzing 13 columns from dataframe
+INFO:backend.inference.role_inference:[RoleInference] unit_id -> 顧客ID (confidence: 0.80)
+INFO:backend.inference.role_inference:[RoleInference] outcome -> キャンペーン適用 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] treatment -> Web閲覧時間_分 (confidence: 0.63)
+INFO:backend.inference.role_inference:[RoleInference] time -> 購入日時 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] propensity -> 売上金額 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] weight -> 顧客年齢 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] cost -> 購入回数 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] instrument -> メール開封率 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] policy_boundary -> 広告費 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] cluster -> 性別 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] auxiliary_outcome -> 前月購入額 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] covariate -> 地域 (confidence: 0.45)
+INFO:backend.inference.role_inference:[RoleInference] network_edge -> 商品カテゴリ (confidence: 0.45)
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Analyzing dataframe for objective
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Detected: education (confidence: 0.00)
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Hierarchy: causal_inference → human_behavior → education
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:34756 - "POST /api/roles/infer HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/upload
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Processing 7b80d8a95f2e404ea716f6f98ee7f13f_mini_retail.csv for dataset 7b80d8a95f2e404ea716f6f98ee7f13f (skip_validation=True)
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Loaded 20 rows, 5 columns
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Schema-free mode: skipping validation and causal prep
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Packet created successfully: /home/hirokionodera/cqox-complete (Copy 2)/data/packets/7b80d8a95f2e404ea716f6f98ee7f13f
+ERROR:gateway:Failed to process uploaded file with Parquet pipeline: Must specify a fill 'value' or 'method'.
+ERROR:gateway:Fallback loader also failed: Must specify a fill 'value' or 'method'.
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:43612 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/roles/infer
+INFO:backend.inference.role_inference:[RoleInference] Analyzing 5 columns from dataframe
+INFO:backend.inference.role_inference:[RoleInference] unit_id -> user_id (confidence: 0.95)
+INFO:backend.inference.role_inference:[RoleInference] outcome -> sales (confidence: 0.95)
+INFO:backend.inference.role_inference:[RoleInference] treatment -> treatment (confidence: 0.98)
+INFO:backend.inference.role_inference:[RoleInference] time -> date (confidence: 0.95)
+INFO:backend.inference.role_inference:[RoleInference] propensity -> cost (confidence: 0.45)
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Analyzing dataframe for objective
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Detected: medical (confidence: 0.33)
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Hierarchy: causal_inference → human_behavior → medical
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:43616 - "POST /api/roles/infer HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/analyze/comprehensive
+INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 500 Internal Server Error"
+ERROR:gateway:Engine call failed (HTTPError): HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+ERROR:gateway:Exception details: HTTPStatusError("Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500")
+ERROR:gateway:Traceback: Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 573, in analyze_comprehensive
+    result = await _call_engine_analyze(forward_payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 430, in _call_engine_analyze
+    r.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+
+INFO:gateway:Response status: 503
+INFO:     127.0.0.1:40886 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable
+INFO:gateway:Incoming request: POST /api/upload
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Processing ad30cc1a1f06426d9dc58a09cc38adc8_mini_retail_complete.csv for dataset ad30cc1a1f06426d9dc58a09cc38adc8 (skip_validation=True)
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Loaded 20 rows, 6 columns
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Schema-free mode: skipping validation and causal prep
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Packet created successfully: /home/hirokionodera/cqox-complete (Copy 2)/data/packets/ad30cc1a1f06426d9dc58a09cc38adc8
+ERROR:gateway:Failed to process uploaded file with Parquet pipeline: Must specify a fill 'value' or 'method'.
+ERROR:gateway:Fallback loader also failed: Must specify a fill 'value' or 'method'.
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:54970 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/roles/infer
+INFO:backend.inference.role_inference:[RoleInference] Analyzing 6 columns from dataframe
+INFO:backend.inference.role_inference:[RoleInference] unit_id -> user_id (confidence: 0.95)
+INFO:backend.inference.role_inference:[RoleInference] outcome -> y (confidence: 0.95)
+INFO:backend.inference.role_inference:[RoleInference] treatment -> treatment (confidence: 0.98)
+INFO:backend.inference.role_inference:[RoleInference] time -> date (confidence: 0.95)
+INFO:backend.inference.role_inference:[RoleInference] propensity -> log_propensity (confidence: 0.95)
+INFO:backend.inference.role_inference:[RoleInference] weight -> cost (confidence: 0.45)
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Analyzing dataframe for objective
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Detected: medical (confidence: 0.50)
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Hierarchy: causal_inference → human_behavior → medical
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:54972 - "POST /api/roles/infer HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/analyze/comprehensive
+INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 500 Internal Server Error"
+ERROR:gateway:Engine call failed (HTTPError): HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+ERROR:gateway:Exception details: HTTPStatusError("Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500")
+ERROR:gateway:Traceback: Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 573, in analyze_comprehensive
+    result = await _call_engine_analyze(forward_payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 430, in _call_engine_analyze
+    r.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+
+INFO:gateway:Response status: 503
+INFO:     127.0.0.1:33698 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable
+INFO:gateway:Incoming request: GET /api/health
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:37244 - "GET /api/health HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/upload
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Processing f078d9dadc6c4b5bae0cd4bea11d7057_mini_retail_complete.csv for dataset f078d9dadc6c4b5bae0cd4bea11d7057 (skip_validation=True)
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Loaded 20 rows, 6 columns
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Schema-free mode: skipping validation and causal prep
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Packet created successfully: /home/hirokionodera/cqox-complete (Copy 2)/data/packets/f078d9dadc6c4b5bae0cd4bea11d7057
+ERROR:gateway:Failed to process uploaded file with Parquet pipeline: Must specify a fill 'value' or 'method'.
+ERROR:gateway:Fallback loader also failed: Must specify a fill 'value' or 'method'.
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:40088 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/roles/infer
+INFO:backend.inference.role_inference:[RoleInference] Analyzing 6 columns from dataframe
+INFO:backend.inference.role_inference:[RoleInference] unit_id -> user_id (confidence: 0.95)
+INFO:backend.inference.role_inference:[RoleInference] outcome -> y (confidence: 0.95)
+INFO:backend.inference.role_inference:[RoleInference] treatment -> treatment (confidence: 0.98)
+INFO:backend.inference.role_inference:[RoleInference] time -> date (confidence: 0.95)
+INFO:backend.inference.role_inference:[RoleInference] propensity -> log_propensity (confidence: 0.95)
+INFO:backend.inference.role_inference:[RoleInference] weight -> cost (confidence: 0.45)
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Analyzing dataframe for objective
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Detected: medical (confidence: 0.50)
+INFO:backend.inference.objective_detection:[ObjectiveDetection] Hierarchy: causal_inference → human_behavior → medical
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:40090 - "POST /api/roles/infer HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/analyze/comprehensive
+INFO:httpx:HTTP Request: POST http://localhost:8080/api/analyze/comprehensive "HTTP/1.1 500 Internal Server Error"
+ERROR:gateway:Engine call failed (HTTPError): HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+ERROR:gateway:Exception details: HTTPStatusError("Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500")
+ERROR:gateway:Traceback: Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 573, in analyze_comprehensive
+    result = await _call_engine_analyze(forward_payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 430, in _call_engine_analyze
+    r.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:8080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+
+INFO:gateway:Response status: 503
+INFO:     127.0.0.1:37928 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable

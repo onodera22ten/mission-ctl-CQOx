@@ -1,0 +1,311 @@
+# ============================================================================
+# Blue-Green Deployment Services
+# ============================================================================
+# This file defines the services for blue-green deployment strategy.
+# Traffic is switched by updating the service selector.
+
+---
+# Production Service (Traffic Router)
+apiVersion: v1
+kind: Service
+metadata:
+  name: cqox-engine
+  namespace: default
+  labels:
+    app: cqox-engine
+    tier: production
+spec:
+  type: LoadBalancer
+  selector:
+    app: cqox-engine
+    version: blue  # Change to 'green' to switch traffic
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      protocol: TCP
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800  # 3 hours
+
+---
+# Blue Environment Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: cqox-engine-blue
+  namespace: default
+  labels:
+    app: cqox-engine
+    version: blue
+    environment: blue
+spec:
+  type: ClusterIP
+  selector:
+    app: cqox-engine
+    version: blue
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+
+---
+# Green Environment Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: cqox-engine-green
+  namespace: default
+  labels:
+    app: cqox-engine
+    version: green
+    environment: green
+spec:
+  type: ClusterIP
+  selector:
+    app: cqox-engine
+    version: green
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+
+---
+# Blue Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cqox-engine-blue
+  namespace: default
+  labels:
+    app: cqox-engine
+    version: blue
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cqox-engine
+      version: blue
+  template:
+    metadata:
+      labels:
+        app: cqox-engine
+        version: blue
+    spec:
+      containers:
+        - name: engine
+          image: cqox/engine:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ENVIRONMENT
+              value: "blue"
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+---
+# Green Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cqox-engine-green
+  namespace: default
+  labels:
+    app: cqox-engine
+    version: green
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cqox-engine
+      version: green
+  template:
+    metadata:
+      labels:
+        app: cqox-engine
+        version: green
+    spec:
+      containers:
+        - name: engine
+          image: cqox/engine:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ENVIRONMENT
+              value: "green"
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+---
+# Frontend Production Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: cqox-frontend
+  namespace: default
+  labels:
+    app: cqox-frontend
+    tier: production
+spec:
+  type: LoadBalancer
+  selector:
+    app: cqox-frontend
+    version: blue  # Change to 'green' to switch traffic
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000
+      protocol: TCP
+
+---
+# Frontend Blue Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: cqox-frontend-blue
+  namespace: default
+  labels:
+    app: cqox-frontend
+    version: blue
+spec:
+  type: ClusterIP
+  selector:
+    app: cqox-frontend
+    version: blue
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+
+---
+# Frontend Green Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: cqox-frontend-green
+  namespace: default
+  labels:
+    app: cqox-frontend
+    version: green
+spec:
+  type: ClusterIP
+  selector:
+    app: cqox-frontend
+    version: green
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+
+---
+# Frontend Blue Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cqox-frontend-blue
+  namespace: default
+  labels:
+    app: cqox-frontend
+    version: blue
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cqox-frontend
+      version: blue
+  template:
+    metadata:
+      labels:
+        app: cqox-frontend
+        version: blue
+    spec:
+      containers:
+        - name: frontend
+          image: cqox/frontend:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: ENVIRONMENT
+              value: "blue"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+
+---
+# Frontend Green Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cqox-frontend-green
+  namespace: default
+  labels:
+    app: cqox-frontend
+    version: green
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cqox-frontend
+      version: green
+  template:
+    metadata:
+      labels:
+        app: cqox-frontend
+        version: green
+    spec:
+      containers:
+        - name: frontend
+          image: cqox/frontend:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: ENVIRONMENT
+              value: "green"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"

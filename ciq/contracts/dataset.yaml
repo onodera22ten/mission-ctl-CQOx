@@ -1,0 +1,62 @@
+# CQOx Data Contract (Single Source of Truth)
+# Purpose: Define schema, types, constraints for causal inference datasets
+
+# === Role Mapping ===
+id_col: customer_id
+time_col: event_time
+treatment_col: treated
+outcome_col: y
+covariate_cols:
+  - age
+  - gender
+  - rfm_score
+  - prior_7d_spend
+  - web_session_cnt
+
+# === Data Types ===
+types:
+  customer_id: int64
+  event_time: datetime
+  treated: int8  # 0/1
+  y: float64  # continuous or 0/1
+  age: int16
+  gender: category  # ["M", "F", "U"]
+  rfm_score: float32
+  prior_7d_spend: float32
+  web_session_cnt: int16
+
+# === Constraints ===
+constraints:
+  # NOT NULL requirements
+  not_null:
+    - customer_id
+    - event_time
+    - treated
+
+  # Categorical values
+  categories:
+    gender: ["M", "F", "U"]
+
+  # Valid ranges
+  ranges:
+    age: [0, 110]
+    rfm_score: [0.0, 1000.0]
+    prior_7d_spend: [0.0, 1.0e6]
+    web_session_cnt: [0, 10000]
+
+  # Leakage prevention: forbidden column patterns
+  leakage_forbidden_cols:
+    - "future_*"
+    - "*_post"
+    - "*_after"
+    - "outcome_*"
+
+# === Quality Gates ===
+quality_gates:
+  overlap_threshold: 0.6  # Minimum propensity overlap ratio
+  max_missing_rate: 0.3  # Maximum allowed missing rate per column
+  max_smd: 0.1  # Maximum standardized mean difference for balance
+
+# === Metadata ===
+version: "1.0"
+domain: "retail"  # Default domain, can be overridden

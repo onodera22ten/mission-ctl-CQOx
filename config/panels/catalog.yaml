@@ -1,0 +1,314 @@
+# Panel Catalog: 37 Panels × Gating Conditions
+# All domain-agnostic panel definitions with activation gates
+
+panels:
+  # ========== Core 20 (常設) ==========
+
+  ate_bar:
+    name: "ATE Bar with CI"
+    needs: [treatment, y]
+    recommends: []
+    task: causal_estimation
+    priority: 10
+    description: "Average Treatment Effect with confidence intervals"
+
+  ate_density:
+    name: "ATE Density (by group)"
+    needs: [treatment, y]
+    recommends: []
+    task: causal_estimation
+    priority: 11
+
+  cate_hist:
+    name: "CATE Histogram/Density"
+    needs: [treatment, y, features]
+    recommends: []
+    task: heterogeneity
+    priority: 40
+
+  cate_quantile:
+    name: "CATE Quantile Bar + Overall Line"
+    needs: [treatment, y, features]
+    recommends: []
+    task: heterogeneity
+    priority: 41
+
+  top_bottom_subgroups:
+    name: "Top/Bottom Subgroups"
+    needs: [treatment, y]
+    recommends: [features]
+    task: heterogeneity
+    priority: 42
+
+  love_plot:
+    name: "Love Plot (SMD)"
+    needs: [treatment, features]
+    recommends: []
+    task: diagnostics
+    priority: 20
+
+  covariate_correlation:
+    name: "Covariate Correlation Heatmap"
+    needs: [features]
+    recommends: []
+    task: diagnostics
+    priority: 21
+
+  propensity_overlap:
+    name: "Propensity Overlap (log scale)"
+    needs: [treatment]
+    recommends: [log_propensity]
+    task: diagnostics
+    priority: 22
+
+  rosenbaum_gamma:
+    name: "Rosenbaum Γ Curve"
+    needs: [treatment, y]
+    recommends: []
+    task: robustness
+    priority: 30
+
+  evalue_curve:
+    name: "E-value (curve + bar)"
+    needs: [treatment, y]
+    recommends: []
+    task: robustness
+    priority: 31
+
+  prediction_vs_residual:
+    name: "Prediction vs Residual (model validity)"
+    needs: [y, features]
+    recommends: []
+    task: diagnostics
+    priority: 23
+
+  missing_map:
+    name: "Missing Data Map"
+    needs: []
+    recommends: []
+    task: diagnostics
+    priority: 24
+
+  outlier_impact:
+    name: "Outlier Impact (Cook's D style)"
+    needs: [y, features]
+    recommends: []
+    task: diagnostics
+    priority: 25
+
+  tvce_timeseries:
+    name: "Time-Varying ATE (TVCE)"
+    needs: [treatment, y, time]
+    recommends: []
+    task: time_varying
+    priority: 50
+
+  event_study:
+    name: "Event Study (coefficients)"
+    needs: [treatment, y, time]
+    recommends: []
+    task: time_varying
+    priority: 51
+
+  transport_weights:
+    name: "Transport Weights"
+    needs: [treatment, y, domain]
+    recommends: []
+    task: transportability
+    priority: 60
+
+  network_spillover:
+    name: "Network Spillover (pseudo)"
+    needs: [treatment, y]
+    recommends: [cluster_id, neighbor_exposure]
+    task: network
+    priority: 70
+
+  quality_gates_board:
+    name: "Quality Gates Board (pass/fail)"
+    needs: []
+    recommends: []
+    task: diagnostics
+    priority: 1
+
+  cas_radar:
+    name: "CAS Radar (5-axis accountability)"
+    needs: []
+    recommends: []
+    task: diagnostics
+    priority: 2
+
+  cost_effect_curve:
+    name: "Cost-Effect Curve (policy)"
+    needs: [treatment, y]
+    recommends: [cost]
+    task: policy
+    priority: 80
+
+  # ========== Extended 17 (役割があれば出る) ==========
+
+  iv_first_stage:
+    name: "IV First Stage"
+    needs: [treatment, instrument]
+    recommends: []
+    task: iv
+    priority: 61
+
+  iv_second_stage:
+    name: "IV Second Stage"
+    needs: [treatment, y, instrument]
+    recommends: []
+    task: iv
+    priority: 62
+
+  weak_iv_diagnostics:
+    name: "Weak IV Diagnostics (F-stat)"
+    needs: [treatment, instrument]
+    recommends: []
+    task: iv
+    priority: 63
+
+  dose_response:
+    name: "Sequential Treatment (dose-response)"
+    needs: [y, dose]
+    recommends: []
+    task: heterogeneity
+    priority: 43
+
+  threshold_optimization:
+    name: "Threshold Optimization Curve (utility)"
+    needs: [treatment, y]
+    recommends: [cost]
+    task: policy
+    priority: 81
+
+  profit_curve:
+    name: "Profit Curve"
+    needs: [treatment, y, cost]
+    recommends: []
+    task: policy
+    priority: 82
+
+  subgraph_cate:
+    name: "Subgraph CATE (cluster-wise)"
+    needs: [treatment, y, cluster_id]
+    recommends: []
+    task: heterogeneity
+    priority: 44
+
+  prior_vs_posterior:
+    name: "Prior vs Posterior (Bayesian)"
+    needs: [y]
+    recommends: []
+    task: causal_estimation
+    priority: 12
+
+  confounding_sensitivity_heatmap:
+    name: "Confounding Sensitivity Heatmap"
+    needs: [treatment, y]
+    recommends: []
+    task: robustness
+    priority: 32
+
+  counterfactual_panel:
+    name: "Counterfactual Panel (individual examples)"
+    needs: [treatment, y, unit_id]
+    recommends: []
+    task: heterogeneity
+    priority: 45
+
+  importance_shap:
+    name: "Importance (SHAP-like for τ̂)"
+    needs: [treatment, y, features]
+    recommends: []
+    task: heterogeneity
+    priority: 46
+
+  counterfactual_policy_compare:
+    name: "Counterfactual Policy Comparison (Δ profit)"
+    needs: [treatment, y, cost]
+    recommends: []
+    task: policy
+    priority: 83
+
+  transport_validity:
+    name: "Transport Validity Diagnostics (KS/PS)"
+    needs: [domain, features]
+    recommends: []
+    task: transportability
+    priority: 61
+
+  stratified_ate:
+    name: "Stratified ATE"
+    needs: [treatment, y, strata]
+    recommends: []
+    task: causal_estimation
+    priority: 13
+
+  sequential_event_study:
+    name: "Sequential Event Study (±k periods)"
+    needs: [treatment, y, time]
+    recommends: []
+    task: time_varying
+    priority: 52
+
+  missing_mechanism:
+    name: "Missing Mechanism Test (MCAR/MAR hints)"
+    needs: []
+    recommends: []
+    task: diagnostics
+    priority: 26
+
+  fairness_counterfactual:
+    name: "Counterfactual Fairness Indicators"
+    needs: [treatment, y, features]
+    recommends: []
+    task: heterogeneity
+    priority: 47
+
+# Task definitions (for tab organization)
+tasks:
+  diagnostics:
+    name: "診断"
+    description: "Data quality, balance, overlap, missing data"
+    panels: [quality_gates_board, cas_radar, love_plot, covariate_correlation, propensity_overlap, prediction_vs_residual, missing_map, outlier_impact, missing_mechanism]
+
+  causal_estimation:
+    name: "因果推定"
+    description: "ATE/ATT/ATC, CATE, DR/OPE estimators"
+    panels: [ate_bar, ate_density, prior_vs_posterior, stratified_ate]
+
+  heterogeneity:
+    name: "ヘテロ効果探索"
+    description: "CATE distribution, top/bottom subgroups, causal forest"
+    panels: [cate_hist, cate_quantile, top_bottom_subgroups, dose_response, subgraph_cate, counterfactual_panel, importance_shap, fairness_counterfactual]
+
+  policy:
+    name: "方策最適化"
+    description: "Uplift/utility optimization, threshold, revenue curve"
+    panels: [cost_effect_curve, threshold_optimization, profit_curve, counterfactual_policy_compare]
+
+  time_varying:
+    name: "時間変化 (TVCE/DID/ES)"
+    description: "Parallel trends, event study, sequential ATE"
+    panels: [tvce_timeseries, event_study, sequential_event_study]
+
+  iv:
+    name: "IV"
+    description: "First/second stage, weak IV diagnostics"
+    panels: [iv_first_stage, iv_second_stage, weak_iv_diagnostics]
+
+  robustness:
+    name: "頑健性"
+    description: "Rosenbaum Γ, E-value, confounding sensitivity"
+    panels: [rosenbaum_gamma, evalue_curve, confounding_sensitivity_heatmap]
+
+  network:
+    name: "ネットワーク"
+    description: "Neighbor exposure vs own treatment, interference"
+    panels: [network_spillover]
+
+  transportability:
+    name: "転移/運搬性"
+    description: "Transport weights, external validity"
+    panels: [transport_weights, transport_validity]

@@ -1,0 +1,9 @@
+WARNING:gateway:[observability][gateway] tracing disabled: No module named 'opentelemetry.exporter.otlp'
+INFO:     Started server process [203745]
+INFO:     Waiting for application startup.
+INFO:gateway:[Gateway] Starting up...
+INFO:     Application startup complete.
+ERROR:    [Errno 98] error while attempting to bind on address ('0.0.0.0', 8081): [errno 98] address already in use
+INFO:     Waiting for application shutdown.
+INFO:gateway:[Gateway] Shutting down gracefully...
+INFO:     Application shutdown complete.

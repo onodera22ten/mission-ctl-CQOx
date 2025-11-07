@@ -1,0 +1,139 @@
+{
+  "metadata": {
+    "job_id": "job_9501facf",
+    "dataset_id": null,
+    "created_at": "2025-11-04T07:48:08.640777",
+    "cqox_version": "1.0.0",
+    "python_version": "3.11"
+  },
+  "dictionary_version": {
+    "columns_version": "1.0.0",
+    "units_version": "1.0.0",
+    "validators_version": "1.0.0",
+    "columns_hash": "d809f71e",
+    "units_hash": "3c8aeb83",
+    "validators_hash": "f2ed05b3",
+    "timestamp": "2025-11-04T07:48:08.640893"
+  },
+  "mapping_decisions": [],
+  "transformations": [],
+  "random_seeds": [
+    {
+      "seed": 1305897280,
+      "scope": "inference",
+      "algorithm": "numpy+random",
+      "timestamp": "2025-11-04T07:48:08.640934"
+    }
+  ],
+  "validations": [
+    {
+      "check_type": "leakage",
+      "passed": false,
+      "severity": "critical",
+      "details": {
+        "has_leakage": "True",
+        "suspicious_columns": "['revenue', 'profit', 'welfare', 'post']",
+        "correlations": "{'cluster_id': 0.005932867187738337, 'time_period': 0.16458627515583663, 'post': 0.1327193789410352, 'y0': 0.6155947661853582, 'y_cf_low': 0.5837720427365903, 'y_cf_high': 0.6136292944905102, 'propensity_score': 0.38705994492447265, 'age': 0.22520938020858325, 'income': 0.3279178799267776, 'credit_score': 0.008516478289398687, 'running_variable': 0.05621491393541625, 'risk_score': 0.08839966953875876, 'engagement_score': 0.45766790649853983, 'z': 0.06278151220879728, 'w_neg': 0.0067228802033100395, 'z_neg': 0.010393327709568167, 'neighbor_exposure': 0.04782783613132111, 'revenue': 0.9974196667575355, 'profit': 0.9922101660082369, 'roi': 0.25465008888834073, 'welfare': 0.9973076182630541, 'cate_true': 0.5972196084500246, 'unmeasured_confounder': 0.024810316622235786, 'hidden_confounder_strength': 0.016663320570081214, 'time_varying_conf': 0.13604594717904736}",
+        "severity": "critical",
+        "recommendations": "[\"Remove 'revenue' (correlation=0.997 with outcome, likely leakage)\", \"Remove 'profit' (correlation=0.992 with outcome, likely leakage)\", \"Remove 'welfare' (correlation=0.997 with outcome, likely leakage)\", \"Suspicious temporal name 'post' - verify it doesn't contain future info\"]"
+      },
+      "recommendations": [
+        "Remove 'revenue' (correlation=0.997 with outcome, likely leakage)",
+        "Remove 'profit' (correlation=0.992 with outcome, likely leakage)",
+        "Remove 'welfare' (correlation=0.997 with outcome, likely leakage)",
+        "Suspicious temporal name 'post' - verify it doesn't contain future info"
+      ],
+      "timestamp": "2025-11-04T07:48:08.733194"
+    },
+    {
+      "check_type": "vif",
+      "passed": true,
+      "severity": "warning",
+      "details": {
+        "has_multicollinearity": "True",
+        "vif_scores": "{'cluster_id': 1.005125627399476, 'time_period': 999, 'post': 6.485959204250152, 'y0': 999, 'y_cf_low': 7.085952005113231, 'y_cf_high': 26.34140021941921, 'propensity_score': 5.1503551299664245, 'age': 999, 'income': 999, 'credit_score': 1.0042104492804387, 'running_variable': 1.0107348234012246, 'risk_score': 999, 'engagement_score': 999, 'z': 2.510026316539759, 'w_neg': 1.0035347850998408, 'z_neg': 1.0026287346814262, 'neighbor_exposure': 999, 'revenue': 141.99754838346985, 'profit': 218.81525354861003, 'roi': 1.2767336855413804, 'welfare': 181.89413792722337, 'cate_true': 999, 'unmeasured_confounder': 1.0050694526065385, 'hidden_confounder_strength': 1.0026971142893943, 'time_varying_conf': 3.8266586059534227}",
+        "problematic_columns": "['time_period', 'y0', 'y_cf_high', 'age', 'income', 'risk_score', 'engagement_score', 'neighbor_exposure', 'revenue', 'profit', 'welfare', 'cate_true']",
+        "severity": "warning",
+        "recommendations": "[\"Remove or combine 'time_period' (VIF=999.0, highly collinear)\", \"Remove or combine 'y0' (VIF=999.0, highly collinear)\", \"Remove or combine 'y_cf_high' (VIF=26.3, highly collinear)\", \"Remove or combine 'age' (VIF=999.0, highly collinear)\", \"Remove or combine 'income' (VIF=999.0, highly collinear)\", \"Remove or combine 'risk_score' (VIF=999.0, highly collinear)\", \"Remove or combine 'engagement_score' (VIF=999.0, highly collinear)\", \"Remove or combine 'neighbor_exposure' (VIF=999.0, highly collinear)\", \"Remove or combine 'revenue' (VIF=142.0, highly collinear)\", \"Remove or combine 'profit' (VIF=218.8, highly collinear)\", \"Remove or combine 'welfare' (VIF=181.9, highly collinear)\", \"Remove or combine 'cate_true' (VIF=999.0, highly collinear)\"]"
+      },
+      "recommendations": [
+        "Remove or combine 'time_period' (VIF=999.0, highly collinear)",
+        "Remove or combine 'y0' (VIF=999.0, highly collinear)",
+        "Remove or combine 'y_cf_high' (VIF=26.3, highly collinear)",
+        "Remove or combine 'age' (VIF=999.0, highly collinear)",
+        "Remove or combine 'income' (VIF=999.0, highly collinear)",
+        "Remove or combine 'risk_score' (VIF=999.0, highly collinear)",
+        "Remove or combine 'engagement_score' (VIF=999.0, highly collinear)",
+        "Remove or combine 'neighbor_exposure' (VIF=999.0, highly collinear)",
+        "Remove or combine 'revenue' (VIF=142.0, highly collinear)",
+        "Remove or combine 'profit' (VIF=218.8, highly collinear)",
+        "Remove or combine 'welfare' (VIF=181.9, highly collinear)",
+        "Remove or combine 'cate_true' (VIF=999.0, highly collinear)"
+      ],
+      "timestamp": "2025-11-04T07:48:08.733284"
+    },
+    {
+      "check_type": "missing",
+      "passed": true,
+      "severity": "ok",
+      "details": {
+        "has_issues": "False",
+        "missing_rates": "{'user_id': 0.0, 'cluster_id': 0.0, 'date': 0.0, 'time_period': 0.0, 'post': 0.0, 'treatment': 0.0, 'y': 0.0, 'y0': 0.0, 'y_cf_low': 0.0, 'y_cf_high': 0.0, 'cost': 0.0, 'propensity_score': 0.0, 'log_propensity': 0.0, 'age': 0.0, 'income': 0.0, 'credit_score': 0.0, 'running_variable': 0.0, 'risk_score': 0.0, 'engagement_score': 0.0, 'education': 0.0, 'gender': 0.0, 'region': 0.0, 'z': 0.0, 'domain': 0.0, 'w_neg': 0.0, 'z_neg': 0.0, 'neighbor_exposure': 0.0, 'revenue': 0.0, 'profit': 0.0, 'roi': 0.0, 'welfare': 0.0, 'cate_true': 0.0, 'unmeasured_confounder': 0.0, 'hidden_confounder_strength': 0.0, 'time_varying_conf': 0.0}",
+        "missing_patterns": "{}",
+        "mechanism": "MCAR",
+        "severity": "ok",
+        "recommendations": "['No significant missing data']"
+      },
+      "recommendations": [
+        "No significant missing data"
+      ],
+      "timestamp": "2025-11-04T07:48:08.733303"
+    },
+    {
+      "check_type": "balance",
+      "passed": true,
+      "severity": "warning",
+      "details": {
+        "is_balanced": "False",
+        "smd_scores": "{'cluster_id': 0.015722740779784153, 'time_period': 0.09293023572872629, 'post': 0.08277180747935398, 'y0': 0.2198163205011571, 'y_cf_low': 0.16470182483503426, 'y_cf_high': 0.1658312121178815, 'propensity_score': 0.42200945603484613, 'age': 0.15237801118138009, 'income': 0.22400721507097557, 'credit_score': 0.005376428204840587, 'running_variable': 0.18277862655476584, 'risk_score': 0.08284463141119537, 'engagement_score': 0.011269369451636526, 'z': 0.18175094096764985, 'w_neg': 0.023102105099446255, 'z_neg': 0.01698018106749957, 'neighbor_exposure': 0.10066295941704181, 'revenue': 2.3246918370000094, 'profit': 2.084265529625595, 'roi': 0.8979676713138238, 'welfare': 2.161130963126631, 'cate_true': 0.14719531466331598, 'unmeasured_confounder': 0.06106453921895476, 'hidden_confounder_strength': 0.01856829728371344, 'time_varying_conf': 0.10527583996057821}",
+        "imbalanced_columns": "['y0', 'y_cf_low', 'y_cf_high', 'propensity_score', 'age', 'income', 'running_variable', 'z', 'neighbor_exposure', 'revenue', 'profit', 'roi', 'welfare', 'cate_true', 'time_varying_conf']",
+        "severity": "warning",
+        "recommendations": "[\"Adjust for 'y0' (SMD=0.220, imbalanced)\", \"Adjust for 'y_cf_low' (SMD=0.165, imbalanced)\", \"Adjust for 'y_cf_high' (SMD=0.166, imbalanced)\", \"Adjust for 'propensity_score' (SMD=0.422, imbalanced)\", \"Adjust for 'age' (SMD=0.152, imbalanced)\", \"Adjust for 'income' (SMD=0.224, imbalanced)\", \"Adjust for 'running_variable' (SMD=0.183, imbalanced)\", \"Adjust for 'z' (SMD=0.182, imbalanced)\", \"Adjust for 'neighbor_exposure' (SMD=0.101, imbalanced)\", \"Adjust for 'revenue' (SMD=2.325, imbalanced)\", \"Adjust for 'profit' (SMD=2.084, imbalanced)\", \"Adjust for 'roi' (SMD=0.898, imbalanced)\", \"Adjust for 'welfare' (SMD=2.161, imbalanced)\", \"Adjust for 'cate_true' (SMD=0.147, imbalanced)\", \"Adjust for 'time_varying_conf' (SMD=0.105, imbalanced)\"]"
+      },
+      "recommendations": [
+        "Adjust for 'y0' (SMD=0.220, imbalanced)",
+        "Adjust for 'y_cf_low' (SMD=0.165, imbalanced)",
+        "Adjust for 'y_cf_high' (SMD=0.166, imbalanced)",
+        "Adjust for 'propensity_score' (SMD=0.422, imbalanced)",
+        "Adjust for 'age' (SMD=0.152, imbalanced)",
+        "Adjust for 'income' (SMD=0.224, imbalanced)",
+        "Adjust for 'running_variable' (SMD=0.183, imbalanced)",
+        "Adjust for 'z' (SMD=0.182, imbalanced)",
+        "Adjust for 'neighbor_exposure' (SMD=0.101, imbalanced)",
+        "Adjust for 'revenue' (SMD=2.325, imbalanced)",
+        "Adjust for 'profit' (SMD=2.084, imbalanced)",
+        "Adjust for 'roi' (SMD=0.898, imbalanced)",
+        "Adjust for 'welfare' (SMD=2.161, imbalanced)",
+        "Adjust for 'cate_true' (SMD=0.147, imbalanced)",
+        "Adjust for 'time_varying_conf' (SMD=0.105, imbalanced)"
+      ],
+      "timestamp": "2025-11-04T07:48:08.733334"
+    },
+    {
+      "check_type": "overlap",
+      "passed": true,
+      "severity": "ok",
+      "details": {
+        "has_overlap": "True",
+        "propensity_range": "(0.0, 1.0)",
+        "trimmed_fraction": "0.0",
+        "severity": "ok",
+        "recommendations": "['No propensity scores provided - skipping overlap check']"
+      },
+      "recommendations": [
+        "No propensity scores provided - skipping overlap check"
+      ],
+      "timestamp": "2025-11-04T07:48:08.733341"
+    }
+  ]
+}

@@ -1,0 +1,293 @@
+{
+  "study_metadata": {
+    "study_id": "TRIAL-2024-001",
+    "study_name": "Hypertension Drug Efficacy Trial",
+    "principal_investigator": "Dr. Sarah Johnson",
+    "start_date": "2023-01-15",
+    "end_date": "2024-06-30",
+    "randomization_method": "Block randomization",
+    "blinding": "Double-blind"
+  },
+  "patient_records": [
+    {
+      "patient_id": "P001",
+      "enrollment_date": "2023-01-20",
+      "demographics": {
+        "age": "45-54",
+        "gender": "Male",
+        "race": "Caucasian",
+        "bmi_category": "Overweight"
+      },
+      "baseline_measurements": {
+        "systolic_bp": "148mmHg",
+        "diastolic_bp": "92mmHg",
+        "heart_rate": 78,
+        "cholesterol_total": "220mg/dL",
+        "has_diabetes": "No"
+      },
+      "treatment_assignment": "DrugA",
+      "follow_up_visits": [
+        {"week": 4, "systolic_bp": "142mmHg", "diastolic_bp": "88mmHg", "adverse_events": null},
+        {"week": 8, "systolic_bp": "136mmHg", "diastolic_bp": "84mmHg", "adverse_events": "Mild headache"},
+        {"week": 12, "systolic_bp": "132mmHg", "diastolic_bp": "82mmHg", "adverse_events": null}
+      ],
+      "final_outcome": {
+        "achieved_target_bp": "Yes",
+        "systolic_reduction": 16,
+        "side_effects_severity": "Mild"
+      }
+    },
+    {
+      "patient_id": "P002",
+      "enrollment_date": "2023-01-22",
+      "demographics": {
+        "age": "55-64",
+        "gender": "Female",
+        "race": "African American",
+        "bmi_category": "Obese"
+      },
+      "baseline_measurements": {
+        "systolic_bp": "156mmHg",
+        "diastolic_bp": "96mmHg",
+        "heart_rate": 82,
+        "cholesterol_total": "240mg/dL",
+        "has_diabetes": "Yes"
+      },
+      "treatment_assignment": "Placebo",
+      "follow_up_visits": [
+        {"week": 4, "systolic_bp": "154mmHg", "diastolic_bp": "95mmHg", "adverse_events": null},
+        {"week": 8, "systolic_bp": "152mmHg", "diastolic_bp": "94mmHg", "adverse_events": null},
+        {"week": 12, "systolic_bp": "150mmHg", "diastolic_bp": "93mmHg", "adverse_events": null}
+      ],
+      "final_outcome": {
+        "achieved_target_bp": "No",
+        "systolic_reduction": 6,
+        "side_effects_severity": "None"
+      }
+    },
+    {
+      "patient_id": "P003",
+      "enrollment_date": "2023-01-25",
+      "demographics": {
+        "age": "35-44",
+        "gender": "Male",
+        "race": "Hispanic",
+        "bmi_category": "Normal"
+      },
+      "baseline_measurements": {
+        "systolic_bp": "145mmHg",
+        "diastolic_bp": "90mmHg",
+        "heart_rate": 72,
+        "cholesterol_total": "200mg/dL",
+        "has_diabetes": "No"
+      },
+      "treatment_assignment": "DrugA",
+      "follow_up_visits": [
+        {"week": 4, "systolic_bp": "138mmHg", "diastolic_bp": "86mmHg", "adverse_events": null},
+        {"week": 8, "systolic_bp": "130mmHg", "diastolic_bp": "82mmHg", "adverse_events": null},
+        {"week": 12, "systolic_bp": "128mmHg", "diastolic_bp": "80mmHg", "adverse_events": null}
+      ],
+      "final_outcome": {
+        "achieved_target_bp": "Yes",
+        "systolic_reduction": 17,
+        "side_effects_severity": "None"
+      }
+    },
+    {
+      "patient_id": "P004",
+      "enrollment_date": "2023-01-28",
+      "demographics": {
+        "age": "65-74",
+        "gender": "Female",
+        "race": "Asian",
+        "bmi_category": "Normal"
+      },
+      "baseline_measurements": {
+        "systolic_bp": "160mmHg",
+        "diastolic_bp": "98mmHg",
+        "heart_rate": 68,
+        "cholesterol_total": "Missing",
+        "has_diabetes": "Yes"
+      },
+      "treatment_assignment": "Placebo",
+      "follow_up_visits": [
+        {"week": 4, "systolic_bp": "158mmHg", "diastolic_bp": "97mmHg", "adverse_events": null},
+        {"week": 8, "systolic_bp": null, "diastolic_bp": null, "adverse_events": "Withdrew from study"},
+        {"week": 12, "systolic_bp": null, "diastolic_bp": null, "adverse_events": "Withdrew from study"}
+      ],
+      "final_outcome": {
+        "achieved_target_bp": "Unknown",
+        "systolic_reduction": null,
+        "side_effects_severity": "N/A"
+      }
+    },
+    {
+      "patient_id": "P005",
+      "enrollment_date": "2023-02-01",
+      "demographics": {
+        "age": "45-54",
+        "gender": "Male",
+        "race": "Caucasian",
+        "bmi_category": "Overweight"
+      },
+      "baseline_measurements": {
+        "systolic_bp": "150mmHg",
+        "diastolic_bp": "94mmHg",
+        "heart_rate": 80,
+        "cholesterol_total": "230mg/dL",
+        "has_diabetes": "No"
+      },
+      "treatment_assignment": "DrugA",
+      "follow_up_visits": [
+        {"week": 4, "systolic_bp": "144mmHg", "diastolic_bp": "90mmHg", "adverse_events": "Dizziness"},
+        {"week": 8, "systolic_bp": "135mmHg", "diastolic_bp": "85mmHg", "adverse_events": null},
+        {"week": 12, "systolic_bp": "130mmHg", "diastolic_bp": "82mmHg", "adverse_events": null}
+      ],
+      "final_outcome": {
+        "achieved_target_bp": "Yes",
+        "systolic_reduction": 20,
+        "side_effects_severity": "Mild"
+      }
+    },
+    {
+      "patient_id": "P006",
+      "enrollment_date": "2023-02-05",
+      "demographics": {
+        "age": "55-64",
+        "gender": "Female",
+        "race": "African American",
+        "bmi_category": "Obese"
+      },
+      "baseline_measurements": {
+        "systolic_bp": "162mmHg",
+        "diastolic_bp": "100mmHg",
+        "heart_rate": 85,
+        "cholesterol_total": "250mg/dL",
+        "has_diabetes": "Yes"
+      },
+      "treatment_assignment": "Placebo",
+      "follow_up_visits": [
+        {"week": 4, "systolic_bp": "160mmHg", "diastolic_bp": "99mmHg", "adverse_events": null},
+        {"week": 8, "systolic_bp": "159mmHg", "diastolic_bp": "98mmHg", "adverse_events": null},
+        {"week": 12, "systolic_bp": "157mmHg", "diastolic_bp": "97mmHg", "adverse_events": null}
+      ],
+      "final_outcome": {
+        "achieved_target_bp": "No",
+        "systolic_reduction": 5,
+        "side_effects_severity": "None"
+      }
+    },
+    {
+      "patient_id": "P007",
+      "enrollment_date": "2023-02-08",
+      "demographics": {
+        "age": "35-44",
+        "gender": "Male",
+        "race": "Hispanic",
+        "bmi_category": "Normal"
+      },
+      "baseline_measurements": {
+        "systolic_bp": "146mmHg",
+        "diastolic_bp": "91mmHg",
+        "heart_rate": 74,
+        "cholesterol_total": "210mg/dL",
+        "has_diabetes": "No"
+      },
+      "treatment_assignment": "DrugA",
+      "follow_up_visits": [
+        {"week": 4, "systolic_bp": "140mmHg", "diastolic_bp": "87mmHg", "adverse_events": null},
+        {"week": 8, "systolic_bp": "133mmHg", "diastolic_bp": "83mmHg", "adverse_events": null},
+        {"week": 12, "systolic_bp": "129mmHg", "diastolic_bp": "81mmHg", "adverse_events": null}
+      ],
+      "final_outcome": {
+        "achieved_target_bp": "Yes",
+        "systolic_reduction": 17,
+        "side_effects_severity": "None"
+      }
+    },
+    {
+      "patient_id": "P008",
+      "enrollment_date": "2023-02-12",
+      "demographics": {
+        "age": "65-74",
+        "gender": "Female",
+        "race": "Caucasian",
+        "bmi_category": "Overweight"
+      },
+      "baseline_measurements": {
+        "systolic_bp": "155mmHg",
+        "diastolic_bp": "95mmHg",
+        "heart_rate": 70,
+        "cholesterol_total": "235mg/dL",
+        "has_diabetes": "No"
+      },
+      "treatment_assignment": "Placebo",
+      "follow_up_visits": [
+        {"week": 4, "systolic_bp": "153mmHg", "diastolic_bp": "94mmHg", "adverse_events": null},
+        {"week": 8, "systolic_bp": "151mmHg", "diastolic_bp": "93mmHg", "adverse_events": null},
+        {"week": 12, "systolic_bp": "149mmHg", "diastolic_bp": "92mmHg", "adverse_events": null}
+      ],
+      "final_outcome": {
+        "achieved_target_bp": "No",
+        "systolic_reduction": 6,
+        "side_effects_severity": "None"
+      }
+    },
+    {
+      "patient_id": "P009",
+      "enrollment_date": "2023-02-15",
+      "demographics": {
+        "age": "45-54",
+        "gender": "Male",
+        "race": "Asian",
+        "bmi_category": "Normal"
+      },
+      "baseline_measurements": {
+        "systolic_bp": "147mmHg",
+        "diastolic_bp": "92mmHg",
+        "heart_rate": 76,
+        "cholesterol_total": "205mg/dL",
+        "has_diabetes": "No"
+      },
+      "treatment_assignment": "DrugA",
+      "follow_up_visits": [
+        {"week": 4, "systolic_bp": "141mmHg", "diastolic_bp": "88mmHg", "adverse_events": "Nausea"},
+        {"week": 8, "systolic_bp": "134mmHg", "diastolic_bp": "84mmHg", "adverse_events": null},
+        {"week": 12, "systolic_bp": "131mmHg", "diastolic_bp": "82mmHg", "adverse_events": null}
+      ],
+      "final_outcome": {
+        "achieved_target_bp": "Yes",
+        "systolic_reduction": 16,
+        "side_effects_severity": "Mild"
+      }
+    },
+    {
+      "patient_id": "P010",
+      "enrollment_date": "2023-02-18",
+      "demographics": {
+        "age": "55-64",
+        "gender": "Female",
+        "race": "Hispanic",
+        "bmi_category": "Obese"
+      },
+      "baseline_measurements": {
+        "systolic_bp": "164mmHg",
+        "diastolic_bp": "102mmHg",
+        "heart_rate": 88,
+        "cholesterol_total": "Missing",
+        "has_diabetes": "Yes"
+      },
+      "treatment_assignment": "Placebo",
+      "follow_up_visits": [
+        {"week": 4, "systolic_bp": "162mmHg", "diastolic_bp": "101mmHg", "adverse_events": null},
+        {"week": 8, "systolic_bp": "160mmHg", "diastolic_bp": "100mmHg", "adverse_events": null},
+        {"week": 12, "systolic_bp": "158mmHg", "diastolic_bp": "99mmHg", "adverse_events": null}
+      ],
+      "final_outcome": {
+        "achieved_target_bp": "No",
+        "systolic_reduction": 6,
+        "side_effects_severity": "None"
+      }
+    }
+  ]
+}

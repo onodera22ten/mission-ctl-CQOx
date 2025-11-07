@@ -1,0 +1,244 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: cqox-engine-rollout
+  namespace: default
+  labels:
+    app: cqox-engine
+    deployment-strategy: progressive
+spec:
+  replicas: 5
+
+  # Rollout strategy: Canary with automated promotion
+  strategy:
+    canary:
+      # Canary service (for testing new version)
+      canaryService: cqox-engine-canary
+      # Stable service (for production traffic)
+      stableService: cqox-engine-stable
+
+      # Traffic management (requires Istio or other service mesh)
+      trafficRouting:
+        istio:
+          virtualService:
+            name: cqox-engine-vsvc
+            routes:
+              - primary
+
+      # Canary deployment steps
+      steps:
+        # Step 1: Deploy canary, 10% traffic
+        - setWeight: 10
+        - pause: {duration: 5m}  # Observe for 5 minutes
+
+        # Step 2: Increase to 25%
+        - setWeight: 25
+        - pause: {duration: 5m}
+
+        # Step 3: Increase to 50%
+        - setWeight: 50
+        - pause: {duration: 10m}  # Longer observation
+
+        # Step 4: Increase to 75%
+        - setWeight: 75
+        - pause: {duration: 5m}
+
+        # Step 5: Full rollout
+        - setWeight: 100
+
+      # Automated analysis during rollout
+      analysis:
+        templates:
+          - templateName: cqox-engine-analysis
+        startingStep: 1  # Start analysis from step 1
+        args:
+          - name: service-name
+            value: cqox-engine
+
+      # Anti-affinity to spread replicas
+      antiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app: cqox-engine
+            topologyKey: kubernetes.io/hostname
+
+  # Rollback window
+  revisionHistoryLimit: 5
+
+  # Pod template
+  selector:
+    matchLabels:
+      app: cqox-engine
+
+  template:
+    metadata:
+      labels:
+        app: cqox-engine
+    spec:
+      containers:
+        - name: engine
+          image: cqox/engine:latest
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+
+          # Health checks
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+
+          env:
+            - name: ENVIRONMENT
+              value: "production"
+            - name: DEPLOYMENT_STRATEGY
+              value: "canary"
+
+---
+# Analysis Template for automated rollout decisions
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: cqox-engine-analysis
+  namespace: default
+spec:
+  args:
+    - name: service-name
+
+  metrics:
+    # Metric 1: Success rate (from Prometheus)
+    - name: success-rate
+      interval: 30s
+      successCondition: result >= 0.95  # 95% success rate
+      failureLimit: 3
+      provider:
+        prometheus:
+          address: http://prometheus.default.svc:9090
+          query: |
+            sum(rate(http_requests_total{service="{{args.service-name}}",status=~"2.."}[2m]))
+            /
+            sum(rate(http_requests_total{service="{{args.service-name}}"}[2m]))
+
+    # Metric 2: P99 latency
+    - name: latency-p99
+      interval: 30s
+      successCondition: result <= 2000  # < 2 seconds
+      failureLimit: 3
+      provider:
+        prometheus:
+          address: http://prometheus.default.svc:9090
+          query: |
+            histogram_quantile(0.99,
+              sum(rate(http_request_duration_seconds_bucket{service="{{args.service-name}}"}[2m])) by (le)
+            ) * 1000
+
+    # Metric 3: Error rate
+    - name: error-rate
+      interval: 30s
+      successCondition: result < 0.01  # < 1% error rate
+      failureLimit: 3
+      provider:
+        prometheus:
+          address: http://prometheus.default.svc:9090
+          query: |
+            sum(rate(http_requests_total{service="{{args.service-name}}",status=~"5.."}[2m]))
+            /
+            sum(rate(http_requests_total{service="{{args.service-name}}"}[2m]))
+
+    # Metric 4: CPU usage
+    - name: cpu-usage
+      interval: 30s
+      successCondition: result < 80  # < 80% CPU
+      failureLimit: 3
+      provider:
+        prometheus:
+          address: http://prometheus.default.svc:9090
+          query: |
+            sum(rate(container_cpu_usage_seconds_total{pod=~"{{args.service-name}}-.*"}[2m])) by (pod)
+            /
+            sum(container_spec_cpu_quota{pod=~"{{args.service-name}}-.*"}) by (pod)
+            * 100
+
+---
+# Canary Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: cqox-engine-canary
+  namespace: default
+  labels:
+    app: cqox-engine
+    role: canary
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http
+  selector:
+    app: cqox-engine
+
+---
+# Stable Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: cqox-engine-stable
+  namespace: default
+  labels:
+    app: cqox-engine
+    role: stable
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http
+  selector:
+    app: cqox-engine
+
+---
+# Istio VirtualService for traffic splitting
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: cqox-engine-vsvc
+  namespace: default
+spec:
+  hosts:
+    - cqox-engine
+  http:
+    - name: primary
+      route:
+        - destination:
+            host: cqox-engine-stable
+          weight: 100
+        - destination:
+            host: cqox-engine-canary
+          weight: 0

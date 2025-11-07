@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head><title>CQOx UI Test</title></head>
+<body style="background:#000;color:#fff;padding:20px;">
+<h1>CQOx 可視化テスト</h1>
+<div id="images"></div>
+<script>
+const figures = [
+  'ate_estimate.png',
+  'treatment_vs_control.png',
+  '3d_outcome_cost_treatment.png',
+  '3d_counterfactual_surface.png',
+  'counterfactual_parameter_adjustment.png'
+];
+const div = document.getElementById('images');
+figures.forEach((f, i) => {
+  const img = document.createElement('img');
+  img.src = 'http://localhost:8081/reports/figures/' + f;
+  img.style.width = '400px';
+  img.style.margin = '10px';
+  img.style.border = '2px solid #fff';
+  img.onerror = () => img.style.display = 'none';
+  const h3 = document.createElement('h3');
+  h3.textContent = (i+1) + '. ' + f;
+  div.appendChild(h3);
+  div.appendChild(img);
+});
+</script>
+</body>
+</html>

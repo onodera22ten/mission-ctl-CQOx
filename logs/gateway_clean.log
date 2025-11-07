@@ -1,0 +1,40 @@
+INFO:     Will watch for changes in these directories: ['/home/hirokionodera/cqox-complete (Copy 2)']
+INFO:     Uvicorn running on http://0.0.0.0:8081 (Press CTRL+C to quit)
+INFO:     Started reloader process [210954] using StatReload
+WARNING:gateway:[observability][gateway] tracing disabled: No module named 'opentelemetry.exporter.otlp'
+INFO:     Started server process [210995]
+INFO:     Waiting for application startup.
+INFO:gateway:[Gateway] Starting up...
+INFO:     Application startup complete.
+INFO:gateway:Incoming request: GET /api/health
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:54094 - "GET /api/health HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/upload
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Processing 901d6a01423f4da0b045109cb47244c8_test_simple.csv for dataset 901d6a01423f4da0b045109cb47244c8 (skip_validation=True)
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Loaded 10 rows, 5 columns
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Schema-free mode: skipping validation and causal prep
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Packet created successfully: /home/hirokionodera/cqox-complete (Copy 2)/data/packets/901d6a01423f4da0b045109cb47244c8
+ERROR:gateway:Failed to process uploaded file with Parquet pipeline: Must specify a fill 'value' or 'method'.
+ERROR:gateway:Fallback loader also failed: Must specify a fill 'value' or 'method'.
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:48250 - "POST /api/upload HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'scripts/generate_realistic_test_data.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:gateway:[Gateway] Shutting down gracefully...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [210995]
+WARNING:gateway:[observability][gateway] tracing disabled: No module named 'opentelemetry.exporter.otlp'
+INFO:     Started server process [213212]
+INFO:     Waiting for application startup.
+INFO:gateway:[Gateway] Starting up...
+INFO:     Application startup complete.
+INFO:gateway:Incoming request: GET /api/health
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:41914 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:gateway:[Gateway] Shutting down gracefully...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [213212]
+INFO:     Stopping reloader process [210954]

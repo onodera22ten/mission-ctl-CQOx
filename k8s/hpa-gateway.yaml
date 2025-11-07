@@ -1,0 +1,73 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: cqox-gateway-hpa
+  namespace: default
+  labels:
+    app: cqox-gateway
+    component: autoscaling
+    tier: api
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cqox-gateway
+  minReplicas: 3  # Gateway needs higher minimum for high availability
+  maxReplicas: 20
+  metrics:
+    # CPU-based scaling
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+
+    # Memory-based scaling
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 70
+
+    # Request rate per pod
+    - type: Pods
+      pods:
+        metric:
+          name: http_requests_per_second
+        target:
+          type: AverageValue
+          averageValue: "2000"  # Gateway handles more traffic
+
+    # Request latency (p99)
+    - type: Pods
+      pods:
+        metric:
+          name: http_request_duration_p99
+        target:
+          type: AverageValue
+          averageValue: "500m"  # Scale if p99 latency > 500ms
+
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 600  # 10分の安定化（APIゲートウェイは慎重に）
+      policies:
+        - type: Percent
+          value: 25  # 最大25%削減
+          periodSeconds: 120
+        - type: Pods
+          value: 1  # または1 Podずつ
+          periodSeconds: 120
+      selectPolicy: Min
+
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 15  # 15秒で倍増可能
+        - type: Pods
+          value: 5
+          periodSeconds: 15
+      selectPolicy: Max

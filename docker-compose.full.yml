@@ -1,0 +1,231 @@
+version: '3.8'
+
+services:
+  # ========================================
+  # Core Application Services
+  # ========================================
+
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile.gateway
+    container_name: cqox-gateway
+    ports:
+      - "8082:8080"
+    volumes:
+      - "./backend:/app/backend:z"
+      - "./data:/app/data:z"
+      - "./reports:/app/reports:z"
+    environment:
+      - ENGINE_URL=http://engine:8080
+      - REDIS_URL=redis://redis:6379
+      - POSTGRES_URL=postgresql://cqox:cqox_password@postgres:5432/cqox_db
+      - JAEGER_ENDPOINT=jaeger:6831
+      - OTEL_CONSOLE=false
+    depends_on:
+      - engine
+      - redis
+      - postgres
+      - jaeger
+    networks:
+      - cqox-network
+    restart: unless-stopped
+
+  engine:
+    build:
+      context: .
+      dockerfile: Dockerfile.engine
+    container_name: cqox-engine
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./backend:/app/backend:z"
+      - "./data:/app/data:z"
+      - "./reports:/app/reports:z"
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - POSTGRES_URL=postgresql://cqox:cqox_password@postgres:5432/cqox_db
+      - JAEGER_ENDPOINT=jaeger:6831
+      - OTEL_CONSOLE=false
+    depends_on:
+      - redis
+      - postgres
+      - jaeger
+    networks:
+      - cqox-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: cqox-frontend
+    ports:
+      - "4000:80"
+    depends_on:
+      - gateway
+    networks:
+      - cqox-network
+    restart: unless-stopped
+
+  # ========================================
+  # Data Layer
+  # ========================================
+
+  redis:
+    image: redis:7-alpine
+    container_name: cqox-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    networks:
+      - cqox-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: cqox-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: cqox_db
+      POSTGRES_USER: cqox
+      POSTGRES_PASSWORD: cqox_password
+      POSTGRES_INITDB_ARGS: "-E UTF8 --locale=C"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - cqox-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cqox"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # ========================================
+  # Loki Stack (Log Aggregation)
+  # ========================================
+
+  loki:
+    image: grafana/loki:2.9.3
+    container_name: cqox-loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki/loki-config.yml:/etc/loki/local-config.yaml:ro
+      - loki-data:/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - cqox-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3100/ready || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  promtail:
+    image: grafana/promtail:2.9.3
+    container_name: cqox-promtail
+    volumes:
+      - ./loki/promtail-config.yml:/etc/promtail/config.yml:ro
+      - ./logs:/var/log/cqox:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: -config.file=/etc/promtail/config.yml
+    depends_on:
+      - loki
+    networks:
+      - cqox-network
+    restart: unless-stopped
+
+  # ========================================
+  # Distributed Tracing (OpenTelemetry)
+  # ========================================
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.52
+    container_name: cqox-jaeger
+    ports:
+      - "5775:5775/udp"     # Thrift compact
+      - "6831:6831/udp"     # Thrift compact (agent)
+      - "6832:6832/udp"     # Thrift binary
+      - "5778:5778"         # Serve configs
+      - "16686:16686"       # Jaeger UI
+      - "14250:14250"       # gRPC
+      - "14268:14268"       # HTTP collector
+      - "14269:14269"       # Admin port
+      - "9411:9411"         # Zipkin compatible
+    environment:
+      - COLLECTOR_ZIPKIN_HOST_PORT=:9411
+      - COLLECTOR_OTLP_ENABLED=true
+      - LOG_LEVEL=info
+    networks:
+      - cqox-network
+    restart: unless-stopped
+
+  # ========================================
+  # Legacy Monitoring (for transition period)
+  # ========================================
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: cqox-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    networks:
+      - cqox-network
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: cqox-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+      - GF_USERS_DEFAULT_THEME=dark
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - cqox-network
+    restart: unless-stopped
+
+networks:
+  cqox-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+    driver: local
+  postgres-data:
+    driver: local
+  loki-data:
+    driver: local
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local

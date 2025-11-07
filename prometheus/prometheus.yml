@@ -1,0 +1,20 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['prometheus:9090']
+
+  # Gateway (FastAPI/Uvicorn) - ホストマシンで実行中
+  - job_name: 'gateway'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['172.17.0.1:8080']
+
+  # Engine (FastAPI/Uvicorn)
+  - job_name: 'engine'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['engine:8080']

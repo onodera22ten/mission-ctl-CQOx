@@ -1,0 +1,84 @@
+# Causal Roles Schema - The ABI (Application Binary Interface) for CQOx
+# All domain-agnostic role definitions
+
+required:
+  - unit_id
+  - treatment
+  - y
+
+optional:
+  - time
+  - log_propensity
+  - cost
+  - cluster_id
+  - instrument
+  - features  # x_*
+  - neighbor_exposure
+  - dose
+  - domain
+  - weight
+  - strata
+  - period
+
+aliases:
+  # Unit ID
+  unit_id: [user_id, uid, id, student_id, patient_id, customer_id, device_id, account_id, individual_id, subject_id]
+
+  # Treatment
+  treatment: [treat, variant, exposure, w, intervention, policy, campaign, arm, condition, assigned, received_tutoring, tutoring, tutored, participated, enrolled, attended]
+
+  # Outcome
+  y: [outcome, label, target, revenue, sales, profit, score, performance, test_score_raw, test_score, grade, conversion, kpi, metric]
+
+  # Propensity
+  log_propensity: [log_ps, logit_p, lp, pscore_logit, prior_gpa_text]
+
+  # Cluster
+  cluster_id: [group, class, cohort, school_id, hospital_id, region_id, age_group, gender_group]
+
+  # Instrument
+  instrument: [z, iv, instrumental_variable, exogenous]
+
+  # Time
+  time: [date, timestamp, period, week, day, month, year, missing_days]
+
+  # Cost
+  cost: [price, spend, spending, expenditure, expense, budget]
+
+  # Weight
+  weight: [weights, sampling_weight, survey_weight, ipw, iptw]
+
+validation:
+  unit_id:
+    uniqueness: "> 0.8"
+    missing_rate: "< 0.05"
+
+  treatment:
+    cardinality: "< 20"
+    binary_preferred: true
+    missing_rate: "< 0.05"
+
+  y:
+    variance: "> 0"
+    missing_rate: "< 0.3"
+
+  time:
+    monotonic: true
+    missing_rate: "< 0.1"
+
+  log_propensity:
+    range: "[-10, 10]"
+    missing_rate: "< 0.3"
+
+  cost:
+    range: "[0, inf]"
+    missing_rate: "< 0.5"
+
+# Anti-patterns (exclude from certain roles)
+anti_patterns:
+  treatment:
+    - age_group
+    - gender_group
+    - income_group
+    - demographic
+    - name

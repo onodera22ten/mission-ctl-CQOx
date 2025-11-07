@@ -1,0 +1,45 @@
+{
+  "objective_id": "conversion_uplift_shadowprice",
+  "description": "CV率向上（影の価格） - Conversion Uplift with Shadow Price",
+  "roles": {
+    "unit_id": "user_id",
+    "time": "date",
+    "treatment": "treatment",
+    "outcome": "y",
+    "log_propensity": "log_propensity"
+  },
+  "outcome": {
+    "type": "binary",
+    "value_per_unit": 5000,
+    "margin": 0.40
+  },
+  "policy": {
+    "target_treatment_rate": 0.30,
+    "fairness": {
+      "group": "segment",
+      "max_gap": 0.15
+    }
+  },
+  "risk": {
+    "cas_thresholds": {
+      "go": 70,
+      "canary": 50,
+      "hold": 30
+    },
+    "max_acceptable_cost": 3000
+  },
+  "capabilities": {
+    "uplift": true,
+    "network": false,
+    "geo": false,
+    "time_varying": false,
+    "survival": false
+  },
+  "visuals": [
+    "effect_overview",
+    "budget_profit",
+    "overlap",
+    "balance",
+    "cate_waterfall"
+  ]
+}

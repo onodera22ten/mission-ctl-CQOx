@@ -1,0 +1,970 @@
+INFO:     Will watch for changes in these directories: ['/home/hirokionodera/cqox-complete_b']
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+INFO:     Started reloader process [144747] using WatchFiles
+DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:     Started server process [144749]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+Warning: asyncpg not installed. Run: pip install asyncpg
+[engine] DB clients disabled: No module named 'sqlalchemy'
+[Tracing] OpenTelemetry enabled for Engine
+INFO:     127.0.0.1:52666 - "GET /api/health HTTP/1.1" 200 OK
+[server] Estimator validation: 2/7 estimators can run
+[server]   ✓ tvce
+[server]   ✗ ope: log_propensity
+[server]   ✓ hidden
+[server]   ✗ iv: z
+[server]   ✗ transport: domain
+[server]   ✗ proximal: w_neg, z_neg
+[server]   ✗ network: cluster_id, neighbor_exposure
+[server]   ✓ tvce: τ=11.4773 ± 0.5693 (0.00s)
+[server]   ✓ hidden: τ=11.4773 ± 0.5693 (0.00s)
+[server] Using matplotlib fallback (WolframONE disabled for debugging)
+[server] Generated 8 figures with matplotlib
+[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_c5f8310f
+[primitive] y=test_score_raw, t=received_tutoring, time=None
+[primitive] covariates: ['name', 'age_group', 'prior_gpa_text', 'gender_code', 'missing_days', 'household_income_range', 'parent_education']
+[primitive] Attempting distribution...
+[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_c5f8310f/primitive_distribution.png
+[primitive] Attempting scatter...
+[primitive] ✅ scatter: /home/hirokionodera/cqox-complete_b/reports/figures/job_c5f8310f/primitive_scatter.png
+[primitive] Attempting heterogeneity...
+[primitive] ✅ heterogeneity: /home/hirokionodera/cqox-complete_b/reports/figures/job_c5f8310f/primitive_heterogeneity.png
+[primitive] Attempting propensity...
+[primitive] ✅ propensity: /home/hirokionodera/cqox-complete_b/reports/figures/job_c5f8310f/primitive_propensity.png
+[primitive] Attempting balance...
+[primitive] ✅ balance: /home/hirokionodera/cqox-complete_b/reports/figures/job_c5f8310f/primitive_balance.png
+[primitive] Completed. Generated 5 figures: ['primitive_distribution', 'primitive_scatter', 'primitive_heterogeneity', 'primitive_propensity', 'primitive_balance']
+[DomainFigures] Generating 3/5 figures for education
+[DomainFigures] Recommended: education_gain_distrib, education_attainment_sankey, education_fairness...
+[DomainFigures] Calling WolframONE for education domain...
+[DomainFigures] Output directory: /home/hirokionodera/cqox-complete_b/reports/figures/job_c5f8310f
+[DomainFigures] WolframONE generation successful
+[DomainFigures] stdout: 
+CreateDirectory::eexist: /home/hirokionodera/cqox-complete_b/reports/figures/job_c5f8310f already exists.
+Loading data from: /tmp/tmpv4_2h4_x.csv
+Generating Education domain visualizations...
+Visualization generation complete!
+
+[DomainFigures] Registered: education_event_study -> /home/hirokionodera/cqox-complete_b/reports/figures/job_c5f8310f/education_event_study.png
+[DomainFigures] Registered: education_gain_distrib -> /home/hirokionodera/cqox-complete_b/reports/figures/job_c5f8310f/education_gain_distrib.png
+[DomainFigures] Registered: education_fairness -> /home/hirokionodera/cqox-complete_b/reports/figures/job_c5f8310f/education_fairness.png
+[DomainFigures] Registered: education_attainment_sankey -> /home/hirokionodera/cqox-complete_b/reports/figures/job_c5f8310f/education_attainment_sankey.png
+[server] Generated 2 advanced figures (41-42)
+[server] figures_local keys before conversion: ['parallel_trends', 'ate_density', 'balance_smd', 'rosenbaum_gamma', 'transport_weights', 'network_spillover', 'quality_gates_board', 'cas_radar', 'primitive_distribution', 'primitive_scatter', 'primitive_heterogeneity', 'primitive_propensity', 'primitive_balance', 'education_event_study', 'education_gain_distrib', 'education_fairness', 'education_attainment_sankey', 'evalue_sensitivity', 'cate_forest']
+[server] Education figures: ['education_event_study', 'education_gain_distrib', 'education_fairness', 'education_attainment_sankey']
+[server] Final figures keys: ['parallel_trends', 'ate_density', 'balance_smd', 'rosenbaum_gamma', 'transport_weights', 'network_spillover', 'quality_gates_board', 'cas_radar', 'primitive_distribution', 'primitive_scatter', 'primitive_heterogeneity', 'primitive_propensity', 'primitive_balance', 'education_event_study', 'education_gain_distrib', 'education_fairness', 'education_attainment_sankey', 'evalue_sensitivity', 'cate_forest']
+[server] Education figure URLs: [('education_event_study', '/reports/figures/job_c5f8310f/education_event_study.png'), ('education_gain_distrib', '/reports/figures/job_c5f8310f/education_gain_distrib.png'), ('education_fairness', '/reports/figures/job_c5f8310f/education_fairness.png'), ('education_attainment_sankey', '/reports/figures/job_c5f8310f/education_attainment_sankey.png')]
+INFO:     127.0.0.1:36320 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
+[server] Estimator validation: 3/7 estimators can run
+[server]   ✓ tvce
+[server]   ✓ ope
+[server]   ✓ hidden
+[server]   ✗ iv: z
+[server]   ✗ transport: domain
+[server]   ✗ proximal: w_neg, z_neg
+[server]   ✗ network: cluster_id, neighbor_exposure
+[server]   ✓ tvce: τ=11.4773 ± 0.5693 (0.00s)
+[server]   ✓ ope: τ=11.4773 ± 0.5693 (0.00s)
+[server]   ✓ hidden: τ=11.4773 ± 0.5693 (0.00s)
+[server] Using matplotlib fallback (WolframONE disabled for debugging)
+[server] Generated 11 figures with matplotlib
+[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_e1f085d3
+[primitive] y=test_score_raw, t=received_tutoring, time=missing_days
+[primitive] covariates: ['name', 'age_group', 'gender_code', 'household_income_range', 'parent_education']
+[primitive] Attempting timeseries...
+[primitive] ✅ timeseries: /home/hirokionodera/cqox-complete_b/reports/figures/job_e1f085d3/primitive_timeseries.png
+[primitive] Attempting distribution...
+[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_e1f085d3/primitive_distribution.png
+[primitive] Attempting scatter...
+[primitive] Attempting heterogeneity...
+[primitive] Attempting propensity...
+[primitive] Attempting balance...
+[primitive] Completed. Generated 2 figures: ['primitive_timeseries', 'primitive_distribution']
+[DomainFigures] Generating 4/5 figures for education
+[DomainFigures] Recommended: education_gain_distrib, education_attainment_sankey, education_event_study, education_fairness...
+[DomainFigures] Calling WolframONE for education domain...
+[DomainFigures] Output directory: /home/hirokionodera/cqox-complete_b/reports/figures/job_e1f085d3
+[DomainFigures] WolframONE generation successful
+[DomainFigures] stdout: 
+CreateDirectory::eexist: /home/hirokionodera/cqox-complete_b/reports/figures/job_e1f085d3 already exists.
+Loading data from: /tmp/tmpyv9c3oa9.csv
+Generating Education domain visualizations...
+Visualization generation complete!
+
+[DomainFigures] Registered: education_event_study -> /home/hirokionodera/cqox-complete_b/reports/figures/job_e1f085d3/education_event_study.png
+[DomainFigures] Registered: education_gain_distrib -> /home/hirokionodera/cqox-complete_b/reports/figures/job_e1f085d3/education_gain_distrib.png
+[DomainFigures] Registered: education_fairness -> /home/hirokionodera/cqox-complete_b/reports/figures/job_e1f085d3/education_fairness.png
+[DomainFigures] Registered: education_attainment_sankey -> /home/hirokionodera/cqox-complete_b/reports/figures/job_e1f085d3/education_attainment_sankey.png
+[server] Generated 2 advanced figures (41-42)
+[server] figures_local keys before conversion: ['parallel_trends', 'event_study', 'ate_density', 'propensity_overlap', 'balance_smd', 'rosenbaum_gamma', 'transport_weights', 'tvce_line', 'network_spillover', 'quality_gates_board', 'cas_radar', 'primitive_timeseries', 'primitive_distribution', 'education_event_study', 'education_gain_distrib', 'education_fairness', 'education_attainment_sankey', 'evalue_sensitivity', 'cate_forest']
+[server] Education figures: ['education_event_study', 'education_gain_distrib', 'education_fairness', 'education_attainment_sankey']
+[server] Final figures keys: ['parallel_trends', 'event_study', 'ate_density', 'propensity_overlap', 'balance_smd', 'rosenbaum_gamma', 'transport_weights', 'tvce_line', 'network_spillover', 'quality_gates_board', 'cas_radar', 'primitive_timeseries', 'primitive_distribution', 'education_event_study', 'education_gain_distrib', 'education_fairness', 'education_attainment_sankey', 'evalue_sensitivity', 'cate_forest']
+[server] Education figure URLs: [('education_event_study', '/reports/figures/job_e1f085d3/education_event_study.png'), ('education_gain_distrib', '/reports/figures/job_e1f085d3/education_gain_distrib.png'), ('education_fairness', '/reports/figures/job_e1f085d3/education_fairness.png'), ('education_attainment_sankey', '/reports/figures/job_e1f085d3/education_attainment_sankey.png')]
+INFO:     127.0.0.1:49770 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'backend/engine/tasks/__init__.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [144749]
+DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:     Started server process [147406]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'backend/engine/tasks/base.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [147406]
+Warning: asyncpg not installed. Run: pip install asyncpg
+[engine] DB clients disabled: No module named 'sqlalchemy'
+[Tracing] OpenTelemetry enabled for Engine
+DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:     Started server process [147431]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'backend/engine/tasks/estimation.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [147431]
+Warning: asyncpg not installed. Run: pip install asyncpg
+[engine] DB clients disabled: No module named 'sqlalchemy'
+[Tracing] OpenTelemetry enabled for Engine
+DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:     Started server process [147462]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'backend/engine/tasks/diagnostics.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [147462]
+Warning: asyncpg not installed. Run: pip install asyncpg
+[engine] DB clients disabled: No module named 'sqlalchemy'
+[Tracing] OpenTelemetry enabled for Engine
+DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:     Started server process [147506]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'backend/engine/tasks/heterogeneity.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [147506]
+Warning: asyncpg not installed. Run: pip install asyncpg
+[engine] DB clients disabled: No module named 'sqlalchemy'
+[Tracing] OpenTelemetry enabled for Engine
+DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:     Started server process [147573]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'backend/engine/tasks/timevarying.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [147573]
+Warning: asyncpg not installed. Run: pip install asyncpg
+[engine] DB clients disabled: No module named 'sqlalchemy'
+[Tracing] OpenTelemetry enabled for Engine
+DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:     Started server process [147616]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'backend/engine/tasks/iv.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [147616]
+Warning: asyncpg not installed. Run: pip install asyncpg
+[engine] DB clients disabled: No module named 'sqlalchemy'
+[Tracing] OpenTelemetry enabled for Engine
+DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:     Started server process [147650]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'backend/engine/tasks/robustness.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [147650]
+Warning: asyncpg not installed. Run: pip install asyncpg
+[engine] DB clients disabled: No module named 'sqlalchemy'
+[Tracing] OpenTelemetry enabled for Engine
+DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:     Started server process [147684]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'backend/engine/tasks/network.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [147684]
+Warning: asyncpg not installed. Run: pip install asyncpg
+[engine] DB clients disabled: No module named 'sqlalchemy'
+[Tracing] OpenTelemetry enabled for Engine
+DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:     Started server process [147715]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'backend/engine/tasks/policy.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [147715]
+Warning: asyncpg not installed. Run: pip install asyncpg
+[engine] DB clients disabled: No module named 'sqlalchemy'
+[Tracing] OpenTelemetry enabled for Engine
+DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:     Started server process [147747]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'backend/engine/tasks/transportability.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [147747]
+Warning: asyncpg not installed. Run: pip install asyncpg
+[engine] DB clients disabled: No module named 'sqlalchemy'
+[Tracing] OpenTelemetry enabled for Engine
+DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:     Started server process [147780]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'backend/engine/composer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [147780]
+Warning: asyncpg not installed. Run: pip install asyncpg
+[engine] DB clients disabled: No module named 'sqlalchemy'
+[Tracing] OpenTelemetry enabled for Engine
+DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:     Started server process [147827]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'backend/gateway/app.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [147827]
+Warning: asyncpg not installed. Run: pip install asyncpg
+[engine] DB clients disabled: No module named 'sqlalchemy'
+[Tracing] OpenTelemetry enabled for Engine
+DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:     Started server process [147892]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'backend/gateway/app.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [147892]
+Warning: asyncpg not installed. Run: pip install asyncpg
+[engine] DB clients disabled: No module named 'sqlalchemy'
+[Tracing] OpenTelemetry enabled for Engine
+DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:     Started server process [147922]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+Warning: asyncpg not installed. Run: pip install asyncpg
+[engine] DB clients disabled: No module named 'sqlalchemy'
+[Tracing] OpenTelemetry enabled for Engine
+[server] Estimator validation: 3/7 estimators can run
+[server]   ✓ tvce
+[server]   ✓ ope
+[server]   ✓ hidden
+[server]   ✗ iv: z
+[server]   ✗ transport: domain
+[server]   ✗ proximal: w_neg, z_neg
+[server]   ✗ network: cluster_id, neighbor_exposure
+[server]   ✓ tvce: τ=11.4773 ± 0.5693 (0.00s)
+[server]   ✓ ope: τ=11.4773 ± 0.5693 (0.00s)
+[server]   ✓ hidden: τ=11.4773 ± 0.5693 (0.00s)
+[server] Using matplotlib fallback (WolframONE disabled for debugging)
+[server] Generated 11 figures with matplotlib
+[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_cb8f9e0d
+[primitive] y=test_score_raw, t=received_tutoring, time=missing_days
+[primitive] covariates: ['name', 'age_group', 'gender_code', 'household_income_range', 'parent_education']
+[primitive] Attempting timeseries...
+[primitive] ✅ timeseries: /home/hirokionodera/cqox-complete_b/reports/figures/job_cb8f9e0d/primitive_timeseries.png
+[primitive] Attempting distribution...
+[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_cb8f9e0d/primitive_distribution.png
+[primitive] Attempting scatter...
+[primitive] Attempting heterogeneity...
+[primitive] Attempting propensity...
+[primitive] Attempting balance...
+[primitive] Completed. Generated 2 figures: ['primitive_timeseries', 'primitive_distribution']
+[DomainFigures] Generating 4/5 figures for education
+[DomainFigures] Recommended: education_gain_distrib, education_attainment_sankey, education_event_study, education_fairness...
+[DomainFigures] Calling WolframONE for education domain...
+[DomainFigures] Output directory: /home/hirokionodera/cqox-complete_b/reports/figures/job_cb8f9e0d
+[DomainFigures] WolframONE generation successful
+[DomainFigures] stdout: 
+CreateDirectory::eexist: /home/hirokionodera/cqox-complete_b/reports/figures/job_cb8f9e0d already exists.
+Loading data from: /tmp/tmp8cwxwv63.csv
+Generating Education domain visualizations...
+Visualization generation complete!
+
+[DomainFigures] Registered: education_event_study -> /home/hirokionodera/cqox-complete_b/reports/figures/job_cb8f9e0d/education_event_study.png
+[DomainFigures] Registered: education_gain_distrib -> /home/hirokionodera/cqox-complete_b/reports/figures/job_cb8f9e0d/education_gain_distrib.png
+[DomainFigures] Registered: education_fairness -> /home/hirokionodera/cqox-complete_b/reports/figures/job_cb8f9e0d/education_fairness.png
+[DomainFigures] Registered: education_attainment_sankey -> /home/hirokionodera/cqox-complete_b/reports/figures/job_cb8f9e0d/education_attainment_sankey.png
+[server] Generated 2 advanced figures (41-42)
+[server] figures_local keys before conversion: ['parallel_trends', 'event_study', 'ate_density', 'propensity_overlap', 'balance_smd', 'rosenbaum_gamma', 'transport_weights', 'tvce_line', 'network_spillover', 'quality_gates_board', 'cas_radar', 'primitive_timeseries', 'primitive_distribution', 'education_event_study', 'education_gain_distrib', 'education_fairness', 'education_attainment_sankey', 'evalue_sensitivity', 'cate_forest']
+[server] Education figures: ['education_event_study', 'education_gain_distrib', 'education_fairness', 'education_attainment_sankey']
+[server] Final figures keys: ['parallel_trends', 'event_study', 'ate_density', 'propensity_overlap', 'balance_smd', 'rosenbaum_gamma', 'transport_weights', 'tvce_line', 'network_spillover', 'quality_gates_board', 'cas_radar', 'primitive_timeseries', 'primitive_distribution', 'education_event_study', 'education_gain_distrib', 'education_fairness', 'education_attainment_sankey', 'evalue_sensitivity', 'cate_forest']
+[server] Education figure URLs: [('education_event_study', '/reports/figures/job_cb8f9e0d/education_event_study.png'), ('education_gain_distrib', '/reports/figures/job_cb8f9e0d/education_gain_distrib.png'), ('education_fairness', '/reports/figures/job_cb8f9e0d/education_fairness.png'), ('education_attainment_sankey', '/reports/figures/job_cb8f9e0d/education_attainment_sankey.png')]
+INFO:     127.0.0.1:47218 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54366 - "POST /api/analyze/comprehensive HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/indexes/base.py", line 3790, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "index.pyx", line 152, in pandas._libs.index.IndexEngine.get_loc
+  File "index.pyx", line 181, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'received_discount_code'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/applications.py", line 1106, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/opentelemetry/instrumentation/asgi/__init__.py", line 606, in __call__
+    await self.app(scope, otel_receive, otel_send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 108, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/observability/metrics.py", line 262, in observability_middleware
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 84, in call_next
+    raise app_exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 70, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
+    raise exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 66, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 274, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 191, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/engine/server.py", line 148, in analyze
+    if df[t].dtype == 'object' or df[t].nunique() > 2:
+       ~~^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/frame.py", line 3893, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/indexes/base.py", line 3797, in get_loc
+    raise KeyError(key) from err
+KeyError: 'received_discount_code'
+INFO:     127.0.0.1:54378 - "POST /api/analyze/comprehensive HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/indexes/base.py", line 3790, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "index.pyx", line 152, in pandas._libs.index.IndexEngine.get_loc
+  File "index.pyx", line 181, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'received_discount_code'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/applications.py", line 1106, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/opentelemetry/instrumentation/asgi/__init__.py", line 606, in __call__
+    await self.app(scope, otel_receive, otel_send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 108, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/observability/metrics.py", line 262, in observability_middleware
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 84, in call_next
+    raise app_exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 70, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
+    raise exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 66, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 274, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 191, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/engine/server.py", line 148, in analyze
+    if df[t].dtype == 'object' or df[t].nunique() > 2:
+       ~~^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/frame.py", line 3893, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/indexes/base.py", line 3797, in get_loc
+    raise KeyError(key) from err
+KeyError: 'received_discount_code'
+INFO:     127.0.0.1:57880 - "POST /api/analyze/comprehensive HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/indexes/base.py", line 3790, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "index.pyx", line 152, in pandas._libs.index.IndexEngine.get_loc
+  File "index.pyx", line 181, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'received_discount_code'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/applications.py", line 1106, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/opentelemetry/instrumentation/asgi/__init__.py", line 606, in __call__
+    await self.app(scope, otel_receive, otel_send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 108, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/observability/metrics.py", line 262, in observability_middleware
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 84, in call_next
+    raise app_exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 70, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
+    raise exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 66, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 274, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 191, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/engine/server.py", line 148, in analyze
+    if df[t].dtype == 'object' or df[t].nunique() > 2:
+       ~~^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/frame.py", line 3893, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/pandas/core/indexes/base.py", line 3797, in get_loc
+    raise KeyError(key) from err
+KeyError: 'received_discount_code'
+[server] Estimator validation: 3/7 estimators can run
+[server]   ✓ tvce
+[server]   ✓ ope
+[server]   ✓ hidden
+[server]   ✗ iv: z
+[server]   ✗ transport: domain
+[server]   ✗ proximal: w_neg, z_neg
+[server]   ✗ network: cluster_id, neighbor_exposure
+[server]   ✓ tvce: τ=708.9200 ± 60.1919 (0.00s)
+[server]   ✓ ope: τ=708.9200 ± 60.1919 (0.00s)
+[server]   ✓ hidden: τ=708.9200 ± 60.1919 (0.00s)
+[server] Using matplotlib fallback (WolframONE disabled for debugging)
+[server] Generated 11 figures with matplotlib
+[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_74c85380
+[primitive] y=y, t=treatment, time=date
+[primitive] covariates: ['cost']
+[primitive] Attempting timeseries...
+[primitive] ✅ timeseries: /home/hirokionodera/cqox-complete_b/reports/figures/job_74c85380/primitive_timeseries.png
+[primitive] Attempting distribution...
+[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_74c85380/primitive_distribution.png
+[primitive] Attempting scatter...
+[primitive] ✅ scatter: /home/hirokionodera/cqox-complete_b/reports/figures/job_74c85380/primitive_scatter.png
+[primitive] Attempting heterogeneity...
+[primitive] Attempting propensity...
+[primitive] ✅ propensity: /home/hirokionodera/cqox-complete_b/reports/figures/job_74c85380/primitive_propensity.png
+[primitive] Attempting balance...
+[primitive] ✅ balance: /home/hirokionodera/cqox-complete_b/reports/figures/job_74c85380/primitive_balance.png
+[primitive] Completed. Generated 5 figures: ['primitive_timeseries', 'primitive_distribution', 'primitive_scatter', 'primitive_propensity', 'primitive_balance']
+[DomainFigures] Generating 0/6 figures for medical
+[DomainFigures] Recommended: ...
+[DomainFigures] Calling WolframONE for medical domain...
+[DomainFigures] Output directory: /home/hirokionodera/cqox-complete_b/reports/figures/job_74c85380
+[DomainFigures] WolframONE generation successful
+[DomainFigures] stdout: 
+CreateDirectory::eexist: /home/hirokionodera/cqox-complete_b/reports/figures/job_74c85380 already exists.
+Loading data from: /tmp/tmpej2eyqoy.csv
+Generating Medical domain visualizations...
+Visualization generation complete!
+
+[DomainFigures] Registered: medical_km_survival -> /home/hirokionodera/cqox-complete_b/reports/figures/job_74c85380/medical_km_survival.png
+[DomainFigures] Registered: medical_dose_response -> /home/hirokionodera/cqox-complete_b/reports/figures/job_74c85380/medical_dose_response.png
+[server] Generated 2 advanced figures (41-42)
+[server] figures_local keys before conversion: ['parallel_trends', 'event_study', 'ate_density', 'propensity_overlap', 'balance_smd', 'rosenbaum_gamma', 'transport_weights', 'tvce_line', 'network_spillover', 'quality_gates_board', 'cas_radar', 'primitive_timeseries', 'primitive_distribution', 'primitive_scatter', 'primitive_propensity', 'primitive_balance', 'medical_km_survival', 'medical_dose_response', 'evalue_sensitivity', 'cate_forest']
+[server] Education figures: []
+[server] Final figures keys: ['parallel_trends', 'event_study', 'ate_density', 'propensity_overlap', 'balance_smd', 'rosenbaum_gamma', 'transport_weights', 'tvce_line', 'network_spillover', 'quality_gates_board', 'cas_radar', 'primitive_timeseries', 'primitive_distribution', 'primitive_scatter', 'primitive_propensity', 'primitive_balance', 'medical_km_survival', 'medical_dose_response', 'evalue_sensitivity', 'cate_forest']
+[server] Education figure URLs: []
+INFO:     127.0.0.1:60630 - "POST /api/analyze/comprehensive HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/anyio/streams/memory.py", line 98, in receive
+    return self.receive_nowait()
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/anyio/streams/memory.py", line 93, in receive_nowait
+    raise WouldBlock
+anyio.WouldBlock
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 78, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/anyio/streams/memory.py", line 118, in receive
+    raise EndOfStream
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/applications.py", line 1106, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/opentelemetry/instrumentation/asgi/__init__.py", line 606, in __call__
+    await self.app(scope, otel_receive, otel_send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 108, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/observability/metrics.py", line 262, in observability_middleware
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 84, in call_next
+    raise app_exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/base.py", line 70, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
+    raise exc
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/routing.py", line 66, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 274, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/fastapi/routing.py", line 191, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/engine/server.py", line 578, in analyze
+    return JSONResponse(response_data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/responses.py", line 196, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/responses.py", line 55, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/starlette/responses.py", line 199, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "/usr/lib64/python3.11/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/usr/lib64/python3.11/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib64/python3.11/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant
+[server] Estimator validation: 3/7 estimators can run
+[server]   ✓ tvce
+[server]   ✓ ope
+[server]   ✓ hidden
+[server]   ✗ iv: z
+[server]   ✗ transport: domain
+[server]   ✗ proximal: w_neg, z_neg
+[server]   ✗ network: cluster_id, neighbor_exposure
+[server]   ✓ tvce: τ=11.4773 ± 0.5693 (0.00s)
+[server]   ✓ ope: τ=11.4773 ± 0.5693 (0.00s)
+[server]   ✓ hidden: τ=11.4773 ± 0.5693 (0.00s)
+[server] Using matplotlib fallback (WolframONE disabled for debugging)
+[server] Generated 11 figures with matplotlib
+[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_4d5d6043
+[primitive] y=test_score_raw, t=received_tutoring, time=missing_days
+[primitive] covariates: ['name', 'age_group', 'gender_code', 'household_income_range', 'parent_education']
+[primitive] Attempting timeseries...
+[primitive] ✅ timeseries: /home/hirokionodera/cqox-complete_b/reports/figures/job_4d5d6043/primitive_timeseries.png
+[primitive] Attempting distribution...
+[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_4d5d6043/primitive_distribution.png
+[primitive] Attempting scatter...
+[primitive] Attempting heterogeneity...
+[primitive] Attempting propensity...
+[primitive] Attempting balance...
+[primitive] Completed. Generated 2 figures: ['primitive_timeseries', 'primitive_distribution']
+[DomainFigures] Generating 4/5 figures for education
+[DomainFigures] Recommended: education_gain_distrib, education_attainment_sankey, education_event_study, education_fairness...
+[DomainFigures] Calling WolframONE for education domain...
+[DomainFigures] Output directory: /home/hirokionodera/cqox-complete_b/reports/figures/job_4d5d6043
+[DomainFigures] WolframONE generation successful
+[DomainFigures] stdout: 
+CreateDirectory::eexist: /home/hirokionodera/cqox-complete_b/reports/figures/job_4d5d6043 already exists.
+Loading data from: /tmp/tmpvzcvwg12.csv
+Generating Education domain visualizations...
+Visualization generation complete!
+
+[DomainFigures] Registered: education_event_study -> /home/hirokionodera/cqox-complete_b/reports/figures/job_4d5d6043/education_event_study.png
+[DomainFigures] Registered: education_gain_distrib -> /home/hirokionodera/cqox-complete_b/reports/figures/job_4d5d6043/education_gain_distrib.png
+[DomainFigures] Registered: education_fairness -> /home/hirokionodera/cqox-complete_b/reports/figures/job_4d5d6043/education_fairness.png
+[DomainFigures] Registered: education_attainment_sankey -> /home/hirokionodera/cqox-complete_b/reports/figures/job_4d5d6043/education_attainment_sankey.png
+[server] Generated 2 advanced figures (41-42)
+[server] figures_local keys before conversion: ['parallel_trends', 'event_study', 'ate_density', 'propensity_overlap', 'balance_smd', 'rosenbaum_gamma', 'transport_weights', 'tvce_line', 'network_spillover', 'quality_gates_board', 'cas_radar', 'primitive_timeseries', 'primitive_distribution', 'education_event_study', 'education_gain_distrib', 'education_fairness', 'education_attainment_sankey', 'evalue_sensitivity', 'cate_forest']
+[server] Education figures: ['education_event_study', 'education_gain_distrib', 'education_fairness', 'education_attainment_sankey']
+[server] Final figures keys: ['parallel_trends', 'event_study', 'ate_density', 'propensity_overlap', 'balance_smd', 'rosenbaum_gamma', 'transport_weights', 'tvce_line', 'network_spillover', 'quality_gates_board', 'cas_radar', 'primitive_timeseries', 'primitive_distribution', 'education_event_study', 'education_gain_distrib', 'education_fairness', 'education_attainment_sankey', 'evalue_sensitivity', 'cate_forest']
+[server] Education figure URLs: [('education_event_study', '/reports/figures/job_4d5d6043/education_event_study.png'), ('education_gain_distrib', '/reports/figures/job_4d5d6043/education_gain_distrib.png'), ('education_fairness', '/reports/figures/job_4d5d6043/education_fairness.png'), ('education_attainment_sankey', '/reports/figures/job_4d5d6043/education_attainment_sankey.png')]
+INFO:     127.0.0.1:35862 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'backend/engine/tasks/estimation.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [147922]
+DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:     Started server process [149152]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'test_objective_api.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [149152]
+Warning: asyncpg not installed. Run: pip install asyncpg
+[engine] DB clients disabled: No module named 'sqlalchemy'
+[Tracing] OpenTelemetry enabled for Engine
+DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:     Started server process [149299]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'test_objective_api.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [149299]
+Warning: asyncpg not installed. Run: pip install asyncpg
+[engine] DB clients disabled: No module named 'sqlalchemy'
+[Tracing] OpenTelemetry enabled for Engine
+DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:     Started server process [149359]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'test_objective_api.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [149359]
+Warning: asyncpg not installed. Run: pip install asyncpg
+[engine] DB clients disabled: No module named 'sqlalchemy'
+[Tracing] OpenTelemetry enabled for Engine
+DependencyConflict: requested: "psycopg2 >= 2.7.3.1" but found: "None"
+INFO:     Started server process [149392]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+Warning: asyncpg not installed. Run: pip install asyncpg
+[engine] DB clients disabled: No module named 'sqlalchemy'
+[Tracing] OpenTelemetry enabled for Engine
+INFO:     127.0.0.1:60274 - "GET /api/health HTTP/1.1" 200 OK
+[server] Estimator validation: 3/7 estimators can run
+[server]   ✓ tvce
+[server]   ✓ ope
+[server]   ✓ hidden
+[server]   ✗ iv: z
+[server]   ✗ transport: domain
+[server]   ✗ proximal: w_neg, z_neg
+[server]   ✗ network: cluster_id, neighbor_exposure
+[server]   ✓ tvce: τ=11.4773 ± 0.5693 (0.00s)
+[server]   ✓ ope: τ=11.4773 ± 0.5693 (0.00s)
+[server]   ✓ hidden: τ=11.4773 ± 0.5693 (0.00s)
+[server] Using matplotlib fallback (WolframONE disabled for debugging)
+[server] Generated 11 figures with matplotlib
+[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_05dcca04
+[primitive] y=test_score_raw, t=received_tutoring, time=missing_days
+[primitive] covariates: ['name', 'age_group', 'gender_code', 'household_income_range', 'parent_education']
+[primitive] Attempting timeseries...
+[primitive] ✅ timeseries: /home/hirokionodera/cqox-complete_b/reports/figures/job_05dcca04/primitive_timeseries.png
+[primitive] Attempting distribution...
+[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_05dcca04/primitive_distribution.png
+[primitive] Attempting scatter...
+[primitive] Attempting heterogeneity...
+[primitive] Attempting propensity...
+[primitive] Attempting balance...
+[primitive] Completed. Generated 2 figures: ['primitive_timeseries', 'primitive_distribution']
+[DomainFigures] Generating 4/5 figures for education
+[DomainFigures] Recommended: education_gain_distrib, education_attainment_sankey, education_event_study, education_fairness...
+[DomainFigures] Calling WolframONE for education domain...
+[DomainFigures] Output directory: /home/hirokionodera/cqox-complete_b/reports/figures/job_05dcca04
+[DomainFigures] WolframONE generation successful
+[DomainFigures] stdout: 
+CreateDirectory::eexist: /home/hirokionodera/cqox-complete_b/reports/figures/job_05dcca04 already exists.
+Loading data from: /tmp/tmp3r8_nim9.csv
+Generating Education domain visualizations...
+Visualization generation complete!
+
+[DomainFigures] Registered: education_event_study -> /home/hirokionodera/cqox-complete_b/reports/figures/job_05dcca04/education_event_study.png
+[DomainFigures] Registered: education_gain_distrib -> /home/hirokionodera/cqox-complete_b/reports/figures/job_05dcca04/education_gain_distrib.png
+[DomainFigures] Registered: education_fairness -> /home/hirokionodera/cqox-complete_b/reports/figures/job_05dcca04/education_fairness.png
+[DomainFigures] Registered: education_attainment_sankey -> /home/hirokionodera/cqox-complete_b/reports/figures/job_05dcca04/education_attainment_sankey.png
+[server] Generated 2 advanced figures (41-42)
+[server] figures_local keys before conversion: ['parallel_trends', 'event_study', 'ate_density', 'propensity_overlap', 'balance_smd', 'rosenbaum_gamma', 'transport_weights', 'tvce_line', 'network_spillover', 'quality_gates_board', 'cas_radar', 'primitive_timeseries', 'primitive_distribution', 'education_event_study', 'education_gain_distrib', 'education_fairness', 'education_attainment_sankey', 'evalue_sensitivity', 'cate_forest']
+[server] Education figures: ['education_event_study', 'education_gain_distrib', 'education_fairness', 'education_attainment_sankey']
+[server] Final figures keys: ['parallel_trends', 'event_study', 'ate_density', 'propensity_overlap', 'balance_smd', 'rosenbaum_gamma', 'transport_weights', 'tvce_line', 'network_spillover', 'quality_gates_board', 'cas_radar', 'primitive_timeseries', 'primitive_distribution', 'education_event_study', 'education_gain_distrib', 'education_fairness', 'education_attainment_sankey', 'evalue_sensitivity', 'cate_forest']
+[server] Education figure URLs: [('education_event_study', '/reports/figures/job_05dcca04/education_event_study.png'), ('education_gain_distrib', '/reports/figures/job_05dcca04/education_gain_distrib.png'), ('education_fairness', '/reports/figures/job_05dcca04/education_fairness.png'), ('education_attainment_sankey', '/reports/figures/job_05dcca04/education_attainment_sankey.png')]
+INFO:     127.0.0.1:49306 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60408 - "GET /api/health HTTP/1.1" 200 OK
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete_b/backend/engine/figures_primitives_v2.py", line 62, in generate_all
+    path = self._scatter_regression(output_dir)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/backend/engine/figures_primitives_v2.py", line 187, in _scatter_regression
+    z = np.polyfit(valid[cov], valid[self.y], 1)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/numpy/lib/polynomial.py", line 669, in polyfit
+    c, resids, rank, s = lstsq(lhs, rhs, rcond)
+                         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/numpy/linalg/linalg.py", line 2326, in lstsq
+    x, resids, rank, s = gufunc(a, b, rcond, signature=signature, extobj=extobj)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete_b/.venv/lib64/python3.11/site-packages/numpy/linalg/linalg.py", line 124, in _raise_linalgerror_lstsq
+    raise LinAlgError("SVD did not converge in Linear Least Squares")
+numpy.linalg.LinAlgError: SVD did not converge in Linear Least Squares
+[server] Estimator validation: 3/7 estimators can run
+[server]   ✓ tvce
+[server]   ✓ ope
+[server]   ✓ hidden
+[server]   ✗ iv: z
+[server]   ✗ transport: domain
+[server]   ✗ proximal: w_neg, z_neg
+[server]   ✗ network: cluster_id, neighbor_exposure
+[server]   ✓ tvce: τ=17.5880 ± 0.7095 (0.00s)
+[server]   ✓ ope: τ=17.5880 ± 0.7095 (0.00s)
+[server]   ✓ hidden: τ=17.5880 ± 0.7095 (0.00s)
+[server] Using matplotlib fallback (WolframONE disabled for debugging)
+[server] Generated 11 figures with matplotlib
+[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_7776256e
+[primitive] y=y, t=treatment, time=time
+[primitive] covariates: ['cost', 'cluster_id', 'domain', 'strata', 'dose', 'x_age', 'x_income', 'x_education']
+[primitive] Attempting timeseries...
+[primitive] ✅ timeseries: /home/hirokionodera/cqox-complete_b/reports/figures/job_7776256e/primitive_timeseries.png
+[primitive] Attempting distribution...
+[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_7776256e/primitive_distribution.png
+[primitive] Attempting scatter...
+[primitive] ❌ scatter failed: SVD did not converge in Linear Least Squares
+[primitive] Attempting heterogeneity...
+[primitive] Attempting propensity...
+[primitive] ✅ propensity: /home/hirokionodera/cqox-complete_b/reports/figures/job_7776256e/primitive_propensity.png
+[primitive] Attempting balance...
+[primitive] ✅ balance: /home/hirokionodera/cqox-complete_b/reports/figures/job_7776256e/primitive_balance.png
+[primitive] Completed. Generated 4 figures: ['primitive_timeseries', 'primitive_distribution', 'primitive_propensity', 'primitive_balance']
+[DomainFigures] Generating 2/6 figures for medical
+[DomainFigures] Recommended: medical_km_survival, medical_sensitivity...
+[DomainFigures] Calling WolframONE for medical domain...
+[DomainFigures] Output directory: /home/hirokionodera/cqox-complete_b/reports/figures/job_7776256e
+[DomainFigures] WolframONE generation successful
+[DomainFigures] stdout: 
+CreateDirectory::eexist: /home/hirokionodera/cqox-complete_b/reports/figures/job_7776256e already exists.
+Loading data from: /tmp/tmp_d_l77hj.csv
+Generating Medical domain visualizations...
+Visualization generation complete!
+
+[DomainFigures] Registered: medical_km_survival -> /home/hirokionodera/cqox-complete_b/reports/figures/job_7776256e/medical_km_survival.png
+[DomainFigures] Registered: medical_dose_response -> /home/hirokionodera/cqox-complete_b/reports/figures/job_7776256e/medical_dose_response.png
+[server] Generated 2 advanced figures (41-42)
+[server] figures_local keys before conversion: ['parallel_trends', 'event_study', 'ate_density', 'propensity_overlap', 'balance_smd', 'rosenbaum_gamma', 'transport_weights', 'tvce_line', 'network_spillover', 'quality_gates_board', 'cas_radar', 'primitive_timeseries', 'primitive_distribution', 'primitive_propensity', 'primitive_balance', 'medical_km_survival', 'medical_dose_response', 'evalue_sensitivity', 'cate_forest']
+[server] Education figures: []
+[server] Final figures keys: ['parallel_trends', 'event_study', 'ate_density', 'propensity_overlap', 'balance_smd', 'rosenbaum_gamma', 'transport_weights', 'tvce_line', 'network_spillover', 'quality_gates_board', 'cas_radar', 'primitive_timeseries', 'primitive_distribution', 'primitive_propensity', 'primitive_balance', 'medical_km_survival', 'medical_dose_response', 'evalue_sensitivity', 'cate_forest']
+[server] Education figure URLs: []
+INFO:     127.0.0.1:49790 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
+[server] Estimator validation: 3/7 estimators can run
+[server]   ✓ tvce
+[server]   ✓ ope
+[server]   ✓ hidden
+[server]   ✗ iv: z
+[server]   ✗ transport: domain
+[server]   ✗ proximal: w_neg, z_neg
+[server]   ✗ network: cluster_id, neighbor_exposure
+[server]   ✓ tvce: τ=17.5880 ± 0.7095 (0.00s)
+[server]   ✓ ope: τ=17.5880 ± 0.7095 (0.00s)
+[server]   ✓ hidden: τ=17.5880 ± 0.7095 (0.00s)
+[server] Using matplotlib fallback (WolframONE disabled for debugging)
+[server] Generated 11 figures with matplotlib
+[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_3b9698db
+[primitive] y=y, t=treatment, time=time
+[primitive] covariates: ['cluster_id', 'instrument', 'domain', 'strata', 'dose', 'x_age', 'x_income', 'x_education']
+[primitive] Attempting timeseries...
+[primitive] ✅ timeseries: /home/hirokionodera/cqox-complete_b/reports/figures/job_3b9698db/primitive_timeseries.png
+[primitive] Attempting distribution...
+[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_3b9698db/primitive_distribution.png
+[primitive] Attempting scatter...
+[primitive] ✅ scatter: /home/hirokionodera/cqox-complete_b/reports/figures/job_3b9698db/primitive_scatter.png
+[primitive] Attempting heterogeneity...
+[primitive] Attempting propensity...
+[primitive] ✅ propensity: /home/hirokionodera/cqox-complete_b/reports/figures/job_3b9698db/primitive_propensity.png
+[primitive] Attempting balance...
+[primitive] ✅ balance: /home/hirokionodera/cqox-complete_b/reports/figures/job_3b9698db/primitive_balance.png
+[primitive] Completed. Generated 5 figures: ['primitive_timeseries', 'primitive_distribution', 'primitive_scatter', 'primitive_propensity', 'primitive_balance']
+[DomainFigures] Generating 2/6 figures for medical
+[DomainFigures] Recommended: medical_km_survival, medical_sensitivity...
+[DomainFigures] Calling WolframONE for medical domain...
+[DomainFigures] Output directory: /home/hirokionodera/cqox-complete_b/reports/figures/job_3b9698db
+[DomainFigures] WolframONE generation successful
+[DomainFigures] stdout: 
+CreateDirectory::eexist: /home/hirokionodera/cqox-complete_b/reports/figures/job_3b9698db already exists.
+Loading data from: /tmp/tmp7wrakpg5.csv
+Generating Medical domain visualizations...
+Visualization generation complete!
+
+[DomainFigures] Registered: medical_km_survival -> /home/hirokionodera/cqox-complete_b/reports/figures/job_3b9698db/medical_km_survival.png
+[DomainFigures] Registered: medical_dose_response -> /home/hirokionodera/cqox-complete_b/reports/figures/job_3b9698db/medical_dose_response.png
+[server] Generated 2 advanced figures (41-42)
+[server] figures_local keys before conversion: ['parallel_trends', 'event_study', 'ate_density', 'propensity_overlap', 'balance_smd', 'rosenbaum_gamma', 'transport_weights', 'tvce_line', 'network_spillover', 'quality_gates_board', 'cas_radar', 'primitive_timeseries', 'primitive_distribution', 'primitive_scatter', 'primitive_propensity', 'primitive_balance', 'medical_km_survival', 'medical_dose_response', 'evalue_sensitivity', 'cate_forest']
+[server] Education figures: []
+[server] Final figures keys: ['parallel_trends', 'event_study', 'ate_density', 'propensity_overlap', 'balance_smd', 'rosenbaum_gamma', 'transport_weights', 'tvce_line', 'network_spillover', 'quality_gates_board', 'cas_radar', 'primitive_timeseries', 'primitive_distribution', 'primitive_scatter', 'primitive_propensity', 'primitive_balance', 'medical_km_survival', 'medical_dose_response', 'evalue_sensitivity', 'cate_forest']
+[server] Education figure URLs: []
+INFO:     127.0.0.1:48970 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK
+[server] Estimator validation: 3/7 estimators can run
+[server]   ✓ tvce
+[server]   ✓ ope
+[server]   ✓ hidden
+[server]   ✗ iv: z
+[server]   ✗ transport: domain
+[server]   ✗ proximal: w_neg, z_neg
+[server]   ✗ network: cluster_id, neighbor_exposure
+[server]   ✓ tvce: τ=7.0304 ± 1.3526 (0.00s)
+[server]   ✓ ope: τ=7.0304 ± 1.3526 (0.00s)
+[server]   ✓ hidden: τ=7.0304 ± 1.3526 (0.00s)
+[server] Using matplotlib fallback (WolframONE disabled for debugging)
+[server] Generated 11 figures with matplotlib
+[primitive] Starting generation in /home/hirokionodera/cqox-complete_b/reports/figures/job_a1bd2496
+[primitive] y=test_score, t=program, time=year
+[primitive] covariates: ['class_id', 'attendance']
+[primitive] Attempting timeseries...
+[primitive] ✅ timeseries: /home/hirokionodera/cqox-complete_b/reports/figures/job_a1bd2496/primitive_timeseries.png
+[primitive] Attempting distribution...
+[primitive] ✅ distribution: /home/hirokionodera/cqox-complete_b/reports/figures/job_a1bd2496/primitive_distribution.png
+[primitive] Attempting scatter...
+[primitive] ✅ scatter: /home/hirokionodera/cqox-complete_b/reports/figures/job_a1bd2496/primitive_scatter.png
+[primitive] Attempting heterogeneity...
+[primitive] ✅ heterogeneity: /home/hirokionodera/cqox-complete_b/reports/figures/job_a1bd2496/primitive_heterogeneity.png
+[primitive] Attempting propensity...
+[primitive] ✅ propensity: /home/hirokionodera/cqox-complete_b/reports/figures/job_a1bd2496/primitive_propensity.png
+[primitive] Attempting balance...
+[primitive] ✅ balance: /home/hirokionodera/cqox-complete_b/reports/figures/job_a1bd2496/primitive_balance.png
+[primitive] Completed. Generated 6 figures: ['primitive_timeseries', 'primitive_distribution', 'primitive_scatter', 'primitive_heterogeneity', 'primitive_propensity', 'primitive_balance']
+[DomainFigures] Generating 5/5 figures for education
+[DomainFigures] Recommended: education_gain_distrib, education_teacher_effect, education_attainment_sankey, education_event_study, education_fairness...
+[DomainFigures] Calling WolframONE for education domain...
+[DomainFigures] Output directory: /home/hirokionodera/cqox-complete_b/reports/figures/job_a1bd2496
+[DomainFigures] WolframONE generation successful
+[DomainFigures] stdout: 
+CreateDirectory::eexist: /home/hirokionodera/cqox-complete_b/reports/figures/job_a1bd2496 already exists.
+Loading data from: /tmp/tmp48553dho.csv
+Generating Education domain visualizations...
+Visualization generation complete!
+
+[DomainFigures] Registered: education_event_study -> /home/hirokionodera/cqox-complete_b/reports/figures/job_a1bd2496/education_event_study.png
+[DomainFigures] Registered: education_gain_distrib -> /home/hirokionodera/cqox-complete_b/reports/figures/job_a1bd2496/education_gain_distrib.png
+[DomainFigures] Registered: education_fairness -> /home/hirokionodera/cqox-complete_b/reports/figures/job_a1bd2496/education_fairness.png
+[DomainFigures] Registered: education_attainment_sankey -> /home/hirokionodera/cqox-complete_b/reports/figures/job_a1bd2496/education_attainment_sankey.png
+[server] Generated 2 advanced figures (41-42)
+[server] figures_local keys before conversion: ['parallel_trends', 'event_study', 'ate_density', 'propensity_overlap', 'balance_smd', 'rosenbaum_gamma', 'transport_weights', 'tvce_line', 'network_spillover', 'quality_gates_board', 'cas_radar', 'primitive_timeseries', 'primitive_distribution', 'primitive_scatter', 'primitive_heterogeneity', 'primitive_propensity', 'primitive_balance', 'education_event_study', 'education_gain_distrib', 'education_fairness', 'education_attainment_sankey', 'evalue_sensitivity', 'cate_forest']
+[server] Education figures: ['education_event_study', 'education_gain_distrib', 'education_fairness', 'education_attainment_sankey']
+[server] Final figures keys: ['parallel_trends', 'event_study', 'ate_density', 'propensity_overlap', 'balance_smd', 'rosenbaum_gamma', 'transport_weights', 'tvce_line', 'network_spillover', 'quality_gates_board', 'cas_radar', 'primitive_timeseries', 'primitive_distribution', 'primitive_scatter', 'primitive_heterogeneity', 'primitive_propensity', 'primitive_balance', 'education_event_study', 'education_gain_distrib', 'education_fairness', 'education_attainment_sankey', 'evalue_sensitivity', 'cate_forest']
+[server] Education figure URLs: [('education_event_study', '/reports/figures/job_a1bd2496/education_event_study.png'), ('education_gain_distrib', '/reports/figures/job_a1bd2496/education_gain_distrib.png'), ('education_fairness', '/reports/figures/job_a1bd2496/education_fairness.png'), ('education_attainment_sankey', '/reports/figures/job_a1bd2496/education_attainment_sankey.png')]
+INFO:     127.0.0.1:45842 - "POST /api/analyze/comprehensive HTTP/1.1" 200 OK

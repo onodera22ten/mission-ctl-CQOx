@@ -1,0 +1,258 @@
+WARNING:gateway:[observability][gateway] tracing disabled: No module named 'opentelemetry.exporter.otlp'
+INFO:     Started server process [217582]
+INFO:     Waiting for application startup.
+INFO:gateway:[Gateway] Starting up...
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8081 (Press CTRL+C to quit)
+INFO:gateway:Incoming request: GET /health
+INFO:gateway:Response status: 404
+INFO:     127.0.0.1:37818 - "GET /health HTTP/1.1" 404 Not Found
+INFO:gateway:Incoming request: GET /api/upload
+INFO:gateway:Response status: 405
+INFO:     127.0.0.1:51818 - "GET /api/upload HTTP/1.1" 405 Method Not Allowed
+INFO:gateway:Incoming request: POST /api/upload
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Processing 32276031bffb49c4b811f73db203588c_mini_retail.csv for dataset 32276031bffb49c4b811f73db203588c (skip_validation=True)
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Loaded 20 rows, 5 columns
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Schema-free mode: skipping validation and causal prep
+INFO:backend.ingestion.parquet_pipeline:[Ingestion] Packet created successfully: /home/hirokionodera/cqox-complete (Copy 2)/data/packets/32276031bffb49c4b811f73db203588c
+ERROR:gateway:Failed to process uploaded file with Parquet pipeline: Must specify a fill 'value' or 'method'.
+ERROR:gateway:Fallback loader also failed: Must specify a fill 'value' or 'method'.
+INFO:gateway:Response status: 200
+INFO:     127.0.0.1:34198 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:gateway:Incoming request: POST /api/analyze
+INFO:gateway:Response status: 404
+INFO:     127.0.0.1:55822 - "POST /api/analyze HTTP/1.1" 404 Not Found
+INFO:gateway:Incoming request: POST /api/analyze/comprehensive
+INFO:httpx:HTTP Request: POST http://localhost:9080/api/analyze/comprehensive "HTTP/1.1 500 Internal Server Error"
+ERROR:gateway:Engine call failed (HTTPError): HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:9080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+ERROR:gateway:Exception details: HTTPStatusError("Server error '500 Internal Server Error' for url 'http://localhost:9080/api/analyze/comprehensive'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500")
+ERROR:gateway:Traceback: Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 573, in analyze_comprehensive
+    result = await _call_engine_analyze(forward_payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 430, in _call_engine_analyze
+    r.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:9080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+
+INFO:gateway:Response status: 503
+INFO:     127.0.0.1:50572 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable
+INFO:gateway:Incoming request: POST /api/analyze/comprehensive
+INFO:httpx:HTTP Request: POST http://localhost:9080/api/analyze/comprehensive "HTTP/1.1 500 Internal Server Error"
+ERROR:gateway:Engine call failed (HTTPError): HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:9080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+ERROR:gateway:Exception details: HTTPStatusError("Server error '500 Internal Server Error' for url 'http://localhost:9080/api/analyze/comprehensive'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500")
+ERROR:gateway:Traceback: Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 573, in analyze_comprehensive
+    result = await _call_engine_analyze(forward_payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 430, in _call_engine_analyze
+    r.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Server error '500 Internal Server Error' for url 'http://localhost:9080/api/analyze/comprehensive'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+
+INFO:gateway:Response status: 503
+INFO:     127.0.0.1:46750 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable
+INFO:gateway:Incoming request: POST /api/analyze/comprehensive
+ERROR:gateway:Engine call failed (HTTPError): ReadTimeout: 
+ERROR:gateway:Exception details: ReadTimeout('')
+ERROR:gateway:Traceback: Traceback (most recent call last):
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        pool_request.request
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpcore/_async/connection.py", line 103, in handle_async_request
+    return await self._connection.handle_async_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpcore/_async/http11.py", line 136, in handle_async_request
+    raise exc
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpcore/_async/http11.py", line 106, in handle_async_request
+    ) = await self._receive_response_headers(**kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpcore/_async/http11.py", line 177, in _receive_response_headers
+    event = await self._receive_event(timeout=timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpcore/_async/http11.py", line 217, in _receive_event
+    data = await self._network_stream.read(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.READ_NUM_BYTES, timeout=timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpcore/_backends/anyio.py", line 32, in read
+    with map_exceptions(exc_map):
+         ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/usr/lib64/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ReadTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 573, in analyze_comprehensive
+    result = await _call_engine_analyze(forward_payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 429, in _call_engine_analyze
+    r = await client.post(f"{ENGINE_URL}/api/analyze/comprehensive", json=payload)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_client.py", line 1859, in post
+    return await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+    ...<13 lines>...
+    )
+    ^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_transports/default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib64/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ReadTimeout
+
+INFO:gateway:Response status: 503
+INFO:     127.0.0.1:53680 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable
+INFO:gateway:Incoming request: POST /api/analyze/comprehensive
+ERROR:gateway:Engine call failed (HTTPError): ReadTimeout: 
+ERROR:gateway:Exception details: ReadTimeout('')
+ERROR:gateway:Traceback: Traceback (most recent call last):
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        pool_request.request
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpcore/_async/connection.py", line 103, in handle_async_request
+    return await self._connection.handle_async_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpcore/_async/http11.py", line 136, in handle_async_request
+    raise exc
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpcore/_async/http11.py", line 106, in handle_async_request
+    ) = await self._receive_response_headers(**kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpcore/_async/http11.py", line 177, in _receive_response_headers
+    event = await self._receive_event(timeout=timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpcore/_async/http11.py", line 217, in _receive_event
+    data = await self._network_stream.read(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.READ_NUM_BYTES, timeout=timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpcore/_backends/anyio.py", line 32, in read
+    with map_exceptions(exc_map):
+         ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/usr/lib64/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ReadTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 573, in analyze_comprehensive
+    result = await _call_engine_analyze(forward_payload)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/cqox-complete (Copy 2)/backend/gateway/app.py", line 429, in _call_engine_analyze
+    r = await client.post(f"{ENGINE_URL}/api/analyze/comprehensive", json=payload)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_client.py", line 1859, in post
+    return await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+    ...<13 lines>...
+    )
+    ^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_transports/default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+         ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib64/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/hirokionodera/.local/lib/python3.13/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ReadTimeout
+
+INFO:gateway:Response status: 503
+INFO:     127.0.0.1:48634 - "POST /api/analyze/comprehensive HTTP/1.1" 503 Service Unavailable
+INFO:gateway:Incoming request: GET /health
+INFO:gateway:Response status: 404
+INFO:     127.0.0.1:42594 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:gateway:[Gateway] Shutting down gracefully...
+INFO:     Application shutdown complete.
+INFO:     Finished server process [217582]

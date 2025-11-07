@@ -1,0 +1,64 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: cqox-engine-hpa
+  namespace: default
+  labels:
+    app: cqox-engine
+    component: autoscaling
+    tier: backend
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cqox-engine
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    # CPU-based scaling
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70  # Scale up when CPU > 70%
+
+    # Memory-based scaling
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 70  # Scale up when Memory > 70%
+
+    # Custom metrics (Prometheus-based)
+    - type: Pods
+      pods:
+        metric:
+          name: http_requests_per_second
+        target:
+          type: AverageValue
+          averageValue: "1000"  # Scale up when > 1000 req/s per pod
+
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300  # 5分間の安定化期間
+      policies:
+        - type: Percent
+          value: 50  # 最大50%のPodを一度に削減
+          periodSeconds: 60
+        - type: Pods
+          value: 2  # または最大2 Podを削減
+          periodSeconds: 60
+      selectPolicy: Min  # より保守的なポリシーを選択
+
+    scaleUp:
+      stabilizationWindowSeconds: 0  # 即座にスケールアップ
+      policies:
+        - type: Percent
+          value: 100  # 最大100%増加（倍増）
+          periodSeconds: 30
+        - type: Pods
+          value: 4  # または最大4 Pod追加
+          periodSeconds: 30
+      selectPolicy: Max  # より積極的なポリシーを選択

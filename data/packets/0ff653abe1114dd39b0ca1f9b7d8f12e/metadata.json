@@ -1,0 +1,55 @@
+{
+  "dataset_id": "0ff653abe1114dd39b0ca1f9b7d8f12e",
+  "original_file": "0ff653abe1114dd39b0ca1f9b7d8f12e_sample_full_roles.csv",
+  "original_shape": {
+    "rows": 50,
+    "cols": 14
+  },
+  "processed_shape": {
+    "rows": 50,
+    "cols": 14
+  },
+  "columns": [
+    "unit_id",
+    "treatment",
+    "y",
+    "time",
+    "cost",
+    "log_propensity",
+    "cluster_id",
+    "instrument",
+    "domain",
+    "strata",
+    "dose",
+    "x_age",
+    "x_income",
+    "x_education"
+  ],
+  "dtypes": {
+    "unit_id": "int64",
+    "treatment": "int64",
+    "y": "float64",
+    "time": "int64",
+    "cost": "int64",
+    "log_propensity": "float64",
+    "cluster_id": "category",
+    "instrument": "float64",
+    "domain": "category",
+    "strata": "category",
+    "dose": "int64",
+    "x_age": "int64",
+    "x_income": "int64",
+    "x_education": "int64"
+  },
+  "preprocessing": {
+    "missing_filled": 0,
+    "types_converted": {
+      "cluster_id": "object\u2192category",
+      "domain": "object\u2192category",
+      "strata": "object\u2192category"
+    },
+    "outliers_handled": 0
+  },
+  "packet_format": "parquet+json",
+  "size_bytes": 9790
+}

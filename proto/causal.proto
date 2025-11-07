@@ -1,0 +1,25 @@
+syntax = "proto3";
+package cqo.v1;
+message ColumnStat { string name=1; string dtype=2; double coverage=3; }
+message RoleCandidate { string role=1; string column=2; double confidence=3; }
+message MissingRole { string role=1; string hint=2; }
+message UploadCSVRequest { string filename=1; bytes data=2; }
+message UploadCSVResponse { string dataset_id=1; repeated ColumnStat stats=2; }
+message RoleProfileRequest { string dataset_id=1; }
+message RoleProfileResponse { repeated RoleCandidate candidates=1; repeated MissingRole missing=2; double acc_at1=3; double recall_at3=4; }
+message ColumnMapping { string role=1; string column=2; }
+message AnalyzeRequest { string dataset_id=1; repeated ColumnMapping mapping=2; double lambda=3; bool preview=4; int32 sample_limit=5; string domain=6; }
+enum EstimatorKind { KIND_TVCE=0; KIND_OPE=1; KIND_IV=2; KIND_TRANSPORT=3; KIND_PROXIMAL=4; KIND_NETWORK=5; KIND_HIDDEN=6; }
+enum EstimatorStatus { EST_SUCCESS=0; EST_SKIP=1; EST_FAIL=2; }
+message EstimatorResult { EstimatorKind kind=1; EstimatorStatus status=2; double tau=3; double se=4; double ci_low=5; double ci_high=6; string message=7; }
+message GateSummary { bool pass=1; double ess=2; double tail_ratio=3; double ci_width=4; double sign_consistency=5; }
+message CASProfile { double gate_pass=1; double sign_consistency=2; double ci_overlap=3; double data_health=4; double sensitivity=5; double total=6; }
+message VizSpec { string key=1; string title=2; repeated string requires=3; string reason=4; }
+message PolicyRec { double budget=1; double expected_profit=2; int32 selected=3; string csv_asset=4; }
+message AnalyzeResponse { string run_id=1; repeated EstimatorResult results=2; GateSummary gate=3; CASProfile cas=4; repeated VizSpec suggest=5; PolicyRec policy=6; }
+message WorkRequest  { string work_id=1; string kind=2; string payload_json=3; }
+message WorkResponse { string work_id=1; string status=2; string result_json=3; }
+message PullRequest  { string worker_id=1; }
+message Ack          { string ok=1; }
+service CausalEngine { rpc UploadCSV(UploadCSVRequest) returns (UploadCSVResponse); rpc RoleProfile(RoleProfileRequest) returns (RoleProfileResponse); rpc AnalyzeComprehensive(AnalyzeRequest) returns (AnalyzeResponse); }
+service Worker { rpc PullTasks(PullRequest) returns (stream WorkRequest); rpc SubmitResult(WorkResponse) returns (Ack); }

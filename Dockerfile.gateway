@@ -1,0 +1,9 @@
+FROM python:3.11-slim
+WORKDIR /app
+COPY backend /app/backend
+COPY config /app/config
+COPY reports /app/reports
+RUN pip install --no-cache-dir fastapi uvicorn[standard] pandas httpx prometheus-client pyyaml python-multipart
+EXPOSE 8080
+CMD ["uvicorn","backend.gateway.app:app","--host","0.0.0.0","--port","8080"]
+

@@ -1,0 +1,9 @@
+{
+  "title": "Cqo-X CAS",
+  "panels": [
+    {
+      "type": "stat",
+      "title": "CAS"
+    }
+  ]
+}
