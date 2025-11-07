@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ObjectiveSpec",
+  "description": "Objective-Lens specification per Plan1.pdf",
+  "type": "object",
+  "properties": {
+    "objective_id": {
+      "type": "string",
+      "description": "Unique objective identifier",
+      "examples": ["profit_max", "conversion_uplift", "interference_geo_network"]
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable objective description"
+    },
+    "roles": {
+      "type": "object",
+      "description": "Column role mapping (正準ロール)",
+      "properties": {
+        "unit_id": {"type": "string"},
+        "time": {"type": "string"},
+        "treatment": {"type": "string"},
+        "outcome": {"type": "string"},
+        "cost": {"type": "string"},
+        "cluster_id": {"type": "string"},
+        "network_edge": {"type": "string"},
+        "log_propensity": {"type": "string"}
+      },
+      "required": ["unit_id", "treatment", "outcome"]
+    },
+    "outcome": {
+      "type": "object",
+      "description": "Outcome type and valuation",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["continuous", "binary", "count", "survival"]
+        },
+        "value_per_unit": {
+          "type": "number",
+          "description": "Monetary value per unit of outcome (円/unit)"
+        },
+        "margin": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Profit margin (0.30 = 30%)"
+        }
+      },
+      "required": ["type"]
+    },
+    "policy": {
+      "type": "object",
+      "description": "Policy constraints and targets",
+      "properties": {
+        "budget": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Total budget in yen"
+        },
+        "target_treatment_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Target treatment rate (0.3 = 30%)"
+        },
+        "fairness": {
+          "type": "object",
+          "properties": {
+            "group": {
+              "type": "string",
+              "description": "Fairness group column"
+            },
+            "max_gap": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Maximum allowed disparity"
+            }
+          }
+        }
+      }
+    },
+    "risk": {
+      "type": "object",
+      "description": "Risk tolerance and gates",
+      "properties": {
+        "cas_thresholds": {
+          "type": "object",
+          "properties": {
+            "go": {"type": "number", "minimum": 0, "maximum": 100},
+            "canary": {"type": "number", "minimum": 0, "maximum": 100},
+            "hold": {"type": "number", "minimum": 0, "maximum": 100}
+          },
+          "description": "CAS score thresholds (default: go≥70, canary≥50, hold<50)"
+        },
+        "max_acceptable_cost": {
+          "type": "number",
+          "description": "Maximum acceptable cost per acquisition"
+        }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "description": "Required analysis capabilities",
+      "properties": {
+        "uplift": {"type": "boolean", "description": "CATE estimation"},
+        "network": {"type": "boolean", "description": "Network spillover"},
+        "geo": {"type": "boolean", "description": "Geographic heterogeneity"},
+        "time_varying": {"type": "boolean", "description": "Time-varying effects"},
+        "survival": {"type": "boolean", "description": "Survival analysis"}
+      }
+    },
+    "visuals": {
+      "type": "array",
+      "description": "Requested visualization panels",
+      "items": {
+        "type": "string",
+        "enum": [
+          "effect_overview",
+          "budget_profit",
+          "love_plot",
+          "overlap",
+          "balance",
+          "sensitivity",
+          "cate_waterfall",
+          "network_diffusion",
+          "parallel_trends",
+          "event_study"
+        ]
+      }
+    }
+  },
+  "required": ["objective_id", "roles", "outcome"]
+}

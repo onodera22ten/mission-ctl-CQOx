@@ -1,0 +1,31 @@
+# dbt profiles for CQOx
+# Supports local DuckDB and future cloud DWH migration
+
+ciq_duck:
+  outputs:
+    dev:
+      type: duckdb
+      path: ../warehouse/warehouse.duckdb
+      threads: 4
+
+    # Future: BigQuery migration
+    # prod_bq:
+    #   type: bigquery
+    #   method: service-account
+    #   project: your-project-id
+    #   dataset: ciq_prod
+    #   threads: 4
+    #   keyfile: /path/to/service-account.json
+
+    # Future: Snowflake migration
+    # prod_sf:
+    #   type: snowflake
+    #   account: your-account
+    #   user: your-user
+    #   password: your-password
+    #   database: CIQ_PROD
+    #   warehouse: COMPUTE_WH
+    #   schema: PUBLIC
+    #   threads: 4
+
+  target: dev

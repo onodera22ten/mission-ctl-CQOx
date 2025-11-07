@@ -1,0 +1,25 @@
+# dbt project configuration for CQOx
+name: ciq_dbt
+version: 1.0
+profile: ciq_duck
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  ciq_dbt:
+    +materialized: table
+    staging:
+      +materialized: view
+    curated:
+      +materialized: table
+    features:
+      +materialized: table

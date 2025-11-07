@@ -1,0 +1,18 @@
+services:
+  engine:
+    build: { context: ., dockerfile: Dockerfile.engine }
+    volumes:
+      - "./reports:/app/reports:z"
+      - "./data:/app/data:z"
+      - "./backend:/app/backend:z"
+    ports: [ "8081:8080" ]
+  gateway:
+    build: { context: '.', dockerfile: Dockerfile.gateway }
+    volumes: [ "./reports:/app/reports:z", "./data:/app/data:z" ]
+    depends_on: [ engine ]
+    environment: [ "ENGINE_URL=http://engine:8080" ]
+    ports: [ "8080:8080" ]
+  frontend:
+    build: { context: '.', dockerfile: Dockerfile.frontend }
+    depends_on: [ gateway ]
+    ports: [ "4000:80" ]

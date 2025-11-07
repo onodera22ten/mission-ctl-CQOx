@@ -1,0 +1,31 @@
+{
+  "dataset_id": "901d6a01423f4da0b045109cb47244c8",
+  "original_file": "901d6a01423f4da0b045109cb47244c8_test_simple.csv",
+  "original_shape": {
+    "rows": 10,
+    "cols": 5
+  },
+  "processed_shape": {
+    "rows": 10,
+    "cols": 5
+  },
+  "columns": [
+    "id",
+    "treatment",
+    "outcome",
+    "age",
+    "income"
+  ],
+  "dtypes": {
+    "id": "int64",
+    "treatment": "int64",
+    "outcome": "int64",
+    "age": "int64",
+    "income": "int64"
+  },
+  "causal_prep_metrics": {},
+  "mapping": {},
+  "packet_format": "parquet+json",
+  "size_bytes": 3522,
+  "contract_path": null
+}

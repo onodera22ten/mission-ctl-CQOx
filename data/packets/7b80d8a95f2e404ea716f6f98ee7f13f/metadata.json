@@ -1,0 +1,31 @@
+{
+  "dataset_id": "7b80d8a95f2e404ea716f6f98ee7f13f",
+  "original_file": "7b80d8a95f2e404ea716f6f98ee7f13f_mini_retail.csv",
+  "original_shape": {
+    "rows": 20,
+    "cols": 5
+  },
+  "processed_shape": {
+    "rows": 20,
+    "cols": 5
+  },
+  "columns": [
+    "user_id",
+    "date",
+    "treatment",
+    "sales",
+    "cost"
+  ],
+  "dtypes": {
+    "user_id": "int64",
+    "date": "object",
+    "treatment": "int64",
+    "sales": "float64",
+    "cost": "float64"
+  },
+  "causal_prep_metrics": {},
+  "mapping": {},
+  "packet_format": "parquet+json",
+  "size_bytes": 3741,
+  "contract_path": null
+}

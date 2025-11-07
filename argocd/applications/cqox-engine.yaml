@@ -1,0 +1,64 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cqox-engine
+  namespace: argocd
+  labels:
+    app: cqox
+    component: engine
+    tier: backend
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  # Project (use 'default' or create custom project)
+  project: cqox-production
+
+  # Source repository
+  source:
+    repoURL: https://github.com/yourusername/cqox-complete_c.git
+    targetRevision: HEAD
+    path: k8s/engine
+
+    # Kustomize overlay (if using kustomize)
+    # kustomize:
+    #   namePrefix: prod-
+
+    # Helm values (if using helm)
+    # helm:
+    #   valueFiles:
+    #     - values-production.yaml
+
+  # Destination cluster
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+
+  # Sync policy
+  syncPolicy:
+    automated:
+      prune: true  # Delete resources not in Git
+      selfHeal: true  # Auto-sync when cluster state drifts
+      allowEmpty: false  # Don't delete all resources if repo is empty
+
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+
+    # Retry strategy
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+
+  # Health assessment
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas  # Ignore HPA-managed replicas
+
+  # Notifications
+  revisionHistoryLimit: 10

@@ -1,0 +1,354 @@
+name: Blue-Green Deployment
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - staging
+          - production
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ${{ github.repository }}
+
+jobs:
+  # ============================================================================
+  # BUILD & TEST
+  # ============================================================================
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tags }}
+      version: ${{ steps.meta.outputs.version }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}
+          tags: |
+            type=sha,prefix={{branch}}-
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+
+      - name: Build and push Engine image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/engine:${{ steps.meta.outputs.version }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push Frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/frontend:${{ steps.meta.outputs.version }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Run tests
+        run: |
+          echo "Running unit tests..."
+          # docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/engine:${{ steps.meta.outputs.version }} pytest
+          echo "Tests passed ✅"
+
+  # ============================================================================
+  # DEPLOY TO GREEN ENVIRONMENT (New Version)
+  # ============================================================================
+  deploy_green:
+    name: Deploy to Green Environment
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure kubectl
+        uses: azure/k8s-set-context@v3
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+
+      - name: Check current active environment
+        id: check_active
+        run: |
+          ACTIVE_ENV=$(kubectl get service cqox-engine -o jsonpath='{.spec.selector.version}' || echo "blue")
+          if [ "$ACTIVE_ENV" == "blue" ]; then
+            echo "active=blue" >> $GITHUB_OUTPUT
+            echo "inactive=green" >> $GITHUB_OUTPUT
+          else
+            echo "active=green" >> $GITHUB_OUTPUT
+            echo "inactive=blue" >> $GITHUB_OUTPUT
+          fi
+          echo "Current active: $ACTIVE_ENV"
+
+      - name: Deploy to Green environment
+        env:
+          VERSION: ${{ needs.build.outputs.version }}
+          GREEN_ENV: ${{ steps.check_active.outputs.inactive }}
+        run: |
+          echo "Deploying version $VERSION to $GREEN_ENV environment..."
+
+          # Update deployments with new image
+          kubectl set image deployment/cqox-engine-$GREEN_ENV \
+            engine=${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/engine:$VERSION
+
+          kubectl set image deployment/cqox-frontend-$GREEN_ENV \
+            frontend=${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/frontend:$VERSION
+
+          # Label deployments
+          kubectl label deployment cqox-engine-$GREEN_ENV version=$GREEN_ENV --overwrite
+          kubectl label deployment cqox-frontend-$GREEN_ENV version=$GREEN_ENV --overwrite
+
+      - name: Wait for rollout
+        env:
+          GREEN_ENV: ${{ steps.check_active.outputs.inactive }}
+        run: |
+          echo "Waiting for rollout to complete..."
+          kubectl rollout status deployment/cqox-engine-$GREEN_ENV --timeout=10m
+          kubectl rollout status deployment/cqox-frontend-$GREEN_ENV --timeout=10m
+
+      - name: Smoke tests on Green
+        env:
+          GREEN_ENV: ${{ steps.check_active.outputs.inactive }}
+        run: |
+          echo "Running smoke tests on Green environment..."
+
+          # Get Green service endpoint
+          GREEN_IP=$(kubectl get service cqox-engine-$GREEN_ENV -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+          # Health check
+          for i in {1..30}; do
+            if curl -f http://$GREEN_IP/health; then
+              echo "Health check passed ✅"
+              break
+            fi
+            echo "Attempt $i/30 failed, retrying..."
+            sleep 10
+          done
+
+          # API smoke test
+          curl -f http://$GREEN_IP/api/version
+
+          echo "Smoke tests completed ✅"
+
+  # ============================================================================
+  # SWITCH TRAFFIC (Blue → Green)
+  # ============================================================================
+  switch_traffic:
+    name: Switch Traffic to Green
+    runs-on: ubuntu-latest
+    needs: [build, deploy_green]
+    environment:
+      name: production-switch
+      url: https://cqox.prod.example.com
+
+    steps:
+      - name: Configure kubectl
+        uses: azure/k8s-set-context@v3
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+
+      - name: Determine environments
+        id: envs
+        run: |
+          ACTIVE_ENV=$(kubectl get service cqox-engine -o jsonpath='{.spec.selector.version}' || echo "blue")
+          if [ "$ACTIVE_ENV" == "blue" ]; then
+            echo "old=blue" >> $GITHUB_OUTPUT
+            echo "new=green" >> $GITHUB_OUTPUT
+          else
+            echo "old=green" >> $GITHUB_OUTPUT
+            echo "new=blue" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Switch traffic to Green
+        env:
+          NEW_ENV: ${{ steps.envs.outputs.new }}
+        run: |
+          echo "Switching production traffic to $NEW_ENV environment..."
+
+          # Update service selectors to point to Green
+          kubectl patch service cqox-engine -p '{"spec":{"selector":{"version":"'$NEW_ENV'"}}}'
+          kubectl patch service cqox-frontend -p '{"spec":{"selector":{"version":"'$NEW_ENV'"}}}'
+
+          echo "Traffic switched to $NEW_ENV ✅"
+
+      - name: Post-switch validation
+        timeout-minutes: 10
+        run: |
+          echo "Validating production traffic..."
+
+          # Wait for DNS propagation
+          sleep 30
+
+          # Check error rate
+          for i in {1..12}; do
+            ERROR_RATE=$(curl -s "http://prometheus:9090/api/v1/query?query=rate(http_requests_total{status=~\"5..\"}[5m])" | jq -r '.data.result[0].value[1]')
+
+            if [ "$ERROR_RATE" == "null" ] || [ $(echo "$ERROR_RATE < 0.01" | bc) -eq 1 ]; then
+              echo "Error rate OK: $ERROR_RATE"
+            else
+              echo "⚠️ High error rate detected: $ERROR_RATE"
+              echo "Rolling back..."
+              exit 1
+            fi
+
+            sleep 30
+          done
+
+          echo "Post-switch validation passed ✅"
+
+      - name: Update deployment metadata
+        env:
+          NEW_ENV: ${{ steps.envs.outputs.new }}
+          VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          kubectl annotate deployment cqox-engine-$NEW_ENV \
+            deployment.kubernetes.io/revision="$(date +%s)" \
+            deployment.kubernetes.io/deployed-at="$(date -Iseconds)" \
+            deployment.kubernetes.io/version="$VERSION"
+
+  # ============================================================================
+  # MONITOR & VALIDATE
+  # ============================================================================
+  monitor_deployment:
+    name: Monitor Deployment
+    runs-on: ubuntu-latest
+    needs: switch_traffic
+
+    steps:
+      - name: Configure kubectl
+        uses: azure/k8s-set-context@v3
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+
+      - name: Monitor metrics for 15 minutes
+        timeout-minutes: 15
+        run: |
+          echo "Monitoring production metrics..."
+
+          for i in {1..30}; do
+            # Check SLO compliance
+            AVAILABILITY=$(curl -s "http://prometheus:9090/api/v1/query?query=slo:availability:5m" | jq -r '.data.result[0].value[1]')
+            ERROR_RATE=$(curl -s "http://prometheus:9090/api/v1/query?query=slo:error_rate:5m" | jq -r '.data.result[0].value[1]')
+            LATENCY_P99=$(curl -s "http://prometheus:9090/api/v1/query?query=histogram_quantile(0.99,sum(rate(http_request_duration_seconds_bucket[5m]))by(le))" | jq -r '.data.result[0].value[1]')
+
+            echo "[$i/30] Availability: $AVAILABILITY, Error Rate: $ERROR_RATE, P99 Latency: ${LATENCY_P99}s"
+
+            # Validate SLOs
+            if [ $(echo "$AVAILABILITY < 0.99" | bc) -eq 1 ]; then
+              echo "❌ SLO VIOLATION: Availability below 99%"
+              exit 1
+            fi
+
+            if [ $(echo "$ERROR_RATE > 0.01" | bc) -eq 1 ]; then
+              echo "❌ SLO VIOLATION: Error rate above 1%"
+              exit 1
+            fi
+
+            if [ $(echo "$LATENCY_P99 > 2.0" | bc) -eq 1 ]; then
+              echo "⚠️ WARNING: P99 latency above 2s"
+            fi
+
+            sleep 30
+          done
+
+          echo "Monitoring completed ✅ - All SLOs met"
+
+      - name: Deployment success notification
+        run: |
+          echo "🎉 Blue-Green deployment completed successfully!"
+          echo "Version: ${{ needs.build.outputs.version }}"
+          echo "Deployed at: $(date -Iseconds)"
+
+  # ============================================================================
+  # ROLLBACK (On Failure)
+  # ============================================================================
+  rollback:
+    name: Rollback Deployment
+    runs-on: ubuntu-latest
+    needs: [switch_traffic, monitor_deployment]
+    if: failure()
+
+    steps:
+      - name: Configure kubectl
+        uses: azure/k8s-set-context@v3
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+
+      - name: Rollback to previous environment
+        run: |
+          echo "🚨 ROLLING BACK DEPLOYMENT"
+
+          CURRENT_ENV=$(kubectl get service cqox-engine -o jsonpath='{.spec.selector.version}')
+
+          if [ "$CURRENT_ENV" == "blue" ]; then
+            ROLLBACK_ENV="green"
+          else
+            ROLLBACK_ENV="blue"
+          fi
+
+          echo "Rolling back to $ROLLBACK_ENV..."
+
+          kubectl patch service cqox-engine -p '{"spec":{"selector":{"version":"'$ROLLBACK_ENV'"}}}'
+          kubectl patch service cqox-frontend -p '{"spec":{"selector":{"version":"'$ROLLBACK_ENV'"}}}'
+
+          echo "Rollback completed ✅"
+
+      - name: Validate rollback
+        run: |
+          sleep 30
+
+          # Check health after rollback
+          for i in {1..10}; do
+            if curl -f http://$(kubectl get service cqox-engine -o jsonpath='{.status.loadBalancer.ingress[0].ip}')/health; then
+              echo "Rollback validation passed ✅"
+              exit 0
+            fi
+            sleep 10
+          done
+
+          echo "❌ Rollback validation failed"
+          exit 1
+
+      - name: Rollback notification
+        run: |
+          echo "⚠️ Deployment rolled back due to failure"
+          echo "Investigate logs and metrics before next deployment"

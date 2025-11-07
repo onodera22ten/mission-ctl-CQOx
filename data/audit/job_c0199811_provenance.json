@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "job_id": "job_c0199811",
+    "dataset_id": "214eb633bd6a4eeda210811b0fe79bda",
+    "created_at": "2025-10-28T07:22:32.690198",
+    "cqox_version": "1.0.0",
+    "python_version": "3.11"
+  },
+  "dictionary_version": {
+    "columns_version": "1.0.0",
+    "units_version": "1.0.0",
+    "validators_version": "1.0.0",
+    "columns_hash": "28748834",
+    "units_hash": "3c8aeb83",
+    "validators_hash": "f2ed05b3",
+    "timestamp": "2025-10-28T07:22:32.690315"
+  },
+  "mapping_decisions": [],
+  "transformations": [
+    {
+      "transform_type": "encoding",
+      "column": "drug",
+      "method": "binary_categorical",
+      "parameters": {
+        "n_categories": 2
+      },
+      "affected_rows": 10,
+      "mapping": {
+        "aspirin": 0,
+        "placebo": 1
+      },
+      "timestamp": "2025-10-28T07:22:32.692398"
+    }
+  ],
+  "random_seeds": [
+    {
+      "seed": 699561330,
+      "scope": "inference",
+      "algorithm": "numpy+random",
+      "timestamp": "2025-10-28T07:22:32.690340"
+    }
+  ],
+  "validations": [
+    {
+      "check_type": "leakage",
+      "passed": true,
+      "severity": "ok",
+      "details": {
+        "has_leakage": "False",
+        "suspicious_columns": "[]",
+        "correlations": "{'mortality': np.float64(0.8494615541297788)}",
+        "severity": "ok",
+        "recommendations": "['No leakage detected']"
+      },
+      "recommendations": [
+        "No leakage detected"
+      ],
+      "timestamp": "2025-10-28T07:22:32.692164"
+    },
+    {
+      "check_type": "vif",
+      "passed": true,
+      "severity": "ok",
+      "details": {
+        "has_multicollinearity": "False",
+        "vif_scores": "{}",
+        "problematic_columns": "[]",
+        "severity": "ok",
+        "recommendations": "['Not enough numeric covariates for VIF']"
+      },
+      "recommendations": [
+        "Not enough numeric covariates for VIF"
+      ],
+      "timestamp": "2025-10-28T07:22:32.692170"
+    },
+    {
+      "check_type": "missing",
+      "passed": true,
+      "severity": "ok",
+      "details": {
+        "has_issues": "False",
+        "missing_rates": "{'patient_id': np.float64(0.0), 'admission_date': np.float64(0.0), 'drug': np.float64(0.0), 'survival_days': np.float64(0.0), 'dose_mg': np.float64(0.0), 'mortality': np.float64(0.0)}",
+        "missing_patterns": "{}",
+        "mechanism": "MCAR",
+        "severity": "ok",
+        "recommendations": "['No significant missing data']"
+      },
+      "recommendations": [
+        "No significant missing data"
+      ],
+      "timestamp": "2025-10-28T07:22:32.692175"
+    },
+    {
+      "check_type": "balance",
+      "passed": true,
+      "severity": "ok",
+      "details": {
+        "is_balanced": "True",
+        "smd_scores": "{}",
+        "imbalanced_columns": "[]",
+        "severity": "ok",
+        "recommendations": "['Covariates are balanced']"
+      },
+      "recommendations": [
+        "Covariates are balanced"
+      ],
+      "timestamp": "2025-10-28T07:22:32.692178"
+    },
+    {
+      "check_type": "overlap",
+      "passed": true,
+      "severity": "ok",
+      "details": {
+        "has_overlap": "True",
+        "propensity_range": "(0.0, 1.0)",
+        "trimmed_fraction": "0.0",
+        "severity": "ok",
+        "recommendations": "['No propensity scores provided - skipping overlap check']"
+      },
+      "recommendations": [
+        "No propensity scores provided - skipping overlap check"
+      ],
+      "timestamp": "2025-10-28T07:22:32.692182"
+    }
+  ]
+}

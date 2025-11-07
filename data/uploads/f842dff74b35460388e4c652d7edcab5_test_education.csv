@@ -1,0 +1,11 @@
+student_id,school_year,tutoring_program,test_score,gpa,attendance_rate
+S001,2023,intensive,85,3.5,0.95
+S002,2023,standard,72,2.8,0.88
+S003,2023,intensive,90,3.8,0.97
+S004,2023,none,68,2.5,0.82
+S005,2023,intensive,88,3.6,0.94
+S006,2023,standard,75,3.0,0.90
+S007,2023,intensive,92,3.9,0.98
+S008,2023,none,65,2.3,0.80
+S009,2023,standard,78,3.2,0.91
+S010,2023,intensive,87,3.7,0.96

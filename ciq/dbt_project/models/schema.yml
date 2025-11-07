@@ -1,0 +1,54 @@
+# dbt schema tests for data quality gates
+version: 2
+
+models:
+  - name: cur_events
+    description: "Curated events with deduplication and cleaning"
+    columns:
+      - name: customer_id
+        description: "Unique customer identifier"
+        tests:
+          - not_null
+          - unique
+
+      - name: event_time
+        description: "Event timestamp"
+        tests:
+          - not_null
+
+      - name: treated
+        description: "Treatment indicator (0/1)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1]
+
+      - name: gender
+        description: "Gender category"
+        tests:
+          - accepted_values:
+              values: ['M', 'F', 'U']
+
+  - name: causal_ready
+    description: "Final causal-safe dataset for inference"
+    columns:
+      - name: customer_id
+        description: "Unique customer identifier"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('cur_events')
+              field: customer_id
+
+      - name: treated
+        description: "Treatment indicator (0/1)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1]
+
+      - name: gender
+        description: "Normalized gender category"
+        tests:
+          - accepted_values:
+              values: ['M', 'F', 'U']

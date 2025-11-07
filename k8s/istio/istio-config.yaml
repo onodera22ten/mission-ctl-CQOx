@@ -1,0 +1,259 @@
+# k8s/istio/istio-config.yaml
+# Istio Service Mesh Configuration for CQOx
+# Phase 1.8: 95点達成目標
+
+---
+# 1. Gateway設定（Ingress）
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: cqox-gateway
+  namespace: default
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: cqox-tls-cert
+      hosts:
+        - "cqox.example.com"
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "cqox.example.com"
+      # HTTP to HTTPS redirect
+      tls:
+        httpsRedirect: true
+
+---
+# 2. VirtualService設定（ルーティング）
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: cqox-routes
+  namespace: default
+spec:
+  hosts:
+    - "cqox.example.com"
+  gateways:
+    - cqox-gateway
+  http:
+    # Gateway API
+    - match:
+        - uri:
+            prefix: "/api/"
+      route:
+        - destination:
+            host: gateway
+            port:
+              number: 8080
+          weight: 100
+      retries:
+        attempts: 3
+        perTryTimeout: 2s
+        retryOn: "5xx,reset,connect-failure,refused-stream"
+      timeout: 30s
+
+    # Engine API (internal)
+    - match:
+        - uri:
+            prefix: "/internal/engine/"
+      route:
+        - destination:
+            host: engine
+            port:
+              number: 8080
+      retries:
+        attempts: 2
+        perTryTimeout: 5s
+      timeout: 60s
+
+    # Frontend
+    - match:
+        - uri:
+            prefix: "/"
+      route:
+        - destination:
+            host: frontend
+            port:
+              number: 80
+
+---
+# 3. DestinationRule設定（トラフィック管理）
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: gateway-destination
+  namespace: default
+spec:
+  host: gateway
+  trafficPolicy:
+    # Load balancing
+    loadBalancer:
+      simple: LEAST_REQUEST
+
+    # Connection pool
+    connectionPool:
+      tcp:
+        maxConnections: 100
+      http:
+        http1MaxPendingRequests: 50
+        http2MaxRequests: 100
+        maxRequestsPerConnection: 2
+
+    # Outlier detection (Circuit Breaker)
+    outlierDetection:
+      consecutive5xxErrors: 5
+      interval: 30s
+      baseEjectionTime: 30s
+      maxEjectionPercent: 50
+      minHealthPercent: 40
+
+  # mTLS設定
+  exportTo:
+    - "."
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: engine-destination
+  namespace: default
+spec:
+  host: engine
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+
+    connectionPool:
+      tcp:
+        maxConnections: 200
+      http:
+        http1MaxPendingRequests: 100
+        http2MaxRequests: 200
+
+    outlierDetection:
+      consecutive5xxErrors: 3
+      interval: 20s
+      baseEjectionTime: 30s
+
+---
+# 4. PeerAuthentication（mTLS強制）
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: default-mtls
+  namespace: default
+spec:
+  mtls:
+    mode: STRICT  # すべてのサービス間通信でmTLS強制
+
+---
+# 5. AuthorizationPolicy（アクセス制御）
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: gateway-authz
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: gateway
+  action: ALLOW
+  rules:
+    # Allow all HTTP methods for API endpoints
+    - to:
+        - operation:
+            methods: ["GET", "POST", "PUT", "DELETE"]
+            paths: ["/api/*"]
+
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: engine-authz
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: engine
+  action: ALLOW
+  rules:
+    # Engine only accepts requests from gateway
+    - from:
+        - source:
+            principals: ["cluster.local/ns/default/sa/gateway"]
+      to:
+        - operation:
+            methods: ["POST"]
+            paths: ["/api/*"]
+
+---
+# 6. Telemetry設定（メトリクス・トレーシング）
+apiVersion: telemetry.istio.io/v1alpha1
+kind: Telemetry
+metadata:
+  name: cqox-telemetry
+  namespace: default
+spec:
+  # Distributed Tracing
+  tracing:
+    - providers:
+        - name: "jaeger"
+      randomSamplingPercentage: 100.0  # 100% sampling for development
+
+  # Access Logging
+  accessLogging:
+    - providers:
+        - name: "envoy"
+      filter:
+        expression: "response.code >= 400"
+
+  # Metrics
+  metrics:
+    - providers:
+        - name: "prometheus"
+      overrides:
+        - match:
+            metric: ALL_METRICS
+          disabled: false
+
+---
+# 7. ServiceEntry（外部サービスアクセス）
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: external-postgres
+  namespace: default
+spec:
+  hosts:
+    - "postgres.external.svc.cluster.local"
+  ports:
+    - number: 5432
+      name: postgresql
+      protocol: TCP
+  location: MESH_EXTERNAL
+  resolution: DNS
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: external-redis
+  namespace: default
+spec:
+  hosts:
+    - "redis.external.svc.cluster.local"
+  ports:
+    - number: 6379
+      name: redis
+      protocol: TCP
+  location: MESH_EXTERNAL
+  resolution: DNS

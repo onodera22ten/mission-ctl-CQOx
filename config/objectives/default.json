@@ -1,0 +1,46 @@
+{
+  "parameters": {
+    "column_selection": {
+      "confidence_threshold": 0.3
+    },
+    "analysis": {
+      "ci_alpha": 0.05,
+      "ci_z_score": 1.96
+    },
+    "estimators": {
+      "sensitivity": {
+        "method": "evalue"
+      },
+      "iv": {
+        "method": "2sls"
+      },
+      "network": {
+        "adjacency_threshold": 0.5,
+        "method": "linear_in_means"
+      }
+    }
+  },
+  "quality_gates": {
+    "ess": {
+      "threshold": 1000
+    },
+    "tail": {
+      "threshold": 0.2
+    },
+    "ci_width": {
+      "threshold": 0.5
+    },
+    "weak_iv": {
+      "threshold": 10.0
+    },
+    "sensitivity": {
+      "threshold": 1.5
+    },
+    "balance": {
+      "threshold": 0.1
+    },
+    "mono": {
+      "threshold": 0.9
+    }
+  }
+}

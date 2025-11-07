@@ -1,0 +1,8 @@
+# ScenarioSpec: Force all units to treatment (do-operator)
+scenario_id: cf_do_all_treatment
+description: |
+  Counterfactual: What if everyone received treatment?
+  Pure ATE estimation without selection bias
+
+intervention:
+  do_treatment: 1

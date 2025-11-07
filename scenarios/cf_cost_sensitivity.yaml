@@ -1,0 +1,9 @@
+# ScenarioSpec: Cost sensitivity analysis
+scenario_id: cf_cost_sensitivity
+description: |
+  What-If: Cost increases by 30%
+  Impact on profitability and optimal policy
+
+economics:
+  cost_multiplier: 1.30
+  margin_adjustment: -0.05

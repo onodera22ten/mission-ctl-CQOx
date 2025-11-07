@@ -1,0 +1,274 @@
+groups:
+  # ============================================================================
+  # SLO-based Alerting Rules (Google SRE Standard)
+  # ============================================================================
+  - name: slo_alerts
+    interval: 30s
+    rules:
+      # ========================================================================
+      # AVAILABILITY SLO ALERTS
+      # ========================================================================
+      - alert: SLOViolation_Availability
+        expr: |
+          (
+            sum(rate(http_requests_total{status=~"2..|3.."}[30d]))
+            /
+            sum(rate(http_requests_total[30d]))
+          ) < 0.9999
+        for: 5m
+        labels:
+          severity: critical
+          slo: availability
+          team: sre
+        annotations:
+          summary: "Availability SLO violated (< 99.99%)"
+          description: "Current availability: {{ $value | humanizePercentage }}"
+          runbook_url: "https://runbooks.cqox.com/slo-violation-availability"
+
+      # ========================================================================
+      # ERROR BUDGET ALERTS
+      # ========================================================================
+      # Fast burn rate (1 hour window) - Will exhaust budget in ~3 days
+      - alert: ErrorBudgetBurnRate_Fast
+        expr: |
+          (
+            (1 - (sum(rate(http_requests_total{status=~"2..|3.."}[1h])) /
+                  sum(rate(http_requests_total[1h]))))
+            /
+            (1 - 0.9999)
+          ) > 14.4
+        for: 5m
+        labels:
+          severity: critical
+          slo: error_budget
+          burn_rate: fast
+          team: sre
+        annotations:
+          summary: "Error budget burning 14.4x faster than expected"
+          description: "At this rate, will exhaust monthly budget in 2.08 days"
+          action: "Page on-call immediately. Investigate and mitigate."
+
+      # Medium burn rate (6 hour window) - Will exhaust budget in ~7 days
+      - alert: ErrorBudgetBurnRate_Medium
+        expr: |
+          (
+            (1 - (sum(rate(http_requests_total{status=~"2..|3.."}[6h])) /
+                  sum(rate(http_requests_total[6h]))))
+            /
+            (1 - 0.9999)
+          ) > 6
+        for: 30m
+        labels:
+          severity: warning
+          slo: error_budget
+          burn_rate: medium
+          team: sre
+        annotations:
+          summary: "Error budget burning 6x faster than expected"
+          description: "At this rate, will exhaust monthly budget in 5 days"
+          action: "Investigate potential issues. Consider feature freeze."
+
+      # Slow burn rate (3 day window) - Will exhaust budget in ~15 days
+      - alert: ErrorBudgetBurnRate_Slow
+        expr: |
+          (
+            (1 - (sum(rate(http_requests_total{status=~"2..|3.."}[3d])) /
+                  sum(rate(http_requests_total[3d]))))
+            /
+            (1 - 0.9999)
+          ) > 2
+        for: 2h
+        labels:
+          severity: info
+          slo: error_budget
+          burn_rate: slow
+          team: sre
+        annotations:
+          summary: "Error budget burning 2x faster than expected"
+          description: "At this rate, will exhaust monthly budget in 15 days"
+          action: "Monitor closely. Review reliability improvements."
+
+      # ========================================================================
+      # LATENCY SLO ALERTS
+      # ========================================================================
+      - alert: SLOViolation_LatencyP99
+        expr: |
+          histogram_quantile(0.99,
+            sum(rate(http_request_duration_seconds_bucket[5m])) by (le)
+          ) > 2.0
+        for: 10m
+        labels:
+          severity: warning
+          slo: latency_p99
+          team: sre
+        annotations:
+          summary: "P99 latency SLO violated (> 2000ms)"
+          description: "Current P99 latency: {{ $value }}s"
+          runbook_url: "https://runbooks.cqox.com/high-latency"
+
+      - alert: SLOViolation_LatencyP95
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_seconds_bucket[5m])) by (le)
+          ) > 1.0
+        for: 10m
+        labels:
+          severity: warning
+          slo: latency_p95
+          team: sre
+        annotations:
+          summary: "P95 latency SLO violated (> 1000ms)"
+          description: "Current P95 latency: {{ $value }}s"
+
+      # ========================================================================
+      # ERROR RATE ALERTS
+      # ========================================================================
+      - alert: SLOViolation_ErrorRate
+        expr: |
+          (
+            sum(rate(http_requests_total{status=~"5.."}[5m]))
+            /
+            sum(rate(http_requests_total[5m]))
+          ) > 0.001
+        for: 5m
+        labels:
+          severity: critical
+          slo: error_rate
+          team: sre
+        annotations:
+          summary: "Error rate SLO violated (> 0.1%)"
+          description: "Current error rate: {{ $value | humanizePercentage }}"
+          runbook_url: "https://runbooks.cqox.com/high-error-rate"
+
+      # ========================================================================
+      # DATABASE SLO ALERTS
+      # ========================================================================
+      - alert: SLOViolation_DatabaseAvailability
+        expr: up{job="postgres"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          slo: database_availability
+          team: sre-database
+        annotations:
+          summary: "Database is down"
+          description: "PostgreSQL primary is unreachable"
+          runbook_url: "https://runbooks.cqox.com/database-down"
+
+      - alert: DatabaseReplicationLagHigh
+        expr: |
+          (
+            pg_replication_lag_seconds > 60
+          )
+        for: 5m
+        labels:
+          severity: warning
+          slo: database_availability
+          team: sre-database
+        annotations:
+          summary: "Database replication lag high"
+          description: "Replication lag: {{ $value }}s (RPO risk)"
+          action: "Check standby health. May impact RPO < 1h target."
+
+  # ============================================================================
+  # ERROR BUDGET CALCULATION
+  # ============================================================================
+  - name: error_budget_recording
+    interval: 1m
+    rules:
+      # Record error budget remaining (30-day window)
+      - record: slo:error_budget_remaining:ratio
+        expr: |
+          1 - (
+            (1 - 0.9999) -  # Total allowed error budget
+            (1 - (
+              sum(rate(http_requests_total{status=~"2..|3.."}[30d]))
+              /
+              sum(rate(http_requests_total[30d]))
+            ))
+          ) / (1 - 0.9999)
+
+      # Record burn rate (1h window)
+      - record: slo:error_budget_burn_rate:1h
+        expr: |
+          (
+            (1 - (sum(rate(http_requests_total{status=~"2..|3.."}[1h])) /
+                  sum(rate(http_requests_total[1h]))))
+            /
+            (1 - 0.9999)
+          ) / (1.0 / 30.0 / 24.0)  # Normalize to daily rate
+
+      # Record burn rate (6h window)
+      - record: slo:error_budget_burn_rate:6h
+        expr: |
+          (
+            (1 - (sum(rate(http_requests_total{status=~"2..|3.."}[6h])) /
+                  sum(rate(http_requests_total[6h]))))
+            /
+            (1 - 0.9999)
+          ) / (1.0 / 30.0 / 24.0)
+
+      # Record burn rate (24h window)
+      - record: slo:error_budget_burn_rate:24h
+        expr: |
+          (
+            (1 - (sum(rate(http_requests_total{status=~"2..|3.."}[24h])) /
+                  sum(rate(http_requests_total[24h]))))
+            /
+            (1 - 0.9999)
+          ) / (1.0 / 30.0)
+
+      # Record availability (5m window for dashboards)
+      - record: slo:availability:5m
+        expr: |
+          sum(rate(http_requests_total{status=~"2..|3.."}[5m]))
+          /
+          sum(rate(http_requests_total[5m]))
+
+      # Record error rate (5m window)
+      - record: slo:error_rate:5m
+        expr: |
+          sum(rate(http_requests_total{status=~"5.."}[5m]))
+          /
+          sum(rate(http_requests_total[5m]))
+
+  # ============================================================================
+  # MULTI-WINDOW ALERTS (Google SRE Best Practice)
+  # ============================================================================
+  - name: multiwindow_alerts
+    interval: 30s
+    rules:
+      # 2% budget consumption in 1h AND 5% in 6h
+      - alert: ErrorBudgetBurn_MultiWindow_Critical
+        expr: |
+          (
+            slo:error_budget_burn_rate:1h > 14.4
+            and
+            slo:error_budget_burn_rate:6h > 6
+          )
+        for: 2m
+        labels:
+          severity: critical
+          team: sre
+          alert_class: multiwindow
+        annotations:
+          summary: "Multiple windows show critical error budget burn"
+          description: "1h burn: {{ $value }}, budget will exhaust soon"
+          action: "IMMEDIATE ACTION REQUIRED"
+
+      # 5% budget consumption in 6h AND 10% in 3d
+      - alert: ErrorBudgetBurn_MultiWindow_Warning
+        expr: |
+          (
+            slo:error_budget_burn_rate:6h > 6
+            and
+            slo:error_budget_burn_rate:24h > 3
+          )
+        for: 15m
+        labels:
+          severity: warning
+          team: sre
+          alert_class: multiwindow
+        annotations:
+          summary: "Sustained error budget burn detected"
+          description: "Review system health and recent changes"

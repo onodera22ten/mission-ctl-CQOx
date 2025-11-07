@@ -1,0 +1,41 @@
+{
+  "objective_id": "interference_geo_network",
+  "description": "干渉下の効果（地理・ネットワーク）- Effects under Interference",
+  "roles": {
+    "unit_id": "user_id",
+    "time": "date",
+    "treatment": "treatment",
+    "outcome": "y",
+    "cluster_id": "region",
+    "network_edge": "friend_edges"
+  },
+  "outcome": {
+    "type": "continuous",
+    "value_per_unit": 1.0,
+    "margin": 0.25
+  },
+  "policy": {
+    "budget": 30000000
+  },
+  "risk": {
+    "cas_thresholds": {
+      "go": 60,
+      "canary": 40,
+      "hold": 20
+    }
+  },
+  "capabilities": {
+    "uplift": true,
+    "network": true,
+    "geo": true,
+    "time_varying": false,
+    "survival": false
+  },
+  "visuals": [
+    "effect_overview",
+    "network_diffusion",
+    "overlap",
+    "balance",
+    "sensitivity"
+  ]
+}

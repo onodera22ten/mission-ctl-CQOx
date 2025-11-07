@@ -1,0 +1,7 @@
+python -m venv .venv && . .venv/bin/activate
+pip install -r requirements.txt
+bash scripts/gen_proto.sh
+python backend/engine/server.py &
+python backend/gateway/app.py &
+python backend/worker/worker.py &
+cd frontend && npm i && npm run dev

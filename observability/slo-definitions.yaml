@@ -1,0 +1,297 @@
+# ============================================================================
+# CQOx Service Level Objectives (SLO) - Google SRE Standard
+# ============================================================================
+# 参考: Google SRE Book - Chapter 4 (Service Level Objectives)
+# 目標: 99.99% availability (4 nines) = 52.56 minutes downtime/year
+# ============================================================================
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cqox-slo-definitions
+  namespace: default
+  labels:
+    app: cqox
+    component: observability
+data:
+  slo-config.yaml: |
+    # ============================================================================
+    # SERVICE LEVEL INDICATORS (SLI) - What we measure
+    # ============================================================================
+    slis:
+      # Availability SLI: % of successful requests
+      - name: availability
+        description: "Percentage of requests that return 2xx or 3xx status codes"
+        query: |
+          sum(rate(http_requests_total{status=~"2..|3.."}[5m]))
+          /
+          sum(rate(http_requests_total[5m]))
+        unit: ratio
+
+      # Latency SLI: % of requests below threshold
+      - name: latency_p99
+        description: "99th percentile request latency in milliseconds"
+        query: |
+          histogram_quantile(0.99,
+            sum(rate(http_request_duration_seconds_bucket[5m])) by (le)
+          ) * 1000
+        unit: milliseconds
+
+      - name: latency_p95
+        description: "95th percentile request latency in milliseconds"
+        query: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_seconds_bucket[5m])) by (le)
+          ) * 1000
+        unit: milliseconds
+
+      # Error Rate SLI
+      - name: error_rate
+        description: "Percentage of requests returning 5xx status codes"
+        query: |
+          sum(rate(http_requests_total{status=~"5.."}[5m]))
+          /
+          sum(rate(http_requests_total[5m]))
+        unit: ratio
+
+      # Database Availability
+      - name: database_availability
+        description: "PostgreSQL uptime percentage"
+        query: |
+          up{job="postgres"} == 1
+        unit: boolean
+
+      # Throughput SLI
+      - name: throughput
+        description: "Total requests per second"
+        query: |
+          sum(rate(http_requests_total[5m]))
+        unit: requests_per_second
+
+    # ============================================================================
+    # SERVICE LEVEL OBJECTIVES (SLO) - What we promise
+    # ============================================================================
+    slos:
+      # Primary SLO: Overall Service Availability
+      - name: overall_availability
+        description: "CQOx service must be available 99.99% of the time"
+        sli: availability
+        target: 0.9999  # 99.99%
+        window: 30d     # Rolling 30-day window
+        error_budget: 0.0001  # 0.01% = 52.56 minutes/year
+
+      # Latency SLO: Fast Response Times
+      - name: fast_response_p99
+        description: "99% of requests must complete within 2000ms"
+        sli: latency_p99
+        target: 2000  # milliseconds
+        window: 7d
+        operator: "≤"
+
+      - name: fast_response_p95
+        description: "95% of requests must complete within 1000ms"
+        sli: latency_p95
+        target: 1000  # milliseconds
+        window: 7d
+        operator: "≤"
+
+      # Error Rate SLO
+      - name: low_error_rate
+        description: "Error rate must be below 0.1%"
+        sli: error_rate
+        target: 0.001  # 0.1%
+        window: 7d
+        operator: "<"
+
+      # Database SLO
+      - name: database_uptime
+        description: "Database must be available 99.99% of the time"
+        sli: database_availability
+        target: 0.9999
+        window: 30d
+
+      # Analysis Throughput SLO
+      - name: analysis_capacity
+        description: "System must handle at least 100 requests/second"
+        sli: throughput
+        target: 100
+        window: 1h
+        operator: "≥"
+
+    # ============================================================================
+    # ERROR BUDGET POLICY
+    # ============================================================================
+    error_budget_policy:
+      # What happens when we burn error budget
+      - remaining_budget: 1.0 - 0.75  # > 75% remaining
+        policy: "Full speed ahead - All deployments allowed"
+        actions:
+          - "Blue-green deployments: Enabled"
+          - "Canary deployments: Enabled"
+          - "Feature rollouts: No restrictions"
+          - "Engineering focus: 100% features"
+
+      - remaining_budget: 0.75 - 0.50  # 50-75% remaining
+        policy: "Caution - Enhanced monitoring"
+        actions:
+          - "Blue-green deployments: Enabled with extended soak"
+          - "Canary deployments: Slower rollout (10% → 50% → 100%)"
+          - "Feature rollouts: Approved by SRE"
+          - "Engineering focus: 80% features, 20% reliability"
+
+      - remaining_budget: 0.50 - 0.25  # 25-50% remaining
+        policy: "Warning - Freeze non-critical changes"
+        actions:
+          - "Blue-green deployments: Critical fixes only"
+          - "Canary deployments: Disabled"
+          - "Feature rollouts: Frozen"
+          - "Engineering focus: 50% features, 50% reliability"
+          - "Incident reviews: Mandatory for all outages"
+
+      - remaining_budget: 0.25 - 0.0  # < 25% remaining
+        policy: "CRITICAL - Feature freeze, reliability focus"
+        actions:
+          - "All deployments: FROZEN except emergency fixes"
+          - "War room: Daily SRE sync"
+          - "Engineering focus: 100% reliability work"
+          - "Executive escalation: Required"
+          - "Postmortem: Required for all incidents"
+
+      - remaining_budget: 0.0  # Budget exhausted
+        policy: "SLO VIOLATED - Complete freeze"
+        actions:
+          - "All changes: BLOCKED"
+          - "On-call: 24/7 dedicated SRE team"
+          - "Root cause analysis: Immediate"
+          - "Remediation plan: Required before any changes"
+          - "Executive report: Daily"
+
+    # ============================================================================
+    # ALERT THRESHOLDS
+    # ============================================================================
+    alerts:
+      # Availability alerts
+      - name: HighErrorRate
+        condition: error_rate > 0.01  # > 1%
+        duration: 5m
+        severity: critical
+        description: "Error rate exceeds 1% for 5 minutes"
+
+      - name: LowAvailability
+        condition: availability < 0.99
+        duration: 5m
+        severity: critical
+        description: "Availability dropped below 99%"
+
+      # Latency alerts
+      - name: HighLatencyP99
+        condition: latency_p99 > 2000
+        duration: 5m
+        severity: warning
+        description: "P99 latency exceeds 2000ms"
+
+      - name: HighLatencyP95
+        condition: latency_p95 > 1000
+        duration: 5m
+        severity: warning
+        description: "P95 latency exceeds 1000ms"
+
+      # Error budget alerts
+      - name: ErrorBudgetBurnRateFast
+        condition: error_budget_burn_rate > 10
+        duration: 1h
+        severity: critical
+        description: "Burning error budget 10x faster than expected"
+
+      - name: ErrorBudgetBurnRateSlow
+        condition: error_budget_burn_rate > 3
+        duration: 6h
+        severity: warning
+        description: "Burning error budget 3x faster than expected"
+
+      - name: ErrorBudgetExhausted
+        condition: error_budget_remaining < 0.1
+        duration: 5m
+        severity: critical
+        description: "Less than 10% error budget remaining"
+
+      # Database alerts
+      - name: DatabaseDown
+        condition: up{job="postgres"} == 0
+        duration: 1m
+        severity: critical
+        description: "PostgreSQL is down"
+
+      - name: DatabaseReplicationLag
+        condition: replication_lag_seconds > 60
+        duration: 5m
+        severity: warning
+        description: "Database replication lag exceeds 60 seconds"
+
+    # ============================================================================
+    # SLI/SLO DASHBOARD METRICS
+    # ============================================================================
+    dashboard_panels:
+      - title: "Overall Availability (30d)"
+        query: slo_target{slo="overall_availability"}
+        target: 99.99%
+
+      - title: "Error Budget Remaining"
+        query: |
+          (1 - (
+            (1 - slo_target{slo="overall_availability"})
+            -
+            (1 - avg_over_time(availability[30d]))
+          ) / (1 - slo_target{slo="overall_availability"})) * 100
+        unit: "%"
+        thresholds:
+          critical: 10
+          warning: 25
+          good: 50
+
+      - title: "Error Budget Burn Rate (24h)"
+        query: |
+          (1 - avg_over_time(availability[24h]))
+          /
+          (1 - slo_target{slo="overall_availability"})
+          /
+          30  # days in window
+        unit: "x"
+        description: "How fast we're burning through error budget"
+
+      - title: "P99 Latency vs Target"
+        query: latency_p99
+        target: 2000
+        unit: "ms"
+
+      - title: "Requests per Second"
+        query: sum(rate(http_requests_total[5m]))
+        unit: "req/s"
+
+    # ============================================================================
+    # REPORTING
+    # ============================================================================
+    reports:
+      - type: weekly
+        recipients:
+          - engineering@cqox.com
+          - sre@cqox.com
+        metrics:
+          - overall_availability
+          - error_budget_remaining
+          - latency_p99
+          - latency_p95
+          - error_rate
+
+      - type: monthly
+        recipients:
+          - engineering@cqox.com
+          - sre@cqox.com
+          - executives@cqox.com
+        metrics:
+          - overall_availability
+          - error_budget_remaining
+          - error_budget_policy_violations
+          - incident_count
+          - mttr  # Mean Time To Recovery
+          - mttd  # Mean Time To Detection
