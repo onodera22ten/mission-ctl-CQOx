@@ -122,6 +122,54 @@ export async function listScenarios(dataset_id: string) {
   };
 }
 
+// バッチシナリオ実行
+export async function runBatchScenarios(args: {
+  dataset_id: string;
+  scenarios: string[];
+  mode?: "ope" | "gcomp";
+}) {
+  const { data } = await api.post("/scenario/run_batch", {
+    dataset_id: args.dataset_id,
+    scenarios: args.scenarios,
+    mode: args.mode || "ope",
+  });
+  return data as {
+    status: string;
+    dataset_id: string;
+    results: Array<{
+      scenario_id: string;
+      delta_profit: number;
+      ate_s0: number;
+      ate_s1: number;
+      ci: [number, number];
+      ess: number;
+      error?: string;
+    }>;
+    ranked_scenarios: string[];
+  };
+}
+
+// Decision Card生成
+export async function exportDecisionCard(args: {
+  dataset_id: string;
+  scenario_id: string;
+  format?: "json" | "html" | "pdf";
+}) {
+  const { data } = await api.get("/scenario/export/decision_card", {
+    params: {
+      dataset_id: args.dataset_id,
+      scenario_id: args.scenario_id,
+      fmt: args.format || "html",
+    },
+  });
+  return data as {
+    status: string;
+    path: string;
+    format: string;
+    generated_at: string;
+  };
+}
+
 // デバッグ用スモーク
 export async function testAPI(file: File) {
   const up = await uploadFile(file);

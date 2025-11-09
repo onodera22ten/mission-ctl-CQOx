@@ -425,3 +425,91 @@ class GeographicAnalyzer:
             return self.tigramite.estimate_with_tigramite(y, treatment, coordinates, X)
         else:
             raise ValueError(f"Unknown method: {method}")
+
+
+# ==========================================
+# Integration with Scenario System
+# ==========================================
+
+def evaluate_geographic_effects_from_df(
+    df: pd.DataFrame,
+    treatment_col: str = "treatment",
+    outcome_col: str = "y",
+    lat_col: str = "lat",
+    lon_col: str = "lon",
+    method: str = "distance_based",
+    value_per_y: float = 1.0,
+    cost_col: Optional[str] = None,
+    **kwargs
+) -> Dict[str, Any]:
+    """
+    Evaluate geographic effects from DataFrame (integration with scenario system)
+
+    Args:
+        df: Main DataFrame
+        treatment_col: Treatment column name
+        outcome_col: Outcome column name
+        lat_col: Latitude column name
+        lon_col: Longitude column name
+        method: Estimation method ("spatial_matching", "distance_based", "tigramite")
+        value_per_y: Monetary value per outcome unit
+        cost_col: Cost column (optional)
+        **kwargs: Method-specific parameters
+
+    Returns:
+        Dictionary with ATE and Moran's I in quality gates format
+    """
+    # Prepare data
+    treatment = df[treatment_col].values
+    outcome = df[outcome_col].values
+    coordinates = df[[lat_col, lon_col]].values
+
+    # Compute profit if cost available
+    if cost_col and cost_col in df.columns:
+        profit = outcome * value_per_y - df[cost_col].values
+    else:
+        profit = outcome * value_per_y
+
+    # Get covariates
+    X_cols = [c for c in df.columns if c.startswith("X_")]
+    X = df[X_cols].values if X_cols else None
+
+    # Estimate geographic effects
+    analyzer = GeographicAnalyzer()
+    result = analyzer.estimate(
+        y=profit,
+        treatment=treatment,
+        coordinates=coordinates,
+        X=X,
+        method=method,
+        **kwargs
+    )
+
+    # Format results for quality gates integration
+    return {
+        "ate": {
+            "value": result.ate,
+            "std_error": result.se,
+            "ci": [result.ci_lower, result.ci_upper]
+        },
+        "spatial_autocorrelation": {
+            "morans_i": result.spatial_autocorrelation,
+            "interpretation": _interpret_morans_i(result.spatial_autocorrelation)
+        },
+        "method": result.method,
+        "diagnostics": result.diagnostics
+    }
+
+
+def _interpret_morans_i(morans_i: float) -> str:
+    """Interpret Moran's I value"""
+    if morans_i > 0.3:
+        return "Strong positive spatial autocorrelation"
+    elif morans_i > 0.1:
+        return "Moderate positive spatial autocorrelation"
+    elif morans_i > -0.1:
+        return "No significant spatial autocorrelation"
+    elif morans_i > -0.3:
+        return "Moderate negative spatial autocorrelation"
+    else:
+        return "Strong negative spatial autocorrelation"

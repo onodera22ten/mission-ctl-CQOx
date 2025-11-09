@@ -329,3 +329,150 @@ class NetworkAnalyzer:
         adjacency = (distances < threshold) & (distances > 0)  # Exclude self-loops
 
         return adjacency.astype(int)
+
+
+# ==========================================
+# Integration with Scenario System
+# ==========================================
+
+def evaluate_network_effects_from_df(
+    df: pd.DataFrame,
+    treatment_col: str = "treatment",
+    outcome_col: str = "y",
+    cluster_col: Optional[str] = None,
+    edges: Optional[pd.DataFrame] = None,
+    coordinates: Optional[Tuple[str, str]] = None,
+    distance_threshold: float = 1.0,
+    method: str = "linear_in_means",
+    value_per_y: float = 1.0,
+    cost_col: Optional[str] = None
+) -> Dict[str, Any]:
+    """
+    Evaluate network effects from DataFrame (integration with scenario system)
+
+    Args:
+        df: Main DataFrame
+        treatment_col: Treatment column name
+        outcome_col: Outcome column name
+        cluster_col: Cluster ID column (for cluster-based networks)
+        edges: Edge list DataFrame with [src, dst, weight]
+        coordinates: Tuple of (lat_col, lon_col) for spatial networks
+        distance_threshold: Distance threshold for spatial networks
+        method: Estimation method
+        value_per_y: Monetary value per outcome unit
+        cost_col: Cost column (optional)
+
+    Returns:
+        Dictionary with DE/IE/TE results in quality gates format
+    """
+    # Construct adjacency matrix
+    n = len(df)
+
+    if edges is not None:
+        # Build from edge list
+        adjacency_matrix = _build_adjacency_from_edges(df, edges)
+    elif coordinates is not None:
+        # Build from spatial coordinates
+        lat_col, lon_col = coordinates
+        coords = df[[lat_col, lon_col]].values
+        analyzer = NetworkAnalyzer()
+        adjacency_matrix = analyzer.construct_adjacency_from_distance(coords, distance_threshold)
+    elif cluster_col is not None:
+        # Build from cluster membership (within-cluster connections)
+        adjacency_matrix = _build_adjacency_from_clusters(df, cluster_col)
+    else:
+        raise ValueError("Must provide either edges, coordinates, or cluster_col")
+
+    # Prepare data
+    treatment = df[treatment_col].values
+    outcome = df[outcome_col].values
+
+    # Compute profit if cost available
+    if cost_col and cost_col in df.columns:
+        profit = outcome * value_per_y - df[cost_col].values
+    else:
+        profit = outcome * value_per_y
+
+    # Get covariates
+    X_cols = [c for c in df.columns if c.startswith("X_")]
+    X = df[X_cols].values if X_cols else None
+
+    # Estimate network effects
+    analyzer = NetworkAnalyzer()
+    result = analyzer.estimate(
+        y=profit,
+        treatment=treatment,
+        adjacency_matrix=adjacency_matrix,
+        X=X,
+        method=method
+    )
+
+    # Format results for quality gates integration
+    return {
+        "direct_effect": {
+            "value": result.direct_effect,
+            "std_error": result.direct_se,
+            "ci": [
+                result.direct_effect - 1.96 * result.direct_se,
+                result.direct_effect + 1.96 * result.direct_se
+            ]
+        },
+        "indirect_effect": {
+            "value": result.spillover_effect,
+            "std_error": result.spillover_se,
+            "ci": [
+                result.spillover_effect - 1.96 * result.spillover_se,
+                result.spillover_effect + 1.96 * result.spillover_se
+            ]
+        },
+        "total_effect": {
+            "value": result.total_effect,
+            "std_error": np.sqrt(result.direct_se**2 + result.spillover_se**2),
+            "ci": [
+                result.total_effect - 1.96 * np.sqrt(result.direct_se**2 + result.spillover_se**2),
+                result.total_effect + 1.96 * np.sqrt(result.direct_se**2 + result.spillover_se**2)
+            ]
+        },
+        "method": result.method,
+        "diagnostics": result.diagnostics
+    }
+
+
+def _build_adjacency_from_edges(df: pd.DataFrame, edges: pd.DataFrame) -> np.ndarray:
+    """Build adjacency matrix from edge list"""
+    n = len(df)
+    adjacency = np.zeros((n, n))
+
+    # Create unit_id to index mapping
+    unit_ids = df["unit_id"].values if "unit_id" in df.columns else df.index.values
+    id_to_idx = {uid: i for i, uid in enumerate(unit_ids)}
+
+    # Fill adjacency matrix
+    for _, edge in edges.iterrows():
+        src = edge.get("src")
+        dst = edge.get("dst")
+        if src in id_to_idx and dst in id_to_idx:
+            i = id_to_idx[src]
+            j = id_to_idx[dst]
+            adjacency[i, j] = 1
+            # Assume undirected
+            adjacency[j, i] = 1
+
+    return adjacency
+
+
+def _build_adjacency_from_clusters(df: pd.DataFrame, cluster_col: str) -> np.ndarray:
+    """Build adjacency matrix from cluster membership"""
+    n = len(df)
+    adjacency = np.zeros((n, n))
+
+    clusters = df[cluster_col].values
+
+    # Connect all units within same cluster
+    for i in range(n):
+        for j in range(i + 1, n):
+            if clusters[i] == clusters[j]:
+                adjacency[i, j] = 1
+                adjacency[j, i] = 1
+
+    return adjacency
