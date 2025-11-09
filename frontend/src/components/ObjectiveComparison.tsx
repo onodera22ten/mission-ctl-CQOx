@@ -1,5 +1,5 @@
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { SmartFigureCompare } from "./figures/FigureCompare";
 import ScenarioPlayground, { ScenarioParams } from "./ScenarioPlayground";
 import { runScenario } from "../lib/client";
