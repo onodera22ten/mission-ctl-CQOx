@@ -52,7 +52,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}
+          images: ghcr.io/onodera22ten/mission-ctl-cqox
           tags: |
             type=sha,prefix={{branch}}-
             type=ref,event=branch
