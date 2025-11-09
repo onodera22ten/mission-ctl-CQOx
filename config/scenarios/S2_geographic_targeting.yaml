@@ -1,0 +1,22 @@
+id: S2_geographic_targeting
+label: "Geographic Targeting Strategy"
+
+intervention:
+  type: policy
+  rule: "X_region in ['tokyo', 'osaka']"
+  coverage: 0.40  # Higher coverage in target regions
+
+constraints:
+  budget:
+    cap: 100000000  # ¥100M cap
+
+geography:
+  include_regions: ["tokyo", "osaka", "nagoya"]
+  geo_multiplier: 1.2
+
+time:
+  start: "2025-01-01"
+  horizon_days: 28
+
+value:
+  value_per_y: 1000  # ¥1000 per conversion

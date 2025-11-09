@@ -1,0 +1,21 @@
+id: S1_budget_increase
+label: "Budget +20% Increase"
+
+intervention:
+  type: policy
+  rule: "propensity > 0.6"
+  coverage: 0.35  # Increase from 30% to 35%
+
+constraints:
+  budget:
+    cap: 120000000  # ¥120M cap
+  fairness:
+    group_col: X_region
+    max_gap: 0.03  # ≤3% fairness gap
+
+time:
+  start: "2025-01-01"
+  horizon_days: 28
+
+value:
+  value_per_y: 1000  # ¥1000 per conversion
