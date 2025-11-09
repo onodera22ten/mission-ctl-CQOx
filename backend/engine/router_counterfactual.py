@@ -15,6 +15,8 @@ from backend.inference.ope import evaluate_scenario_ope
 from backend.inference.g_computation import evaluate_scenario_gcomp
 from backend.engine.quality_gates import evaluate_quality_gates
 from backend.common.schema_validator import validate_for_estimators, ValidationError
+from backend.engine.decision_card import generate_decision_card
+from backend.engine.production_outputs import ProductionOutputGenerator
 
 router = APIRouter(prefix="/api/scenario", tags=["counterfactual"])
 
@@ -149,6 +151,16 @@ async def run_scenario(req: ScenarioRunRequest):
 
         decision = quality_gates_result.get("overall", {}).get("decision", "HOLD")
 
+        # Generate comparison report (for decision card generation)
+        output_gen = ProductionOutputGenerator()
+        scenario_spec["dataset_id"] = req.dataset_id  # Add dataset_id to spec
+        comparison_path = output_gen.generate_comparison_report(
+            baseline_result=result["baseline"],
+            scenario_result=result["scenario"],
+            scenario_spec=scenario_spec,
+            quality_gates=quality_gates_result
+        )
+
         # Generate figures (placeholder for now)
         figures = {}
 
@@ -209,28 +221,66 @@ async def confirm_scenario(req: ScenarioRunRequest):
 async def export_decision_card(
     dataset_id: str,
     scenario_id: str,
-    fmt: str = "pdf"
+    fmt: str = "json"
 ):
     """
-    Decision Card生成（PDF/HTML）
+    Decision Card生成（JSON/HTML/PDF）
 
-    横並び可視化 + ΔProfit + CASゲート判定
+    横並び可視化 + ΔProfit + Quality Gatesゲート判定
+
+    Note: This endpoint looks for the latest comparison report.
+    To generate a fresh decision card, run the scenario first via /run endpoint.
     """
     try:
-        # TODO: 実際のPDF生成ロジック
-        # 現時点ではプレースホルダー
-
-        if fmt not in ["pdf", "html"]:
+        if fmt not in ["json", "html", "pdf"]:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Invalid format: {fmt}. Must be 'pdf' or 'html'"
+                detail=f"Invalid format: {fmt}. Must be 'json', 'html', or 'pdf'"
             )
 
-        # モックレスポンス
+        # Look for latest comparison report
+        exports_dir = Path("exports") / dataset_id
+        if not exports_dir.exists():
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"No exports found for dataset {dataset_id}. Run scenario first."
+            )
+
+        # Find latest comparison report for this scenario
+        comparison_files = list(exports_dir.glob(f"comparison_{dataset_id}_{scenario_id}_*.json"))
+        if not comparison_files:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"No comparison report found for scenario {scenario_id}. Run scenario first."
+            )
+
+        # Load latest comparison report
+        latest_comparison = sorted(comparison_files, key=lambda p: p.stat().st_mtime, reverse=True)[0]
+        with open(latest_comparison) as f:
+            comparison_data = json.load(f)
+
+        # Extract data for decision card
+        baseline_result = comparison_data.get("baseline", {})
+        scenario_result = comparison_data.get("scenario", {})
+        quality_gates = comparison_data.get("quality_gates", {})
+
+        # Generate decision card
+        card_path = generate_decision_card(
+            dataset_id=dataset_id,
+            scenario_id=scenario_id,
+            baseline_result=baseline_result,
+            scenario_result=scenario_result,
+            quality_gates=quality_gates,
+            scenario_spec=None,  # Not stored in comparison report
+            format=fmt,
+            output_dir=Path("exports/decision_cards")
+        )
+
         return {
-            "status": "pending",
-            "message": f"Decision card generation for {scenario_id} is not yet implemented",
-            "expected_path": f"exports/{dataset_id}/decision_card_{scenario_id}.{fmt}"
+            "status": "completed",
+            "path": str(card_path),
+            "format": fmt,
+            "generated_at": comparison_data.get("generated_at")
         }
 
     except HTTPException:
