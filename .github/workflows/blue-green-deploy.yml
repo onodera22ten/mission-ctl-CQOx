@@ -31,8 +31,8 @@ jobs:
       packages: write
 
     outputs:
-      image_tag: ${{ steps.meta.outputs.tags }}
-      version: ${{ steps.meta.outputs.version }}
+      image_tag: ghcr.io/onodera22ten/mission-ctl-cqox/engine:${{ github.ref_name }}
+      version: ${{ github.ref_name }}
 
     steps:
       - name: Checkout code
@@ -48,40 +48,30 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/onodera22ten/mission-ctl-cqox
-          tags: |
-            type=sha,prefix={{branch}}-
-            type=ref,event=branch
-            type=semver,pattern={{version}}
-
       - name: Build and push Engine image
         uses: docker/build-push-action@v5
         with:
-          context: ./backend
-          file: ./backend/Dockerfile
+          context: .
+          file: ./Dockerfile.engine
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/engine:${{ steps.meta.outputs.version }}
+          tags: ghcr.io/onodera22ten/mission-ctl-cqox/engine:${{ github.ref_name }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
       - name: Build and push Frontend image
         uses: docker/build-push-action@v5
         with:
-          context: ./frontend
-          file: ./frontend/Dockerfile
+          context: .
+          file: ./Dockerfile.frontend
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/frontend:${{ steps.meta.outputs.version }}
+          tags: ghcr.io/onodera22ten/mission-ctl-cqox/frontend:${{ github.ref_name }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
       - name: Run tests
         run: |
           echo "Running unit tests..."
-          # docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/engine:${{ steps.meta.outputs.version }} pytest
+          # docker run --rm ghcr.io/onodera22ten/mission-ctl-cqox/engine:${{ github.ref_name }} pytest
           echo "Tests passed ✅"
 
   # ============================================================================
@@ -125,10 +115,10 @@ jobs:
 
           # Update deployments with new image
           kubectl set image deployment/cqox-engine-$GREEN_ENV \
-            engine=${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/engine:$VERSION
+            engine=ghcr.io/onodera22ten/mission-ctl-cqox/engine:$VERSION
 
           kubectl set image deployment/cqox-frontend-$GREEN_ENV \
-            frontend=${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/frontend:$VERSION
+            frontend=ghcr.io/onodera22ten/mission-ctl-cqox/frontend:$VERSION
 
           # Label deployments
           kubectl label deployment cqox-engine-$GREEN_ENV version=$GREEN_ENV --overwrite
