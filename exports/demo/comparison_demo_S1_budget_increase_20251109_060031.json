@@ -1,0 +1,96 @@
+{
+  "dataset_id": "demo",
+  "scenario_id": "S1_budget_increase",
+  "generated_at": "2025-11-09T06:00:31.609656Z",
+  "baseline": {
+    "value": 8308.288021128208,
+    "ci": [
+      7485.385040953231,
+      9131.191001303185
+    ],
+    "std_error": 419.85617422867523
+  },
+  "scenario": {
+    "value": 9295.516950536734,
+    "ci": [
+      8670.603545657184,
+      9920.430355416283
+    ],
+    "std_error": 318.83922858215107
+  },
+  "delta": {
+    "value": 987.2289294085258,
+    "pct_change": 11.882459140775754
+  },
+  "quality_gates": {
+    "gates": [
+      {
+        "category": "identification",
+        "metric": "overlap_rate",
+        "threshold": ">0.90",
+        "s0_value": 0.0,
+        "s1_value": null,
+        "status": "FAIL",
+        "reason": "0.000 \u2264 0.9"
+      },
+      {
+        "category": "precision",
+        "metric": "se_ate_ratio",
+        "threshold": "<0.5",
+        "s0_value": 0.0,
+        "s1_value": null,
+        "status": "PASS",
+        "reason": ""
+      },
+      {
+        "category": "precision",
+        "metric": "ci_width",
+        "threshold": "<2.0",
+        "s0_value": 0.0,
+        "s1_value": null,
+        "status": "PASS",
+        "reason": ""
+      },
+      {
+        "category": "robustness",
+        "metric": "rosenbaum_gamma",
+        "threshold": ">1.2",
+        "s0_value": 0.0,
+        "s1_value": null,
+        "status": "FAIL",
+        "reason": "0.000 \u2264 1.2"
+      },
+      {
+        "category": "robustness",
+        "metric": "evalue",
+        "threshold": ">2.0",
+        "s0_value": 0.0,
+        "s1_value": null,
+        "status": "FAIL",
+        "reason": "0.000 \u2264 2.0"
+      },
+      {
+        "category": "decision",
+        "metric": "delta_profit",
+        "threshold": ">0",
+        "s0_value": null,
+        "s1_value": 987.2289294085258,
+        "status": "PASS",
+        "reason": ""
+      }
+    ],
+    "overall": {
+      "pass_count": 3,
+      "fail_count": 3,
+      "warning_count": 0,
+      "pass_rate": 0.5,
+      "decision": "CANARY"
+    },
+    "rationale": [
+      "Quality gate pass rate: 50.0% (50-70%)",
+      "\u0394Profit: Positive",
+      "Recommendation: Gradual rollout with monitoring"
+    ]
+  },
+  "scenario_spec_hash": "486ace11cbbc"
+}

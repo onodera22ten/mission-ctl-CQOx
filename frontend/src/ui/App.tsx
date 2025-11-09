@@ -4,6 +4,7 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, ReferenceLin
 import { analyzeComprehensive } from "../lib/client";
 import TasksPanel from "./TasksPanel";
 import MetricsDashboard from "../components/MetricsDashboard";
+import CounterfactualDashboard from "../components/counterfactual/CounterfactualDashboard";
 
 // 階層構造対応: 具体ドメイン（Level 2）のみ表示
 const DOMAINS = ["education", "medical", "policy", "retail", "finance", "network"];
@@ -46,6 +47,7 @@ const SAMPLE_DATASETS = [
 type Mapping = Record<string, string>;
 
 export default function App() {
+  const [activeTab, setActiveTab] = useState<"analysis" | "counterfactual">("analysis");
   const [dfPath, setDfPath] = useState("data/realistic_retail_5k.csv");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [domain, setDomain] = useState<string>("retail");
@@ -139,6 +141,53 @@ export default function App() {
         </p>
       </div>
 
+      {/* Tab Navigation */}
+      <div style={{
+        display: "flex",
+        gap: 8,
+        marginBottom: 32,
+        borderBottom: "2px solid #1e293b",
+        paddingBottom: 0,
+      }}>
+        <button
+          onClick={() => setActiveTab("analysis")}
+          style={{
+            padding: "12px 24px",
+            borderRadius: "8px 8px 0 0",
+            border: "none",
+            borderBottom: activeTab === "analysis" ? "3px solid #3b82f6" : "3px solid transparent",
+            background: activeTab === "analysis" ? "#1e293b" : "transparent",
+            color: activeTab === "analysis" ? "#3b82f6" : "#94a3b8",
+            fontWeight: activeTab === "analysis" ? 600 : 400,
+            fontSize: 15,
+            cursor: "pointer",
+            transition: "all 0.2s",
+          }}
+        >
+          📊 Causal Analysis
+        </button>
+        <button
+          onClick={() => setActiveTab("counterfactual")}
+          style={{
+            padding: "12px 24px",
+            borderRadius: "8px 8px 0 0",
+            border: "none",
+            borderBottom: activeTab === "counterfactual" ? "3px solid #8b5cf6" : "3px solid transparent",
+            background: activeTab === "counterfactual" ? "#1e293b" : "transparent",
+            color: activeTab === "counterfactual" ? "#8b5cf6" : "#94a3b8",
+            fontWeight: activeTab === "counterfactual" ? 600 : 400,
+            fontSize: 15,
+            cursor: "pointer",
+            transition: "all 0.2s",
+          }}
+        >
+          🔮 Counterfactual Evaluation
+        </button>
+      </div>
+
+      {/* Causal Analysis Tab */}
+      {activeTab === "analysis" && (
+      <>
       <div style={{
         display: "flex",
         flexDirection: "column",
@@ -602,6 +651,13 @@ export default function App() {
             </div>
           )}
         </div>
+      )}
+      </>
+      )}
+
+      {/* Counterfactual Evaluation Tab */}
+      {activeTab === "counterfactual" && (
+        <CounterfactualDashboard datasetId="demo" />
       )}
     </div>
   );

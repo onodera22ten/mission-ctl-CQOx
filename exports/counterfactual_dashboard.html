@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counterfactual Evaluation Dashboard - CQOx</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0b1323 0%, #1e293b 100%);
+            color: #e5edf7;
+            padding: 24px;
+            min-height: 100vh;
+        }
+
+        .header {
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid #1e293b;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .decision-badge {
+            padding: 20px 40px;
+            border-radius: 16px;
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 32px;
+            border: 3px solid;
+        }
+
+        .decision-go {
+            background-color: #10B981;
+            border-color: #059669;
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.25);
+        }
+
+        .decision-canary {
+            background-color: #F59E0B;
+            border-color: #D97706;
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(245, 158, 11, 0.25);
+        }
+
+        .decision-hold {
+            background-color: #EF4444;
+            border-color: #DC2626;
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.25);
+        }
+
+        .comparison-panel {
+            padding: 24px;
+            background: #1e293b;
+            border-radius: 16px;
+            border: 1px solid #334155;
+            margin-bottom: 24px;
+        }
+
+        .panel-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #3b82f6;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .metric-card {
+            padding: 20px;
+            background: #0f172a;
+            border-radius: 12px;
+            border: 2px solid #475569;
+        }
+
+        .metric-card.delta {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #e2e8f0;
+            margin-bottom: 8px;
+        }
+
+        .metric-value.positive {
+            color: #10b981;
+        }
+
+        .metric-ci {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .gates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .gate {
+            padding: 14px;
+            border-radius: 10px;
+            border: 2px solid;
+        }
+
+        .gate.pass {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10b981;
+        }
+
+        .gate.fail {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: #ef4444;
+        }
+
+        .gate-metric {
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .gate-value {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-bottom: 6px;
+        }
+
+        .gate-status {
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .gate-status.pass {
+            color: #10b981;
+        }
+
+        .gate-status.fail {
+            color: #ef4444;
+        }
+
+        .rationale {
+            padding: 16px;
+            background: #0f172a;
+            border-radius: 10px;
+            border: 1px solid #334155;
+        }
+
+        .rationale h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .rationale ul {
+            padding-left: 20px;
+            color: #94a3b8;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #10b981;
+            color: #fff;
+        }
+
+        .badge-warning {
+            background: #f59e0b;
+            color: #fff;
+        }
+
+        .badge-error {
+            background: #ef4444;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔮 Counterfactual Evaluation</h1>
+        <p class="subtitle">NASA/Google Standard • Scenario: S1_budget_increase • Mode: OPE</p>
+    </div>
+
+    <!-- Decision Badge -->
+    <div class="decision-badge decision-canary">
+        ⚠ CANARY - Gradual Rollout Recommended
+    </div>
+
+    <!-- S0 vs S1 Comparison -->
+    <div class="comparison-panel">
+        <h2 class="panel-title">S0 vs S1 Comparison</h2>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">S0: Baseline (Observed)</div>
+                <div class="metric-value">¥8,308</div>
+                <div class="metric-ci">Average Treatment Effect</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-label">S1: Scenario (Counterfactual)</div>
+                <div class="metric-value">¥9,296</div>
+                <div class="metric-ci">Projected ATE with +20% budget</div>
+            </div>
+
+            <div class="metric-card delta">
+                <div class="metric-label">ΔProfit (S1 - S0)</div>
+                <div class="metric-value positive">¥987</div>
+                <div class="metric-ci">+11.9% improvement</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quality Gates -->
+    <div class="comparison-panel">
+        <h2 class="panel-title">Quality Gates <span class="badge badge-warning">50% Pass Rate</span></h2>
+
+        <div class="gates-grid">
+            <div class="gate fail">
+                <div class="gate-metric">overlap_rate</div>
+                <div class="gate-value">0.000 / 0.900</div>
+                <div class="gate-status fail">FAIL</div>
+            </div>
+
+            <div class="gate pass">
+                <div class="gate-metric">se_ate_ratio</div>
+                <div class="gate-value">0.000 / 0.500</div>
+                <div class="gate-status pass">PASS</div>
+            </div>
+
+            <div class="gate pass">
+                <div class="gate-metric">ci_width</div>
+                <div class="gate-value">0.000 / 2.000</div>
+                <div class="gate-status pass">PASS</div>
+            </div>
+
+            <div class="gate fail">
+                <div class="gate-metric">rosenbaum_gamma</div>
+                <div class="gate-value">0.000 / 1.200</div>
+                <div class="gate-status fail">FAIL</div>
+            </div>
+
+            <div class="gate fail">
+                <div class="gate-metric">evalue</div>
+                <div class="gate-value">0.000 / 2.000</div>
+                <div class="gate-status fail">FAIL</div>
+            </div>
+
+            <div class="gate pass">
+                <div class="gate-metric">delta_profit</div>
+                <div class="gate-value">¥987 > 0</div>
+                <div class="gate-status pass">PASS</div>
+            </div>
+        </div>
+
+        <div class="rationale">
+            <h4>Decision Rationale</h4>
+            <ul>
+                <li>✓ ΔProfit > 0: Positive profit increase of ¥987 (+11.9%)</li>
+                <li>⚠ Pass rate 50%: Some identification and robustness gates failed</li>
+                <li>⚠ Recommendation: Gradual rollout with monitoring (CANARY strategy)</li>
+                <li>✓ Precision gates passed: Confidence intervals within acceptable range</li>
+                <li>✗ Overlap and sensitivity analysis need improvement</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Metadata -->
+    <div class="comparison-panel">
+        <div style="font-size: 12px; color: #94a3b8;">
+            <strong>Dataset:</strong> demo (5,000 rows) |
+            <strong>Scenario:</strong> S1_budget_increase |
+            <strong>Method:</strong> Off-Policy Evaluation (OPE) |
+            <strong>Execution Time:</strong> ~280ms |
+            <strong>Generated:</strong> 2025-11-09
+        </div>
+    </div>
+</body>
+</html>
